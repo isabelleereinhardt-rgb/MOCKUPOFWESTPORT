@@ -2,6 +2,99 @@
  "version": 1,
  "homes": [
   {
+   "id": "abernathy-trailer",
+   "name": "Abernathy trailer, lot 47",
+   "address": "1118 Holt Street, Lot 47",
+   "neighborhood": "Riverside",
+   "residents": [
+    "Dalton Abernathy",
+    "Lisa Abernathy"
+   ],
+   "status": "Canon 2 (address, lot 47); design from the author's photo (reference/dalton-park.webp)",
+   "house": "models/homes/abernathy-trailer.glb",
+   "lot": "models/homes/abernathy-trailer-lot.glb",
+   "at": [
+    -1937.25,
+    -2151.25
+   ],
+   "heading": 174.3,
+   "building": 173,
+   "render": "renders/abernathy-trailer.jpg",
+   "aerial": "renders/abernathy-trailer-aerial.jpg",
+   "style": "older single-wide manufactured home (16 x 61 ft box)",
+   "stories": 1,
+   "ridge": 3.26,
+   "footprint": [
+    5,
+    19
+   ],
+   "materials": [
+    "horizontal lap aluminum siding, 200 mm exposure: grey (about #A6ABAB) below the sills, off-white (about #DCDDD7) above, split by an aluminum strip",
+    "low bowed galvanized steel roof with crimped cross seams every 1.2 m, worn silver roof coating, rust at the seams and down-slope streaks",
+    "ribbed off-white vinyl skirting with louvred vents, splash-dirty at the bottom",
+    "mill-finish aluminum single-hung windows, blinds and curtains behind the glass",
+    "white steel entry door with a small light and an aluminum storm door",
+    "weathered pressure-treated pine landing, stairs and railings on concrete blocks",
+    "window AC unit, furnace roof jack, plumbing vents, bathroom fan"
+   ],
+   "notes": "Box 4.88 x 18.70 m (16 x 61 ft) inside the 5.0 x 19.0 m Atlas footprint; floor 0.86 m above grade on the chassis, side walls to 3.04 m, bowed roof crown 3.26 m (Atlas height 3.5 m). From the photo: the single-wide type and proportions, grey and white horizontal siding, the low metal roof with rust, skirting to the ground, aluminum windows, the wooden steps with a railing. From the brief: door on the long side facing the stub, landing with steps and railing, window AC, gravel pad, propane cylinder, trash bins, folding chair, short clothesline. Interpreted (not in the photo or brief): the two-tone split at sill height, cross-seam spacing, the window layout (living room at the lane end, bedrooms at the north end), the back door and its stoop, roof jacks, the storm door, the second cylinder, the recycling cart, the power pedestal, hose and loose blocks. The lot is the strip beside the trailer only (neighbours stand 11.5 m east and west, so it is held to x = -5.7..5.7); the gravel pad meets the lane edge at y = -10.95 and opens toward the access stub on its west side.",
+   "triangles": 10685,
+   "lotRect": [
+    -5.7,
+    -10.95,
+    5.7,
+    11.5
+   ]
+  },
+  {
+   "id": "delacroix-house",
+   "name": "Delacroix house",
+   "address": "3064 Harbor Drive",
+   "neighborhood": "Harborview",
+   "residents": [
+    "Lori Delacroix",
+    "Charles Delacroix",
+    "Madeleine Delacroix",
+    "Philippe Delacroix"
+   ],
+   "status": "proposed (address and placement); design from the author's film still (reference/lori-house.webp), detail from reference/board-17.jpg and board-19.jpg",
+   "house": "models/homes/delacroix-house.glb",
+   "lot": "models/homes/delacroix-house-lot.glb",
+   "at": [
+    5518.75,
+    -634.75
+   ],
+   "heading": 136.1,
+   "building": 23936,
+   "render": "renders/delacroix-house.jpg",
+   "aerial": "renders/delacroix-house-aerial.jpg",
+   "style": "Georgian / Colonial Revival brick estate",
+   "stories": 2.5,
+   "ridge": 11.86,
+   "footprint": [
+    24.4,
+    18.74
+   ],
+   "materials": [
+    "warm red-brown brick in Flemish bond with darker burnt headers, light mortar",
+    "darker brick base with a limestone water table",
+    "dark natural slate hipped roof with lead hip and ridge caps, copper valleys",
+    "white painted dentil cornice, pediment, pilasters, portico and balustrade",
+    "black louvered shutters, 6-over-6 white sash windows, arched fanlights",
+    "limestone sills, jack-arch lintels and keystones; bluestone terrace and treads",
+    "lead-coated copper bay roof, aged copper downspouts",
+    "asphalt drive with Belgian-block (granite) edging, brick paver landing and terrace"
+   ],
+   "notes": "Main block 18.0 x 11.5 m (x -9..9, y -5.75..5.75), first floor 0.60 m above grade, second floor 4.15 m, cornice soffit 7.2 m, 34 deg slate hip to a 11.9 m ridge; twin corbelled end chimneys to 13.55 m. The Atlas height (8.0 m) is too low for a 2.5-story Georgian house with the tall roof in the photo, so the ridge is about 48% higher. The pavilion projects 1.0 m; the portico, terrace and steps reach y = -10.5 (1.1 m beyond the footprint). Wings make the house about 30 m wide: the 1.5-story front-gabled left wing (x -15..-9) and the two-story hipped right wing (x 9..15). From the photo: brick, dark slate hip, tall corbelled chimney, white columned portico with balustraded balcony, pedimented pavilion with an arched fanlight rising into the pediment, black shutters, front-gabled left wing, the shed-roofed porch between the wing and the portico, lanterns, arched first-floor windows on the right, attic dormers, curving drive. Interpretations: the side, rear and roof plan (rear ell, dormers front and back, side entry, chimney positions), the box bay on the wing (after board-19), Flemish bond, the drive layout (a horseshoe with a planted island and a spur to a parking court at the right wing), gate piers, rear terrace and the three hardwoods. The lot GLB has no lawn; its drive meets the curb line exactly at two flared mouths. The lot owns its frontage: the brick gate piers stand 3.95 m behind the curb line (caps 3.58 m), so nothing walled or hedged sits in the 1.8-3.3 m sidewalk zone; only the drive and its granite edging run to the curb. The three hardwoods (white-oak habit, 16.5-18 m) are a trunk with root flares, scaffold limbs, branches and twigs carrying about 530 small soft leaf clumps each in a lobed crown shell, shaded by vertex colour (darker inside and underneath); no alpha cards.",
+   "triangles": 213775,
+   "lotRect": [
+    -22,
+    -33.04,
+    21,
+    25
+   ]
+  },
+  {
    "id": "monet-williams-house",
    "name": "Monet Williams's house",
    "address": "648 Oak Street",
@@ -21,8 +114,8 @@
    ],
    "heading": -92.2,
    "building": 6973,
-   "render": null,
-   "aerial": null,
+   "render": "renders/monet-williams-house.jpg",
+   "aerial": "renders/monet-williams-house-aerial.jpg",
    "style": "Lowcountry Victorian farmhouse",
    "stories": 2,
    "ridge": 12.51,
@@ -31,7 +124,7 @@
     20.01
    ],
    "materials": [
-    "painted lap siding, pale blue-grey (#B6C2CD), 115 mm exposure",
+    "painted lap siding, pale blue-grey (about #B8C3CD after board shading), 115 mm exposure",
     "white painted trim, corner boards, scalloped fascia valance",
     "navy louvered shutters (#2B3350)",
     "weathered grey architectural asphalt shingles",
@@ -39,8 +132,8 @@
     "white diagonal lattice and slatted porch skirting",
     "grey painted porch floor, pale blue beadboard porch ceiling"
    ],
-   "notes": "Main block 12.4 x 11.0 m, first floor raised 0.95 m on brick piers, eaves 7.8 m, ridge 12.5 m. The photo shows a long ridge with near-vertical roof ends, so the hip ends are pitched steeper (60 deg) than the front and back (38 deg). Wraparound porch 3.0 m deep on the front and both sides; the left return ends short of the side wing, the right return has brick steps down to the driveway. Interpretations (not in the photo): side and rear elevations, the rear kitchen ell, chimney positions (rear slope), shell driveway, the third live oak behind the house on the left, porch furniture. The photo's porch skirting is horizontal slats, used here; the house block uses lattice between brick piers per the brief.",
-   "triangles": 234005,
+   "notes": "Main block 12.4 x 11.0 m, first floor raised 0.95 m on brick piers, eaves 7.8 m, ridge 12.5 m (Atlas height 10 m; the photo needs the taller roof). The photo shows a long ridge with near-vertical roof ends, so the hip ends are pitched steeper (60 deg) than the front and back (38 deg). Wraparound porch 3.0 m deep on the front and both sides; the left return stops short of the side wing, the right return has brick steps at its back end toward the driveway. From the photo: massing, three dormers with sawn bargeboards and finials, scalloped fascia, turned posts with fan brackets, sawn balusters, balcony with flower boxes, double entry with sidelights and transom, lanterns, brick steps, slatted porch skirting, white picket fence with an X-braced gate, brick walk, rounded ornamental tree right of the walk, and the two moss-hung live oaks (both stand front left in the photo; the brief put one behind the house, the photo was followed). Interpreted (not visible in the photo): side and rear elevations, the hipped side wing, the rear kitchen ell and stoop, chimney positions on the rear slope, lattice under the house block (per the brief), shell driveway with concrete apron, mailbox, HVAC condensers, roll carts, porch rockers, swing and ferns.",
+   "triangles": 213555,
    "lotRect": [
     -21.2,
     -28.66,
@@ -50,8 +143,420 @@
   }
  ],
  "landmarks": [],
- "archetypes": [],
+ "archetypes": [
+  {
+   "id": "mobile-single-a",
+   "kinds": [
+    "mobile"
+   ],
+   "bbox_m": [
+    5.375,
+    19,
+    3.617
+   ],
+   "z_range_m": [
+    -0.6,
+    3.617
+   ],
+   "stories": 1,
+   "best_aspect": 0.2829,
+   "neighborhoods": [
+    "Riverside"
+   ],
+   "triangles": 1186,
+   "file_kb": 486.5,
+   "description": "older single-wide: bowed metal roof with cross seams, two-tone lap aluminum siding, window AC, wooden landing and steps with a rail",
+   "front_note": "long axis along Y; lane end at -Y (glTF +Z); entry steps on the -X side",
+   "file": "models/archetypes/mobile-single-a.glb"
+  },
+  {
+   "id": "mobile-single-b",
+   "kinds": [
+    "mobile"
+   ],
+   "bbox_m": [
+    5.66,
+    19,
+    3.626
+   ],
+   "z_range_m": [
+    -0.6,
+    3.626
+   ],
+   "stories": 1,
+   "best_aspect": 0.2979,
+   "neighborhoods": [
+    "Riverside"
+   ],
+   "triangles": 1182,
+   "file_kb": 541.1,
+   "description": "older, rustier 1970s single-wide: rounder metal roof with streaky (rust) shading, stripe band, aluminum door awning, plain wooden stoops",
+   "front_note": "long axis along Y; lane end at -Y (glTF +Z); entry steps on the -X side",
+   "file": "models/archetypes/mobile-single-b.glb"
+  },
+  {
+   "id": "mobile-single-c",
+   "kinds": [
+    "mobile"
+   ],
+   "bbox_m": [
+    5.515,
+    19.2,
+    3.492
+   ],
+   "z_range_m": [
+    -0.6,
+    3.492
+   ],
+   "stories": 1,
+   "best_aspect": 0.2872,
+   "neighborhoods": [
+    "Riverside"
+   ],
+   "triangles": 1266,
+   "file_kb": 901,
+   "description": "newer single-wide: 3:12 shingled gable roof with overhangs, vinyl lap siding, shutters, landing with steps and railing",
+   "front_note": "long axis along Y; lane end at -Y (glTF +Z); entry steps on the -X side",
+   "file": "models/archetypes/mobile-single-c.glb"
+  },
+  {
+   "id": "mobile-double",
+   "kinds": [
+    "mobile"
+   ],
+   "bbox_m": [
+    10.475,
+    18.7,
+    4.45
+   ],
+   "z_range_m": [
+    -0.6,
+    4.45
+   ],
+   "stories": 1,
+   "best_aspect": 0.5602,
+   "neighborhoods": [
+    "Riverside"
+   ],
+   "triangles": 1390,
+   "file_kb": 899.8,
+   "description": "double-wide (about 9 x 18 m): 4:12 shingled gable roof, vinyl siding, shutters, two doors, block-look skirting, landing with steps",
+   "front_note": "long axis along Y; lane end at -Y (glTF +Z); entry steps on the -X side",
+   "file": "models/archetypes/mobile-double.glb"
+  },
+  {
+   "id": "house-ranch",
+   "kinds": [
+    "house"
+   ],
+   "bbox_m": [
+    14.2,
+    10.58,
+    5.86
+   ],
+   "stories": 1,
+   "best_aspect": 1.342,
+   "neighborhoods": [
+    "Westport Acres",
+    "Pinecrest",
+    "North End",
+    "South of the river"
+   ],
+   "triangles": 722,
+   "style": "1950s-60s ranch, low hip roof",
+   "roof": "shingle",
+   "size_kb": 364,
+   "file": "models/archetypes/house-ranch.glb"
+  },
+  {
+   "id": "house-brick-ranch",
+   "kinds": [
+    "house"
+   ],
+   "bbox_m": [
+    15.45,
+    11.26,
+    6.19
+   ],
+   "stories": 1,
+   "best_aspect": 1.372,
+   "neighborhoods": [
+    "Westport Acres",
+    "Pinecrest",
+    "Harborview",
+    "North End",
+    "South of the river"
+   ],
+   "triangles": 887,
+   "style": "brick ranch, side gable with siding gables and a gabled entry portico",
+   "roof": "shingle",
+   "size_kb": 375,
+   "file": "models/archetypes/house-brick-ranch.glb"
+  },
+  {
+   "id": "house-bungalow",
+   "kinds": [
+    "house"
+   ],
+   "bbox_m": [
+    10.3,
+    14.86,
+    6.42
+   ],
+   "stories": 1,
+   "best_aspect": 0.693,
+   "neighborhoods": [
+    "Riverside",
+    "Garden District",
+    "North End",
+    "Downtown"
+   ],
+   "triangles": 869,
+   "style": "Craftsman bungalow, front gable with an offset front-gable porch on brick piers",
+   "roof": "shingle",
+   "size_kb": 374,
+   "file": "models/archetypes/house-bungalow.glb"
+  },
+  {
+   "id": "house-cape",
+   "kinds": [
+    "house"
+   ],
+   "bbox_m": [
+    11.4,
+    10.26,
+    8.34
+   ],
+   "stories": 1.5,
+   "best_aspect": 1.111,
+   "neighborhoods": [
+    "Westport Acres",
+    "Garden District",
+    "Harborview",
+    "North End"
+   ],
+   "triangles": 1019,
+   "style": "Cape Cod, steep side gable, two gabled dormers, end chimney",
+   "roof": "shingle",
+   "size_kb": 384,
+   "file": "models/archetypes/house-cape.glb"
+  },
+  {
+   "id": "house-colonial",
+   "kinds": [
+    "house"
+   ],
+   "bbox_m": [
+    13.4,
+    10.61,
+    10.33
+   ],
+   "stories": 2,
+   "best_aspect": 1.263,
+   "neighborhoods": [
+    "Harborview",
+    "Garden District",
+    "Westport Acres",
+    "Uptown"
+   ],
+   "triangles": 1479,
+   "style": "Colonial Revival, two stories, side gable, five bays with shutters, end chimney",
+   "roof": "shingle",
+   "size_kb": 416,
+   "file": "models/archetypes/house-colonial.glb"
+  },
+  {
+   "id": "house-foursquare",
+   "kinds": [
+    "house"
+   ],
+   "bbox_m": [
+    10.1,
+    12.29,
+    10.11
+   ],
+   "stories": 2.5,
+   "best_aspect": 0.822,
+   "neighborhoods": [
+    "Garden District",
+    "Downtown",
+    "North End",
+    "Riverside"
+   ],
+   "triangles": 1526,
+   "style": "American Foursquare, hip roof with hipped dormer, full-width porch",
+   "roof": "shingle",
+   "size_kb": 419,
+   "file": "models/archetypes/house-foursquare.glb"
+  },
+  {
+   "id": "house-farmhouse",
+   "kinds": [
+    "house"
+   ],
+   "bbox_m": [
+    14.2,
+    14.11,
+    10.13
+   ],
+   "stories": 2,
+   "best_aspect": 1.006,
+   "neighborhoods": [
+    "North of town",
+    "Riverside",
+    "North End",
+    "Marsh Point"
+   ],
+   "triangles": 1433,
+   "style": "two-story farmhouse (I-house) with standing-seam metal roof, rear ell, wraparound porch",
+   "roof": "metal",
+   "size_kb": 296,
+   "file": "models/archetypes/house-farmhouse.glb"
+  },
+  {
+   "id": "house-shotgun",
+   "kinds": [
+    "house"
+   ],
+   "bbox_m": [
+    5.5,
+    17.64,
+    6.27
+   ],
+   "stories": 1,
+   "best_aspect": 0.312,
+   "neighborhoods": [
+    "Riverside",
+    "Downtown",
+    "South of the river"
+   ],
+   "triangles": 994,
+   "style": "shotgun house on brick piers, front gable over a full-width porch",
+   "roof": "shingle",
+   "size_kb": 382,
+   "file": "models/archetypes/house-shotgun.glb"
+  },
+  {
+   "id": "house-coastal",
+   "kinds": [
+    "house"
+   ],
+   "bbox_m": [
+    10.1,
+    12.15,
+    8.31
+   ],
+   "stories": 1,
+   "best_aspect": 0.831,
+   "neighborhoods": [
+    "The beach",
+    "Marsh Point",
+    "Harborview"
+   ],
+   "triangles": 1370,
+   "style": "raised coastal cottage on brick piers, hip roof, porch with a side-running stair",
+   "roof": "metal",
+   "size_kb": 292,
+   "file": "models/archetypes/house-coastal.glb"
+  },
+  {
+   "id": "house-victorian",
+   "kinds": [
+    "house"
+   ],
+   "bbox_m": [
+    13.2,
+    12.84,
+    12.14
+   ],
+   "stories": 2.5,
+   "best_aspect": 1.028,
+   "neighborhoods": [
+    "Garden District",
+    "Downtown",
+    "Uptown"
+   ],
+   "triangles": 1828,
+   "style": "Queen Anne Victorian: steep hip with a front cross gable bay, wraparound porch, tall chimneys",
+   "roof": "shingle",
+   "size_kb": 439,
+   "file": "models/archetypes/house-victorian.glb"
+  },
+  {
+   "id": "duplex-one",
+   "kinds": [
+    "duplex"
+   ],
+   "bbox_m": [
+    16.4,
+    11.48,
+    5.19
+   ],
+   "stories": 1,
+   "best_aspect": 1.429,
+   "neighborhoods": [
+    "Westport Acres",
+    "Riverside",
+    "North of Patriots Boulevard",
+    "Pinecrest"
+   ],
+   "triangles": 850,
+   "style": "one-story side-by-side duplex, hip roof, twin covered stoops",
+   "roof": "shingle",
+   "size_kb": 373,
+   "file": "models/archetypes/duplex-one.glb"
+  },
+  {
+   "id": "duplex-two",
+   "kinds": [
+    "duplex"
+   ],
+   "bbox_m": [
+    14,
+    10.91,
+    8.82
+   ],
+   "stories": 2,
+   "best_aspect": 1.283,
+   "neighborhoods": [
+    "Riverside",
+    "Downtown",
+    "North End",
+    "South of the river"
+   ],
+   "triangles": 1230,
+   "style": "two-story side-by-side duplex, side gable, shared front porch",
+   "roof": "shingle",
+   "size_kb": 399,
+   "file": "models/archetypes/duplex-two.glb"
+  },
+  {
+   "id": "townhouse-row",
+   "kinds": [
+    "townhouse"
+   ],
+   "bbox_m": [
+    28.1,
+    11.21,
+    9.12
+   ],
+   "stories": 2,
+   "best_aspect": 2.507,
+   "neighborhoods": [
+    "Downtown",
+    "Uptown",
+    "Harborview"
+   ],
+   "triangles": 1982,
+   "style": "row of four two-story townhouses, side gable, brick party-wall parapets, door hoods",
+   "roof": "shingle",
+   "size_kb": 450,
+   "file": "models/archetypes/townhouse-row.glb"
+  }
+ ],
  "replaces": [
+  173,
+  23936,
   6973
  ]
 }

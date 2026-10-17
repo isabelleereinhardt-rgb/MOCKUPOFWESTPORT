@@ -397,7 +397,11 @@ def blob(g, mat, c, r3, seed, rough=0.28, freq=1.4, sub=2, colfn=None, flat_bott
         cols.append(colfn(p, d) if colfn else (1, 1, 1))
         if nfn:
             nrms.append(nfn(p, d))
-    g.add(verts, F0, mat, smooth=True, colors=cols if colfn else None, normals=nrms if nfn else None)
+    # continuous per-vertex UVs (oblique planar projection in meters): no UV seams, so the GLB keeps one vertex
+    # per sphere vertex instead of splitting them at box-projection seams
+    uvv = [(0.7071 * (p.x - p.y), 0.8165 * p.z - 0.4082 * (p.x + p.y)) for p in verts]
+    g.add(verts, F0, mat, smooth=True, colors=cols if colfn else None, normals=nrms if nfn else None,
+          uvs=[[uvv[i] for i in f] for f in F0])
 
 
 def rect(u0, u1, z0, z1):
@@ -906,6 +910,8 @@ def make_materials():
     M = {}
     brick = tex_flemish('dlx_brick')
     M['Brick'] = wp.mat('Brick', tex=brick, rough=0.86, normal_strength=0.9)
+    # same brick at 1024 px for the lot's gate piers and seat walls (keeps the lot GLB inside the size budget)
+    M['BrickLot'] = wp.mat('BrickLot', tex=tex_flemish('dlx_brick_lot', n=1024), rough=0.86, normal_strength=0.9)
     M['BrickBase'] = wp.mat('BrickBase', '#c9b8ae', tex=brick, rough=0.9, normal_strength=0.9)
     M['BrickSoot'] = wp.mat('BrickSoot', '#9a8e88', tex=brick, rough=0.9, normal_strength=0.9)
     M['Trim'] = wp.mat('Trim', tex=tex_paint('dlx_trim', '#eeebe2'), rough=0.42)
@@ -937,9 +943,8 @@ def make_materials():
                                                         leaf=0.03, flowers='#e2587f', fcov=0.42), rough=0.65)
     M['FlowersW'] = vc_material('FlowersW', tex_foliage('dlx_flowersw', '#4c6b30', n=512, tile=0.5, seed=57,
                                                           leaf=0.03, flowers='#f3f0e8', fcov=0.45), rough=0.65)
-    M['Leaves'] = vc_material('Leaves', tex_foliage('dlx_leaves', '#506b2b', n=1024, tile=1.6, seed=54, leaf=0.085,
-                                                      var=0.2, gap='#1a230f'), rough=0.85, spec=0.22)
-    M['LeafCards'] = card_material('LeafCards', *tex_leafcard('dlx_leafcard', '#56722d'))
+    M['Leaves'] = vc_material('Leaves', tex_foliage('dlx_leaves', '#4f6a2b', n=512, tile=1.2, seed=54, leaf=0.06,
+                                                      var=0.1, gap='#34481d', cover=3.0), rough=0.88, spec=0.2)
     M['Bark'] = wp.mat('Bark', tex=tex_bark('dlx_bark'), rough=0.92)
     M['Mulch'] = wp.mat('Mulch', tex=tex_mulch('dlx_mulch', n=512), rough=0.95)
     M['Asphalt'] = wp.mat('Asphalt', tex=wp.tex_ground('dlx_asphalt', kind='asphalt', color='#606062', n=1024,
@@ -2138,7 +2143,9 @@ def build_drive(g):
             if chain and on_curb[i] and not on_curb[(i - 1) % n]:
                 chain.append(lp[i])
                 if len(chain) > 1:
-                    sweep(g, 'Granite', chain, prof, closed_profile=True)
+                    # cut both ends on the curb plane so no edging block pokes past the curb line
+                    cp = (Vector((0.0, CURB_Y, 0.0)), Vector((0.0, 1.0, 0.0)))
+                    sweep(g, 'Granite', chain, prof, closed_profile=True, end_planes=(cp, cp))
                 chain = []
     return out
 
@@ -2169,13 +2176,15 @@ def ring_hedge_normals(cx, cy, rx, ry, zc, own=0.45):
 
 
 def hardwood(g, base, seed, height, spread, trunk_r, bounds=None, n_limbs=5, lod=1.0):
-    """Mature deciduous hardwood (white oak habit): flared, slightly leaning trunk forking at ~30% of its height
-    into scaffold limbs and secondary branches, under a broad domed crown built from many overlapping lumpy leaf
-    clumps on the crown shell plus darker interior masses (darker underneath and inside)."""
+    """Mature deciduous hardwood (white oak habit): a flared, slightly leaning trunk forking at about a quarter of
+    its height into scaffold limbs, secondary branches and twigs.  The crown is many small, softly rounded leaf
+    clumps gathered around the branch tips (plus a few darker inner masses so the crown does not read as
+    see-through), smooth-shaded with normals blended toward the crown envelope, and vertex-colour shading: darker
+    inside the crown and under each clump, lighter and slightly warmer on top.  No alpha cards."""
     rng = np.random.default_rng(seed)
     bx, by = base
     LX0, LY0, LX1, LY1 = bounds or LOT
-    fork = 0.21 * height
+    fork = 0.23 * height
     lean = Vector((rng.uniform(-0.6, 0.6), rng.uniform(-0.6, 0.6), 0))
     zs = [-0.5, 0.0, 0.5, 1.2, fork * 0.5, fork * 0.8, fork]
     tp = [Vector((bx, by, z)) + lean * max(0.0, z / fork) ** 1.5 for z in zs]
@@ -2188,13 +2197,23 @@ def hardwood(g, base, seed, height, spread, trunk_r, bounds=None, n_limbs=5, lod
         p2 = (bx + math.cos(a) * trunk_r * 1.9, by + math.sin(a) * trunk_r * 1.9, -0.15)
         tube(g, 'Bark', [p0, p1, p2], [trunk_r * 0.42, trunk_r * 0.28, trunk_r * 0.08], seg=6)
     top = tp[-1]
-    crx = min(spread / 2, bx - LX0 - 0.3, LX1 - bx - 0.3, by - LY0 - 0.3, LY1 - by - 0.3)
-    crz = (height - fork - 1.4) / 2
+    s_scale = max(0.6, spread / 16.0)
+    pad = 0.9 * s_scale
+    crx = min(spread / 2, bx - LX0 - pad, LX1 - bx - pad, by - LY0 - pad, LY1 - by - pad)
+    crz = (height - fork - 1.0) / 2
     c0 = Vector((top.x, top.y, height - crz))
+    zbot = c0.z - crz
 
     def ell(u, v, f):
         cv = math.sqrt(max(0.0, 1 - v * v))
         return Vector((c0.x + math.cos(u) * crx * f * cv, c0.y + math.sin(u) * crx * f * cv, c0.z + v * crz * f))
+
+    def rel_of(q):
+        return Vector(((q.x - c0.x) / crx, (q.y - c0.y) / crx, (q.z - c0.z) / crz)).length
+
+    def crown_n(q):
+        n = Vector(((q.x - c0.x) / (crx * crx), (q.y - c0.y) / (crx * crx), (q.z - c0.z) / (crz * crz)))
+        return n.normalized() if n.length > 1e-9 else Vector((0, 0, 1))
 
     def curve(p0, p1, r0, r1, n, rise=0.35):
         pts = []
@@ -2206,105 +2225,111 @@ def hardwood(g, base, seed, height, spread, trunk_r, bounds=None, n_limbs=5, lod
             pts.append(q)
         return pts, [r0 + (r1 - r0) * i / n for i in range(n + 1)]
 
-    sites = []
+    # ---- branch structure: scaffold limbs -> secondary branches -> twigs; every end is a foliage site
+    tips = []
     az0 = rng.uniform(0, 2 * math.pi)
     for li in range(n_limbs):
         u = az0 + 2 * math.pi * li / n_limbs + rng.uniform(-0.3, 0.3)
-        tgt = ell(u, rng.uniform(-0.35, 0.25), 0.72)
+        tgt = ell(u, rng.uniform(-0.3, 0.3), 0.62)
         start = top - Vector((0, 0, rng.uniform(0.0, 0.9)))
-        pts, rad = curve(start, tgt, trunk_r * 0.55, 0.08, 7)
+        pts, rad = curve(start, tgt, trunk_r * 0.55, 0.09, 7)
         tube(g, 'Bark', pts, rad, seg=8, cap_end=False)
-        sites.append(pts[-1])
-        for bi in range(int(rng.integers(3, 5))):
+        tips.append(pts[-1])
+        for bi in range(int(rng.integers(4, 6))):
             i = int(rng.integers(2, len(pts) - 1))
-            u2 = u + rng.uniform(-0.7, 0.7)
-            t2 = ell(u2, rng.uniform(-0.35, 0.8), 0.9)
-            bp, br = curve(pts[i], t2, max(0.05, rad[i] * 0.5), 0.025, 4, rise=0.2)
+            u2 = u + rng.uniform(-0.75, 0.75)
+            t2 = ell(u2, rng.uniform(-0.45, 0.85), rng.uniform(0.84, 0.95))
+            bp, br = curve(pts[i], t2, max(0.05, rad[i] * 0.5), 0.03, 4, rise=0.2)
             tube(g, 'Bark', bp, br, seg=5, cap_end=False)
-            sites.append(bp[-1])
+            tips.append(bp[-1])
+            tips.append(bp[2])
+            if lod >= 0.8:
+                d = (bp[-1] - bp[-2]).normalized()
+                for ti in range(2):
+                    side = Vector(rng.normal(0, 1, 3))
+                    side = (side - d * side.dot(d)).normalized()
+                    q0 = bp[3]
+                    q2 = bp[-1] + side * rng.uniform(1.2, 2.0) * s_scale + d * 0.6 + Vector((0, 0, 0.35))
+                    if rel_of(q2) > 1.0:
+                        q2 = c0 + (q2 - c0) * (1.0 / rel_of(q2))
+                    q1 = q0.lerp(q2, 0.5) + Vector((0, 0, 0.15))
+                    tube(g, 'Bark', [q0, q1, q2], [0.03, 0.02, 0.01], seg=4, cap_end=False)
+                    tips.append(q2)
+
+    # ---- foliage: small soft clumps filling a lobed crown shell, plus clumps at every branch end
     hue = rng.uniform(-0.03, 0.03)
-    zbot = c0.z - crz
 
-    def mk_col(tone, lc=None, lr=None):
+    def colfn_for(tone):
         def colfn(q, d):
-            under = 0.36 + 0.64 * min(1.0, max(0.0, (d.z + 0.5) / 1.3))
-            rel = Vector(((q.x - c0.x) / crx, (q.y - c0.y) / crx, (q.z - c0.z) / crz)).length
-            shell = 0.5 + 0.5 * min(1.0, max(0.0, (rel - 0.35) / 0.6))
-            if lc is not None:
-                shell *= 0.75 + 0.25 * min(1.0, (q - lc).length / lr)
-            ht = 0.7 + 0.3 * min(1.0, max(0.0, (q.z - zbot) / (2 * crz)))
-            a = tone * under * shell * ht
-            return (a * (1.0 + hue), a, a * (0.88 - hue))
+            rel = rel_of(q)
+            shell = 0.4 + 0.6 * min(1.0, max(0.0, (rel - 0.4) / 0.6))           # darker deep inside the crown
+            cz = crown_n(q).z
+            under_c = 0.55 + 0.45 * min(1.0, max(0.0, (cz + 0.6) / 1.4))       # crown underside in shade
+            under = 0.8 + 0.2 * min(1.0, max(0.0, (d.z + 0.7) / 1.5))          # a little under each clump
+            ht = 0.82 + 0.18 * min(1.0, max(0.0, (q.z - zbot) / (2 * crz)))
+            warm = 0.03 * min(1.0, max(0.0, cz)) * max(0.0, d.z)
+            a = tone * shell * under_c * under * ht
+            return (a * (1.0 + hue + warm), a * (1.0 + warm * 0.4), a * (0.86 - hue - warm))
         return colfn
-    # lobes: one per scaffold limb plus a crown top; each lobe is a dark core covered with small leaf clumps
-    lobes = []
-    for k in range(n_limbs):
-        u = az0 + 2 * math.pi * k / n_limbs + rng.uniform(-0.25, 0.25)
-        lobes.append((ell(u, rng.uniform(-0.35, 0.15), 0.6), crx * rng.uniform(0.44, 0.54)))
-    for k in range(3):
-        u = az0 + 2 * math.pi * (k + 0.5) / 3 + rng.uniform(-0.3, 0.3)
-        lobes.append((ell(u, rng.uniform(0.35, 0.6), 0.5), crx * rng.uniform(0.4, 0.48)))
-    lobes.append((ell(0, 1.0, 0.42) + Vector((rng.normal(0, 0.6), rng.normal(0, 0.6), 0)), crx * 0.46))
-    nclump = int(16 * lod)
-    ncard = int(150 * lod)
 
-    def mk_nrm(lc, lr, lrz, own):
+    def nfn_for(own):
         def f(p, d):
-            nl = Vector(((p.x - lc.x) / (lr * lr), (p.y - lc.y) / (lr * lr), (p.z - lc.z) / (lrz * lrz))).normalized()
-            nc = Vector(((p.x - c0.x) / (crx * crx), (p.y - c0.y) / (crx * crx), (p.z - c0.z) / (crz * crz))).normalized()
-            return tuple((nl * (0.75 - own) + nc * 0.25 + d.normalized() * own).normalized())
+            return tuple((d.normalized() * own + crown_n(p) * (1 - own)).normalized())
         return f
-    for k, (lc, lr) in enumerate(lobes):
-        lr_z = lr * crz / crx * 1.05
-        blob(g, 'Leaves', tuple(lc), (lr * 0.86, lr * 0.86, lr_z * 0.82), seed * 50 + k, rough=0.3, freq=1.4, sub=3,
-             colfn=mk_col(0.8, lc, lr), nfn=mk_nrm(lc, lr, lr_z, 0.4))
-        outward = (lc - c0)
-        outward.z *= 0.6
-        outward = outward.normalized() if outward.length > 1e-6 else Vector((0, 0, 1))
-        for j in range(nclump):
-            dvec = Vector(rng.normal(0, 1, 3)).normalized()
-            if dvec.dot(outward) < -0.3 and dvec.z < 0.2:
-                dvec = (dvec + outward * 1.2).normalized()
-            if dvec.z < -0.55:
-                dvec.z *= 0.5
-                dvec.normalize()
-            c = lc + Vector((dvec.x * lr, dvec.y * lr, dvec.z * lr_z)) * rng.uniform(0.7, 1.02)
-            rel = Vector(((c.x - c0.x) / crx, (c.y - c0.y) / crx, (c.z - c0.z) / crz)).length
-            if rel > 1.02:
-                c = c0 + (c - c0) * (1.02 / rel)
-            sc = lr * rng.uniform(0.13, 0.38)
-            blob(g, 'Leaves', tuple(c), (sc, sc * rng.uniform(0.85, 1.15), sc * rng.uniform(0.7, 0.9)),
-                 seed * 1000 + k * 100 + j, rough=0.4, freq=2.4, sub=2, colfn=mk_col(rng.uniform(0.92, 1.05), lc, lr),
-                 flat_bottom=c.z - sc * 0.55, nfn=mk_nrm(lc, lr, lr_z, 0.16))
-        # leaf-cluster cards on the lobe surface break the outline into leaves
-        nf = mk_nrm(lc, lr, lr_z, 0.0)
-        cf = mk_col(1.0, lc, lr)
-        for j in range(ncard):
-            dvec = Vector(rng.normal(0, 1, 3)).normalized()
-            if dvec.dot(outward) < -0.4:
-                dvec = (dvec + outward * 1.3).normalized()
-            if dvec.z < -0.6:
-                dvec.z *= 0.5
-                dvec.normalize()
-            c = lc + Vector((dvec.x * lr, dvec.y * lr, dvec.z * lr_z)) * rng.uniform(0.85, 1.12)
-            rel = Vector(((c.x - c0.x) / crx, (c.y - c0.y) / crx, (c.z - c0.z) / crz)).length
-            if rel > 1.08:
-                c = c0 + (c - c0) * (1.08 / rel)
-            nrm = (dvec + Vector(rng.normal(0, 0.45, 3))).normalized()
-            t1 = nrm.cross(Vector((0, 0, 1)))
-            t1 = t1.normalized() if t1.length > 1e-3 else Vector((1, 0, 0))
-            t2 = nrm.cross(t1).normalized()
-            ang = rng.uniform(0, 2 * math.pi)
-            a_ = t1 * math.cos(ang) + t2 * math.sin(ang)
-            b_ = nrm.cross(a_).normalized()
-            hs = rng.uniform(0.45, 0.72)
-            P = [c - a_ * hs - b_ * hs, c + a_ * hs - b_ * hs, c + a_ * hs + b_ * hs, c - a_ * hs + b_ * hs]
-            g.add(P, [[0, 1, 2, 3]], 'LeafCards', smooth=True, colors=[cf(q, dvec) for q in P],
-                  uvs=[[(0, 0), (1, 0), (1, 1), (0, 1)]], normals=[nf(q, (q - lc).normalized()) for q in P])
 
+    def place(c, r):
+        rel = rel_of(c)
+        if rel > 1.03:
+            c = c0 + (c - c0) * (1.03 / rel)
+        c.x = min(max(c.x, LX0 + r), LX1 - r)
+        c.y = min(max(c.y, LY0 + r), LY1 - r)
+        c.z = max(c.z, zbot - 1.2)
+        return c
+
+    rscale = s_scale / math.sqrt(max(lod, 0.3))
+    # darker inner masses: fill the core so gaps show shadowed leaves rather than sky
+    n_in = max(4, int(12 * lod))
+    for k in range(n_in):
+        u = az0 + 2 * math.pi * k / n_in + rng.uniform(-0.3, 0.3)
+        c = ell(u, rng.uniform(-0.2, 0.6), rng.uniform(0.35, 0.6))
+        r = rscale * rng.uniform(1.1, 1.5)
+        c = place(c, r)
+        blob(g, 'Leaves', tuple(c), (r, r, r * 0.8), seed * 997 + k, rough=0.12, freq=1.5, sub=2,
+             colfn=colfn_for(0.75), nfn=nfn_for(0.3))
+    centers = []
+    # shell clumps: rejection-sampled in a noise-lobed ellipsoid shell; a low-frequency density field clusters
+    # them into lobes with a few holes, the underside is flatter
+    off1, off2 = Vector(rng.uniform(-50, 50, 3)), Vector(rng.uniform(-50, 50, 3))
+    want = int(330 * lod)
+    tries = 0
+    while len(centers) < want and tries < want * 6:
+        tries += 1
+        dvec = Vector(rng.normal(0, 1, 3)).normalized()
+        if dvec.z < -0.75:
+            continue
+        dens = 0.5 + 0.9 * mnoise.noise(dvec * 2.1 + off2)
+        if rng.random() > dens:
+            continue
+        lobe = 1.0 + 0.24 * mnoise.noise(dvec * 1.8 + off1) + 0.08 * mnoise.noise(dvec * 4.0 + off2)
+        f = (1.0 - 0.42 * rng.random() ** 2) * lobe
+        zf = 0.72 if dvec.z < 0 else 1.0
+        c = Vector((c0.x + dvec.x * crx * f, c0.y + dvec.y * crx * f, c0.z + dvec.z * crz * f * zf))
+        centers.append((c, 0.0))
+    for tip in tips:
+        out = crown_n(tip)
+        for j in range(max(1, int(round(2 * lod)))):
+            off = Vector(rng.normal(0, 0.5, 3)) * s_scale + out * 0.3 * s_scale
+            off.z *= 0.7
+            centers.append((tip + off, 1.0))
+    for k, (c, is_tip) in enumerate(centers):
+        r = rscale * rng.uniform(0.46, 0.86)
+        c = place(Vector(c), r)
+        blob(g, 'Leaves', tuple(c), (r, r * rng.uniform(0.85, 1.15), r * rng.uniform(0.66, 0.82)),
+             seed * 7919 + k, rough=0.16, freq=1.9, sub=2, colfn=colfn_for(rng.uniform(0.88, 1.08)),
+             nfn=nfn_for(0.35), flat_bottom=c.z - r * 0.6)
 
 def gate_pier(g, x, y, h=1.75):
-    cbox(g, 'Brick', x, y, 0.62, 0.62, -0.4, h)
+    cbox(g, 'BrickLot', x, y, 0.62, 0.62, -0.4, h)
     cbox(g, 'Stone', x, y, 0.74, 0.74, h, h + 0.08)
     cbox(g, 'Stone', x, y, 0.66, 0.66, h + 0.08, h + 0.14)
     # lantern on the cap
@@ -2335,7 +2360,7 @@ def build_lot():
     slab_from_loops(gD, 'Paver', [ter], 0.04, -0.1)
     for (a, b) in (((-6.4, 14.2), (-1.4, 14.2)), ((1.4, 14.2), (6.4, 14.2)), ((-6.4, 14.2), (-6.4, 10.0)),
                    ((6.4, 14.2), (6.4, 10.0))):
-        seg_box(gD, 'Brick', (a[0], a[1], 0.23), (b[0], b[1], 0.23), 0.36, 0.46, ext=0.18)
+        seg_box(gD, 'BrickLot', (a[0], a[1], 0.23), (b[0], b[1], 0.23), 0.36, 0.46, ext=0.18)
         seg_box(gD, 'Bluestone', (a[0], a[1], 0.49), (b[0], b[1], 0.49), 0.44, 0.06, ext=0.22)
     # walk from the court to the side door stoop is the court itself; walk from the terrace to the court
     walk = [(6.4, 10.4), (16.8, 10.4), (16.8, 11.6), (6.4, 11.6)]
@@ -2344,7 +2369,7 @@ def build_lot():
     r = LOOP['r']
     for sx in (-1, 1):
         for off in (-1, 1):
-            gate_pier(gD, sx * r + off * 4.2, CURB_Y + 1.6)
+            gate_pier(gD, sx * r + off * 4.2, CURB_Y + 3.95)   # caps clear the 3.5 m frontage setback
     # island: mulch bed, clipped boxwood ring, Japanese maple, white flowers
     I = ISLAND
     bed(gB, ellipse(I['cx'], I['cy'], I['rx'], I['ry'], 56))
@@ -2438,7 +2463,7 @@ def render_extras():
           ((0, 52), 113, 20, 16), ((-46, 22), 114, 17, 14), ((45, 24), 115, 18, 15)]
     for (b, s_, h, sp) in bg:
         g = Geo(f'Render_BG_{s_}')
-        hardwood(g, b, s_, h, sp, 0.45, bounds=(-400, -400, 400, 400), n_limbs=4, lod=0.6)
+        hardwood(g, b, s_, h, sp, 0.45, bounds=(-400, -400, 400, 400), n_limbs=4, lod=1.0)
         objs.append(g.build())
     return objs
 
@@ -2519,7 +2544,7 @@ def main():
             apply_custom_uvs(o)
     else:
         th = export_set(house_objs, house_glb)
-        tl = export_set(lot_objs, lot_glb, image_format='AUTO')   # keeps the leaf-card PNG (alpha); JPEGs stay JPEG
+        tl = export_set(lot_objs, lot_glb)
         mn, mx = bbox(house_objs)
         lmn, lmx = bbox(lot_objs)
         print(f'house bbox {tuple(round(v, 2) for v in mn)} .. {tuple(round(v, 2) for v in mx)}')
@@ -2563,7 +2588,12 @@ def main():
                 f'and roof plan (rear ell, dormers front and back, side entry, chimney positions), the box bay on the '
                 f'wing (after board-19), Flemish bond, the drive layout (a horseshoe with a planted island and a spur to '
                 f'a parking court at the right wing), gate piers, rear terrace and the three hardwoods. The lot GLB has '
-                f'no lawn; its drive meets the curb line exactly at two flared mouths.')}
+                f'no lawn; its drive meets the curb line exactly at two flared mouths. The lot owns its frontage: the '
+                f'brick gate piers stand 3.95 m behind the curb line (caps 3.58 m), so nothing walled or hedged sits in '
+                f'the 1.8-3.3 m sidewalk zone; only the drive and its granite edging run to the curb. The three '
+                f'hardwoods (white-oak habit, 16.5-18 m) are a trunk with root flares, scaffold limbs, branches and '
+                f'twigs carrying about 530 small soft leaf clumps each in a lobed crown shell, shaded by vertex colour '
+                f'(darker inside and underneath); no alpha cards.')}
         with open(os.path.join(mdir, f'{ID}.json'), 'w') as f:
             json.dump(meta, f, indent=1)
         print(json.dumps({k: meta[k] for k in ('triangles', 'triangles_house', 'triangles_lot', 'file_mb',

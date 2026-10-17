@@ -1,0 +1,79 @@
+{
+ "id": "delacroix-house",
+ "name": "Delacroix house",
+ "address": "3064 Harbor Drive",
+ "neighborhood": "Harborview",
+ "residents": [
+  "Lori Delacroix",
+  "Charles Delacroix",
+  "Madeleine Delacroix",
+  "Philippe Delacroix"
+ ],
+ "status": "proposed (address and placement); design from the author's film still (reference/lori-house.webp), detail from reference/board-17.jpg and board-19.jpg",
+ "atlas_building_index": 23936,
+ "footprint_m": [
+  24.4,
+  18.74
+ ],
+ "ridge_height_m": 11.86,
+ "top_height_m": 14.02,
+ "stories": 2.5,
+ "style": "Georgian / Colonial Revival brick estate",
+ "materials": [
+  "warm red-brown brick in Flemish bond with darker burnt headers, light mortar",
+  "darker brick base with a limestone water table",
+  "dark natural slate hipped roof with lead hip and ridge caps, copper valleys",
+  "white painted dentil cornice, pediment, pilasters, portico and balustrade",
+  "black louvered shutters, 6-over-6 white sash windows, arched fanlights",
+  "limestone sills, jack-arch lintels and keystones; bluestone terrace and treads",
+  "lead-coated copper bay roof, aged copper downspouts",
+  "asphalt drive with Belgian-block (granite) edging, brick paver landing and terrace"
+ ],
+ "triangles": 213775,
+ "triangles_house": 59450,
+ "triangles_lot": 154325,
+ "files": {
+  "house": "models/homes/delacroix-house.glb",
+  "lot": "models/homes/delacroix-house-lot.glb"
+ },
+ "file_mb": {
+  "house": 7.01,
+  "lot": 8.52
+ },
+ "house_bbox_m": [
+  [
+   -15.42,
+   -10.56,
+   -0.6
+  ],
+  [
+   17.06,
+   10.29,
+   14.02
+  ]
+ ],
+ "house_extents_m": {
+  "width_x": 32.48,
+  "depth_y": 20.85
+ },
+ "lot_bbox_m": [
+  [
+   -21.23,
+   -33.04,
+   -0.5
+  ],
+  [
+   20.88,
+   23.87,
+   18.17
+  ]
+ ],
+ "lot_local_rect_m": [
+  -22.0,
+  -33.04,
+  21.0,
+  25.0
+ ],
+ "curb_line_local_y": -33.04,
+ "notes": "Main block 18.0 x 11.5 m (x -9..9, y -5.75..5.75), first floor 0.60 m above grade, second floor 4.15 m, cornice soffit 7.2 m, 34 deg slate hip to a 11.9 m ridge; twin corbelled end chimneys to 13.55 m. The Atlas height (8.0 m) is too low for a 2.5-story Georgian house with the tall roof in the photo, so the ridge is about 48% higher. The pavilion projects 1.0 m; the portico, terrace and steps reach y = -10.5 (1.1 m beyond the footprint). Wings make the house about 30 m wide: the 1.5-story front-gabled left wing (x -15..-9) and the two-story hipped right wing (x 9..15). From the photo: brick, dark slate hip, tall corbelled chimney, white columned portico with balustraded balcony, pedimented pavilion with an arched fanlight rising into the pediment, black shutters, front-gabled left wing, the shed-roofed porch between the wing and the portico, lanterns, arched first-floor windows on the right, attic dormers, curving drive. Interpretations: the side, rear and roof plan (rear ell, dormers front and back, side entry, chimney positions), the box bay on the wing (after board-19), Flemish bond, the drive layout (a horseshoe with a planted island and a spur to a parking court at the right wing), gate piers, rear terrace and the three hardwoods. The lot GLB has no lawn; its drive meets the curb line exactly at two flared mouths. The lot owns its frontage: the brick gate piers stand 3.95 m behind the curb line (caps 3.58 m), so nothing walled or hedged sits in the 1.8-3.3 m sidewalk zone; only the drive and its granite edging run to the curb. The three hardwoods (white-oak habit, 16.5-18 m) are a trunk with root flares, scaffold limbs, branches and twigs carrying about 530 small soft leaf clumps each in a lobed crown shell, shaded by vertex colour (darker inside and underneath); no alpha cards."
+}
