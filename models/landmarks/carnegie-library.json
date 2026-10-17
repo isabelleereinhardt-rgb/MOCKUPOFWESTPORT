@@ -1,0 +1,35 @@
+{
+ "id": "carnegie-library",
+ "name": "Carnegie Library (1912)",
+ "file": "models/landmarks/carnegie-library.glb",
+ "address": "285 Third Street",
+ "status": "Canon 2",
+ "atlas": {
+  "building_index": 4,
+  "center_atlas": [
+   -52.0,
+   374.0
+  ],
+  "front_heading_deg_atlas": 87.6,
+  "footprint_m": [
+   30.02,
+   24.02
+  ],
+  "atlas_kind": "civic",
+  "atlas_height_m": 10.0,
+  "street": "Fourth Street",
+  "curb_line_local_y": -43.48
+ },
+ "height_m": 11.65,
+ "notes": "Interpretation (no reference image): a small 1912 Beaux-Arts Carnegie library in buff brick on a raised ashlar base; a projecting pedimented entry pavilion with two columns in antis, bronze doors and a lunette over a flight of eight steps with lamp standards; tall arched windows with stone keystones; stone corner pilasters, entablature, a balustraded parapet and a low verdigris dome over the reading room. The site-specs method puts the front toward Fourth Street (heading 87.6) although the address is on Third Street.",
+ "triangles": 15558,
+ "size_kb": 1839,
+ "bbox_local_m": [
+  -15.06,
+  15.06,
+  -12.01,
+  12.06,
+  -0.6,
+  11.65
+ ]
+}

@@ -1023,6 +1023,10 @@ def setup_render(samples, res, sun_az=212, sun_elev=46, exposure=0.4):
     sun.data.color = (1.0, 0.94, 0.84)
     sun.data.energy = 4.4
     sun.data.angle = math.radians(1.5)
+    cy_ = bpy.context.scene.cycles          # keep CPU finals affordable on a shared 4-core box
+    cy_.max_bounces, cy_.diffuse_bounces, cy_.glossy_bounces = 6, 3, 3
+    cy_.transmission_bounces, cy_.transparent_max_bounces = 4, 8
+    cy_.use_adaptive_sampling, cy_.adaptive_threshold = True, 0.02
     wnt = bpy.context.scene.world.node_tree
     bgn = wnt.nodes['Background']
     sky_link = bgn.inputs['Color'].links[0]
@@ -1632,15 +1636,23 @@ def build_lot():
 
 # ============================================================================ main
 def street_ribbon(name, pts, width=9.0, z=0.0):
-    """Render-only street along a polyline of curb points (street on the left of travel = -y side here)."""
+    """Render-only street along a polyline of curb points (mitred joints; the street lies on the right of
+    travel, i.e. -y when the curb runs along +x)."""
     g = Geo(name)
     P = [Vector((p[0], p[1], 0)) for p in pts]
-    for k in range(len(P) - 1):
-        a, b = P[k], P[k + 1]
-        U = (b - a).normalized()
-        N = Vector((U.y, -U.x, 0))      # toward the street when travelling +x along the curb
-        for (o0, o1, mat, z0) in ((0.0, 0.15, 'Concrete', 0.12), (0.15, 0.6, 'Concrete', 0.0), (0.6, 0.6 + width, 'Asphalt', 0.0)):
-            q = [a + N * o0, b + N * o0, b + N * o1, a + N * o1]
+    n = len(P)
+    NR = []
+    for k in range(n):
+        ns = []
+        for a, b_ in ((P[max(k - 1, 0)], P[k]), (P[k], P[min(k + 1, n - 1)])):
+            if (b_ - a).length > 1e-6:
+                U = (b_ - a).normalized()
+                ns.append(Vector((U.y, -U.x, 0)))
+        m = sum(ns, Vector()).normalized()
+        NR.append(m / max(0.5, m.dot(ns[0])))
+    for (o0, o1, mat, z0) in ((0.0, 0.15, 'Concrete', 0.12), (0.15, 0.6, 'Concrete', 0.0), (0.6, 0.6 + width, 'Asphalt', 0.0)):
+        for k in range(n - 1):
+            q = [P[k] + NR[k] * o0, P[k + 1] + NR[k + 1] * o0, P[k + 1] + NR[k + 1] * o1, P[k] + NR[k] * o1]
             extrude(g, mat, WORLD, [(v.x, v.y) for v in q], -0.1, z0 + z)
     return g
 
@@ -1734,7 +1746,7 @@ def main():
     if args.no_render:
         return
     out = args.out or os.path.join(REPO, 'renders')
-    samples = args.samples or (24 if args.quick else 96)
+    samples = args.samples or (24 if args.quick else 48)
     res = (640, 400) if args.quick else (1600, 1000)
     extras = render_extras()
     wp.finalize(extras)

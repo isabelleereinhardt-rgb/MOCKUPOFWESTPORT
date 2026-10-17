@@ -1102,7 +1102,7 @@ def leafy_tree(g, base, H, spread, seed, clear=2.2, trunk_r=0.2, n_limbs=6, leaf
             leaf_spray(g, leaf_mat, q, rng.uniform(*clump_r), nrm, rng, col, nleaf=leaves)
 
 
-def bush(g, mat, c, size, seed, tone=1.0, n=6):
+def bush(g, mat, c, size, seed, tone=1.0, n=6, fine=False):
     """Light shrub: a few noisy masses, darker toward the ground."""
     rng = np.random.default_rng(seed)
     rx, ry, H = size
@@ -1114,7 +1114,8 @@ def bush(g, mat, c, size, seed, tone=1.0, n=6):
         s = rng.uniform(0.6, 0.78)
         cz = H * rng.uniform(0.45, 0.55) if i else H * 0.58
         t = tone * rng.uniform(0.9, 1.08)
-        blob(g, mat, (cx, cy, cz), (rx * s, ry * s, H * 0.45), seed=seed * 7 + i, rough=0.3, freq=2.4, sub=1 if i else 2,
+        blob(g, mat, (cx, cy, cz), (rx * s, ry * s, H * 0.45), seed=seed * 7 + i, rough=0.3, freq=2.4,
+             sub=2 if (fine or not i) else 1,
              colfn=lambda q, d, t=t: (t * (0.42 + 0.58 * min(1.0, max(0.0, q.z / max(H, 0.1)))),) * 3,
              flat_bottom=-0.03, nfn=nfn)
 
@@ -1648,7 +1649,7 @@ def build_house():
     for a, b in ((uc - 0.62, uc - 0.56), (uc + 0.56, uc + 0.62)):
         fbox(gH, 'Trim', F, a, b, z1, zs, -0.05, 0.015)
     sashes(gH, F, uc - 0.56, uc + 0.56, z1 + 0.02, zs, 3, 2, d=-0.08)
-    fbox(gH, 'Stone', F, uc - 1.45, uc + 1.45, z1 - 0.07, z1 + 0.02, -0.1, 0.05)
+    fbox(gH, 'Stone', F, uc - 1.455, uc + 1.455, z1 - 0.075, z1 + 0.025, -0.105, 0.055)   # one sill across all three
     arch_head(gH, F, uc, zs, 0.62)
     for x in (uc - 1.0, uc + 1.0):
         colonial_window(gH, F, x, z2, 0.95, 1.6, holes=holes)

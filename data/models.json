@@ -66,7 +66,7 @@
    "heading": 95.3,
    "building": 21135,
    "render": "renders/al-hassan-house.jpg",
-   "aerial": null,
+   "aerial": "renders/al-hassan-house-aerial.jpg",
    "style": "Contemporary coastal (modern farmhouse) with an attached garage",
    "stories": 2,
    "ridge": 9.67,
@@ -161,8 +161,8 @@
    ],
    "heading": 84.3,
    "building": 30499,
-   "render": null,
-   "aerial": null,
+   "render": "renders/hernandez-house.jpg",
+   "aerial": "renders/hernandez-house-aerial.jpg",
    "style": "front-gable bungalow (post-war, Riverside)",
    "stories": 1,
    "ridge": 5.66,
@@ -255,8 +255,8 @@
    ],
    "heading": -23.2,
    "building": 23310,
-   "render": null,
-   "aerial": null,
+   "render": "renders/patel-house.jpg",
+   "aerial": "renders/patel-house-aerial.jpg",
    "style": "Craftsman / Prairie foursquare with a one-story clinic wing",
    "stories": 2,
    "ridge": 9.5,
@@ -273,7 +273,7 @@
     "concrete porch floor and walks, asphalt clinic parking court"
    ],
    "notes": "House 12.6 x 12.0 m, two stories, low hip roof (25 deg) with 0.78 m eaves, ridge 9.5 m (Atlas height 7.5 m; within the 30% allowance). From board-23: the brick ground floor, deep hipped eaves, the front gable dormer with three windows, the wide porch on brick piers with a low gable over the steps, the stair-landing window, the stepped walk with clipped boxwood globes and landscape boulders, the big shade tree. Per the brief: shingles above the belt course (the photo is brick throughout), tapered columns on the piers, and the clinic wing on the right: one story, its own stoop under a small gable on tapered posts, a 1:12 ramp with steel rails, a blank bronze plaque (no text) by the door, and three striped parking stalls with wheel stops off a paved court that meets the curb. Interpreted: side and rear elevations, rear doors, the exterior chimney, beds and props. No fence or hedge on the frontage.",
-   "triangles": 35812,
+   "triangles": 36532,
    "lotRect": [
     -21.5,
     -26.04,
@@ -300,8 +300,8 @@
    ],
    "heading": -109.8,
    "building": 21164,
-   "render": null,
-   "aerial": null,
+   "render": "renders/rossi-house.jpg",
+   "aerial": "renders/rossi-house-aerial.jpg",
    "style": "Dutch Colonial Revival (gambrel roof, full-width shed dormer)",
    "stories": 2,
    "ridge": 8.27,
@@ -310,7 +310,7 @@
     16.45
    ],
    "materials": [
-    "painted cedar shingles, sage green (#7A8C69), 5 in exposure",
+    "painted cedar shingles, sage green (#6B7C5C), 5 in exposure",
     "white painted trim, casings, Tuscan columns, K-style gutters",
     "white 6-over-1 double-hung windows, mulled in threes and pairs",
     "light grey architectural asphalt shingles; red brick chimneys",
@@ -318,7 +318,7 @@
     "stained wood entry door with oval light, leaded sidelights, elliptical fanlight"
    ],
    "notes": "Main block 12.6 x 9.2 m, floor 0.75 m up, first-floor walls to 3.6 m, gambrel 64/22 deg with a 30 deg flared kick at the eave, ridge 8.3 m (Atlas 7.0 m; the gambrel needs the extra height). From the reference: sage shingles, the gambrel with the near full-width shed dormer (pairs left/right, a short triple in the middle), mulled triples of 6-over-1 windows, the arched gable portico on Tuscan columns, elliptical fanlight and sidelights, bluestone steps with fieldstone piers and urns, the flat-roofed side porch on the left, two ridge chimneys, white gutters and downspouts, foundation beds, white picket fence on the side. Interpreted: side and rear elevations, the plain rear gambrel, back stoop, asphalt driveway on the right to a parking pad, maple and dogwood. Neighbourhood not named in the register. Lot sides use corrected neighbor sides (site-specs.json neighbors_local x is mirrored): the Sullivan house is on the right (+39.7 m).",
-   "triangles": 38725,
+   "triangles": 38765,
    "lotRect": [
     -23.4,
     -26.3,
@@ -344,8 +344,8 @@
    ],
    "heading": -100.3,
    "building": 21165,
-   "render": null,
-   "aerial": null,
+   "render": "renders/sullivan-house.jpg",
+   "aerial": "renders/sullivan-house-aerial.jpg",
    "style": "coastal shingle-style cottage",
    "stories": 1.5,
    "ridge": 8.39,
@@ -362,7 +362,7 @@
     "screened porch: shingled knee wall, bronze screen panels, beadboard ceiling",
     "brick paver walk, crushed-shell driveway with a concrete apron"
    ],
-   "notes": "Main block 13.2 x 9.0 m, floor 0.9 m up on a block foundation, 12:12 side-gable roof with three gabled front dormers, ridge 8.4 m (Atlas 8.5 m). Screened porch 5.0 x 7.0 m on the left (toward the Rossis) with a French door into the house and a screen door with steps to the side yard. All of the design is interpreted from the brief; there is no reference photo. The Atlas footprint (21.4 x 16.8 m) is larger than a cottage needs: the house plus porch fill 19.6 m of its width. Lot sides use corrected neighbor sides (site-specs.json neighbors_local x is mirrored): the Rossi house is on the left at (-40.1, 1.0), rotated -9.5 deg.",
+   "notes": "Main block 13.2 x 9.0 m, floor 0.9 m up on a block foundation, 12:12 side-gable roof with three gabled front dormers, ridge 8.4 m (Atlas 8.5 m). Screened porch 5.0 x 7.0 m on the left (toward the Rossis) with a French door into the house and a screen door with steps to the side yard. All of the design is interpreted from the brief; there is no reference photo. The Atlas footprint (21.4 x 16.8 m) is larger than a cottage needs: the house plus porch fill 19.6 m of its width. Lot sides use corrected neighbor sides (site-specs.json neighbors_local x is mirrored): the Rossi house is on the left at (-40.1, 1.0), rotated -9.5 deg. Main block centred 0.8 m right of the footprint centre so the screened porch stays within 0.2 m of the footprint.",
    "triangles": 25092,
    "lotRect": [
     -20,
@@ -390,8 +390,8 @@
    ],
    "heading": 167.5,
    "building": 22180,
-   "render": null,
-   "aerial": null,
+   "render": "renders/thompson-house.jpg",
+   "aerial": "renders/thompson-house-aerial.jpg",
    "style": "Red-brick Colonial Revival, two stories plus dormers, with a garage wing",
    "stories": 2,
    "ridge": 10.94,
@@ -418,8 +418,257 @@
    ]
   }
  ],
- "landmarks": [],
+ "landmarks": [
+  {
+   "id": "carnegie-library",
+   "name": "Carnegie Library (1912)",
+   "file": "models/landmarks/carnegie-library.glb",
+   "at": [
+    -52,
+    374
+   ],
+   "heading": 87.6,
+   "building": 4,
+   "height": 11.65,
+   "notes": "Interpretation (no reference image): a small 1912 Beaux-Arts Carnegie library in buff brick on a raised ashlar base; a projecting pedimented entry pavilion with two columns in antis, bronze doors and a lunette over a flight of eight steps with lamp standards; tall arched windows with stone keystones; stone corner pilasters, entablature, a balustraded parapet and a low verdigris dome over the reading room. The site-specs method puts the front toward Fourth Street (heading 87.6) although the address is on Third Street."
+  },
+  {
+   "id": "chadwicks",
+   "name": "Chadwick's",
+   "file": "models/landmarks/chadwicks.glb",
+   "at": [
+    89.5,
+    4.88
+   ],
+   "heading": -93.9,
+   "building": 3730,
+   "height": 5,
+   "notes": "Interpretation: a classic one-story diner filling the Atlas footprint: a full-width dining room across the front with a continuous band of big windows (stainless mullions, see-through glass), cream enamel and a red stripe, a rounded stainless roof edge, a glass entry vestibule and deep red canvas awnings; inside a checkerboard floor, booths along the windows, a counter with eleven stools, a back bar and lit pendants; a painted-block kitchen behind with rooftop units. The Atlas height (12 m) is far above a one-story diner; the model is 5.0 m. No sign or name on the building."
+  },
+  {
+   "id": "courthouse",
+   "name": "Lindon County Courthouse",
+   "file": "models/landmarks/courthouse.glb",
+   "at": [
+    -305,
+    286.5
+   ],
+   "heading": 178.1,
+   "building": 0,
+   "height": 30.41,
+   "notes": "Interpretation (no reference image): a two-story neoclassical red-brick courthouse on a rusticated stone basement, stone quoins, belt course, keystone lintels and arched second-floor windows; a hexastyle giant-order portico with a pediment and oculus over a broad flight of granite steps; slate hip roof; a white cupola with four clock faces (no numerals), an octagonal colonnaded lantern and a verdigris copper dome. The site-specs method puts the front toward Jefferson Street (heading 178.1), not Second Street (its address); the Atlas building is 40.01 x 60.03 m with the long side running back from the street."
+  },
+  {
+   "id": "pier-bar",
+   "name": "the pier and the pier bar",
+   "file": "models/landmarks/pier-bar.glb",
+   "at": [
+    300,
+    -225
+   ],
+   "heading": 90,
+   "building": 58,
+   "height": 6.2,
+   "notes": "Origin = the platform center at map grade z = 0; the deck top is z = 1.2 (PIER_DECK_Y = WATER_Y + 1.9), pilings run to z = -4. The app draws pier 12 as a 3 m deck (175.1 m long); this model brings its own 16 x 20 m pier-head platform that starts exactly at the seaward end of that polyline (so the app deck and rails do not overlap it) and runs 20 m on along the last segment; the 10 x 14 m bar sits on it with 3 m of deck all round. Front (-Y) faces back up the pier toward Harbor Drive; the rail has a 3.6 m opening where the pier comes in. Atlas building 58 (a shop at the old pier-bar point) is the bar it replaces; hide it. distance_along_pier_m is the platform center measured from the land end, 10 m past the polyline end."
+  },
+  {
+   "id": "water-tower",
+   "name": "water tower (FOUNDED 1625)",
+   "file": "models/landmarks/water-tower.glb",
+   "at": [
+    1145.23,
+    2353.15
+   ],
+   "heading": 0,
+   "building": 57,
+   "height": 44.5,
+   "notes": "Classic six-leg elevated steel tank, pale blue-grey (#B2C1CB), 13 m tank on battered tubular legs with tie-rod X bracing, a balcony at the shell bottom, central riser and a caged ladder. Lettering is real geometry (DejaVu Sans Bold, navy), WESTPORT over FOUNDED 1625, on the front (toward Mariner Drive) and the back. Center is the QA-moved place point (qa.json move_places), which is also the center of Atlas building 57 (kind civic in the Atlas, not \"tower\"). Leg footings spread to a 16.4 m circle, a little beyond the 12 m Atlas square."
+  },
+  {
+   "id": "williams-funeral-home",
+   "name": "Williams Funeral Home",
+   "file": "models/landmarks/williams-funeral-home.glb",
+   "at": [
+    -183,
+    179.5
+   ],
+   "heading": -92.4,
+   "building": 3160,
+   "height": 12.68,
+   "notes": "Interpretation (no reference image): a two-story Greek Revival house in white-painted brick under a slate hip roof, with a full-height four-column portico and pediment, black shutters on 6-over-6 windows, lanterns, a small balcony over the entry, a one-story chapel wing on the left, a porte-cochere and garage on the right and a rear ell. No signs. Front faces Main Street; the building sits back from the curb as the Atlas footprint does."
+  }
+ ],
  "archetypes": [
+  {
+   "id": "shed",
+   "file": "models/archetypes/shed.glb",
+   "kinds": [
+    "shed"
+   ],
+   "bbox_m": [
+    3,
+    4,
+    2.96
+   ],
+   "stories": 1,
+   "best_aspect": 0.75,
+   "neighborhoods": [
+    "everywhere"
+   ],
+   "triangles": 290,
+   "style": "prefab wood storage shed, front gable, T1-11 siding, double doors, on concrete blocks",
+   "roof": "shingle",
+   "size_kb": 305,
+   "z_min_m": -0.6
+  },
+  {
+   "id": "shed-metal",
+   "file": "models/archetypes/shed-metal.glb",
+   "kinds": [
+    "shed"
+   ],
+   "bbox_m": [
+    6,
+    8,
+    3.5
+   ],
+   "stories": 1,
+   "best_aspect": 0.75,
+   "neighborhoods": [
+    "everywhere"
+   ],
+   "triangles": 262,
+   "style": "steel workshop / garage on a slab, corrugated walls, roll-up door, low gable",
+   "roof": "corrugated",
+   "size_kb": 174,
+   "z_min_m": -0.6
+  },
+  {
+   "id": "barn",
+   "file": "models/archetypes/barn.glb",
+   "kinds": [
+    "barn"
+   ],
+   "bbox_m": [
+    12,
+    18,
+    6.23
+   ],
+   "stories": 1,
+   "best_aspect": 0.667,
+   "neighborhoods": [
+    "rural",
+    "outside the limits"
+   ],
+   "triangles": 534,
+   "style": "pole barn, board-and-batten, metal roof, sliding doors, ridge cupola",
+   "roof": "metal",
+   "size_kb": 201,
+   "z_min_m": -0.6
+  },
+  {
+   "id": "church-brick",
+   "file": "models/archetypes/church-brick.glb",
+   "kinds": [
+    "church"
+   ],
+   "bbox_m": [
+    14,
+    27.95,
+    28
+   ],
+   "stories": 1,
+   "best_aspect": 0.501,
+   "neighborhoods": [
+    "Downtown",
+    "Garden District",
+    "Riverside",
+    "North End"
+   ],
+   "triangles": 2153,
+   "style": "brick church, gable nave with arched windows, brick tower with white belfry and spire on the front",
+   "roof": "shingle",
+   "size_kb": 404,
+   "z_min_m": -0.6,
+   "body_height_m": 9.94,
+   "note": "bbox_m[2] includes the steeple/belfry; scale height by the Atlas height over body_height_m (the nave ridge) rather than over bbox_m[2], or the tower is squashed."
+  },
+  {
+   "id": "church-frame",
+   "file": "models/archetypes/church-frame.glb",
+   "kinds": [
+    "church"
+   ],
+   "bbox_m": [
+    10,
+    20.02,
+    9.87
+   ],
+   "stories": 1,
+   "best_aspect": 0.5,
+   "neighborhoods": [
+    "Riverside",
+    "South of the river",
+    "rural",
+    "North End"
+   ],
+   "triangles": 841,
+   "style": "white clapboard country church, front gable, entry hood, small belfry",
+   "roof": "shingle",
+   "size_kb": 371,
+   "z_min_m": -0.6,
+   "body_height_m": 6.87,
+   "note": "bbox_m[2] includes the steeple/belfry; scale height by the Atlas height over body_height_m (the nave ridge) rather than over bbox_m[2], or the tower is squashed."
+  },
+  {
+   "id": "apartments-garden",
+   "file": "models/archetypes/apartments-garden.glb",
+   "kinds": [
+    "apartments"
+   ],
+   "bbox_m": [
+    40,
+    13.6,
+    10.77
+   ],
+   "stories": 3,
+   "best_aspect": 2.941,
+   "neighborhoods": [
+    "North End",
+    "Westport Acres",
+    "Uptown",
+    "Pinecrest",
+    "South of the river"
+   ],
+   "triangles": 3792,
+   "style": "three-story garden walk-up, brick ground floor, siding above, two open breezeway stairs, balconies, low hip roof",
+   "roof": "shingle",
+   "size_kb": 574,
+   "z_min_m": -0.6
+  },
+  {
+   "id": "motel-strip",
+   "file": "models/archetypes/motel-strip.glb",
+   "kinds": [
+    "motel"
+   ],
+   "bbox_m": [
+    35.64,
+    11.85,
+    6.9
+   ],
+   "stories": 2,
+   "best_aspect": 3.008,
+   "neighborhoods": [
+    "Ocean Highway",
+    "Highway strip"
+   ],
+   "triangles": 4198,
+   "style": "two-story strip motel, exterior walkway with railing, end stairs, mansard fascia, PTAC units",
+   "roof": "shingle",
+   "size_kb": 680,
+   "z_min_m": -0.6
+  },
   {
    "id": "mobile-single-a",
    "kinds": [
@@ -839,6 +1088,12 @@
   23310,
   21164,
   21165,
-  22180
+  22180,
+  4,
+  3730,
+  0,
+  58,
+  57,
+  3160
  ]
 }

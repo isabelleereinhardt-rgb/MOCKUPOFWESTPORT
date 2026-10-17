@@ -1,0 +1,38 @@
+{
+ "id": "water-tower",
+ "name": "water tower (FOUNDED 1625)",
+ "file": "models/landmarks/water-tower.glb",
+ "address": "592 Mariner Drive",
+ "status": "locked",
+ "atlas": {
+  "building_index": 57,
+  "center_atlas": [
+   1145.23,
+   2353.15
+  ],
+  "front_heading_deg_atlas": 0.0,
+  "footprint_m": [
+   12.0,
+   12.0
+  ],
+  "atlas_kind": "civic",
+  "atlas_height_m": 42.0,
+  "street": "Mariner Drive"
+ },
+ "lettering": [
+  "WESTPORT",
+  "FOUNDED 1625"
+ ],
+ "notes": "Classic six-leg elevated steel tank, pale blue-grey (#B2C1CB), 13 m tank on battered tubular legs with tie-rod X bracing, a balcony at the shell bottom, central riser and a caged ladder. Lettering is real geometry (DejaVu Sans Bold, navy), WESTPORT over FOUNDED 1625, on the front (toward Mariner Drive) and the back. Center is the QA-moved place point (qa.json move_places), which is also the center of Atlas building 57 (kind civic in the Atlas, not \"tower\"). Leg footings spread to a 16.4 m circle, a little beyond the 12 m Atlas square.",
+ "triangles": 16164,
+ "size_kb": 1367,
+ "bbox_local_m": [
+  -8.07,
+  8.1,
+  -9.17,
+  9.17,
+  -0.6,
+  44.5
+ ],
+ "height_m": 44.5
+}

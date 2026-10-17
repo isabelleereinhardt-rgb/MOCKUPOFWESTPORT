@@ -1,0 +1,35 @@
+{
+ "id": "chadwicks",
+ "name": "Chadwick's",
+ "file": "models/landmarks/chadwicks.glb",
+ "address": "524 Harbor Drive",
+ "status": "you confirmed",
+ "atlas": {
+  "building_index": 3730,
+  "center_atlas": [
+   89.5,
+   4.88
+  ],
+  "front_heading_deg_atlas": -93.9,
+  "footprint_m": [
+   14.53,
+   22.05
+  ],
+  "atlas_kind": "shop",
+  "atlas_height_m": 12.0,
+  "street": "Harbor Drive",
+  "curb_line_local_y": -20.24
+ },
+ "notes": "Interpretation: a classic one-story diner filling the Atlas footprint: a full-width dining room across the front with a continuous band of big windows (stainless mullions, see-through glass), cream enamel and a red stripe, a rounded stainless roof edge, a glass entry vestibule and deep red canvas awnings; inside a checkerboard floor, booths along the windows, a counter with eleven stools, a back bar and lit pendants; a painted-block kitchen behind with rooftop units. The Atlas height (12 m) is far above a one-story diner; the model is 5.0 m. No sign or name on the building.",
+ "triangles": 2416,
+ "size_kb": 926,
+ "bbox_local_m": [
+  -7.07,
+  7.07,
+  -10.98,
+  11.18,
+  -0.6,
+  5.0
+ ],
+ "height_m": 5.0
+}

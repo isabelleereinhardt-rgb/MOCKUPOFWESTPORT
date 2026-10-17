@@ -1,0 +1,35 @@
+{
+ "id": "williams-funeral-home",
+ "name": "Williams Funeral Home",
+ "file": "models/landmarks/williams-funeral-home.glb",
+ "address": "205 Main Street",
+ "status": "locked",
+ "atlas": {
+  "building_index": 3160,
+  "center_atlas": [
+   -183.0,
+   179.5
+  ],
+  "front_heading_deg_atlas": -92.4,
+  "footprint_m": [
+   34.01,
+   24.02
+  ],
+  "atlas_kind": "civic",
+  "atlas_height_m": 10.0,
+  "street": "Main Street",
+  "curb_line_local_y": -35.75
+ },
+ "height_m": 12.68,
+ "notes": "Interpretation (no reference image): a two-story Greek Revival house in white-painted brick under a slate hip roof, with a full-height four-column portico and pediment, black shutters on 6-over-6 windows, lanterns, a small balcony over the entry, a one-story chapel wing on the left, a porte-cochere and garage on the right and a rear ell. No signs. Front faces Main Street; the building sits back from the curb as the Atlas footprint does.",
+ "triangles": 6706,
+ "size_kb": 1144,
+ "bbox_local_m": [
+  -16.95,
+  16.9,
+  -10.28,
+  12.0,
+  -0.6,
+  12.68
+ ]
+}

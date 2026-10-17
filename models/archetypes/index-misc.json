@@ -1,0 +1,172 @@
+[
+ {
+  "id": "shed",
+  "file": "models/archetypes/shed.glb",
+  "kinds": [
+   "shed"
+  ],
+  "bbox_m": [
+   3.0,
+   4.0,
+   2.96
+  ],
+  "stories": 1,
+  "best_aspect": 0.75,
+  "neighborhoods": [
+   "everywhere"
+  ],
+  "triangles": 290,
+  "style": "prefab wood storage shed, front gable, T1-11 siding, double doors, on concrete blocks",
+  "roof": "shingle",
+  "size_kb": 305,
+  "z_min_m": -0.6
+ },
+ {
+  "id": "shed-metal",
+  "file": "models/archetypes/shed-metal.glb",
+  "kinds": [
+   "shed"
+  ],
+  "bbox_m": [
+   6.0,
+   8.0,
+   3.5
+  ],
+  "stories": 1,
+  "best_aspect": 0.75,
+  "neighborhoods": [
+   "everywhere"
+  ],
+  "triangles": 262,
+  "style": "steel workshop / garage on a slab, corrugated walls, roll-up door, low gable",
+  "roof": "corrugated",
+  "size_kb": 174,
+  "z_min_m": -0.6
+ },
+ {
+  "id": "barn",
+  "file": "models/archetypes/barn.glb",
+  "kinds": [
+   "barn"
+  ],
+  "bbox_m": [
+   12.0,
+   18.0,
+   6.23
+  ],
+  "stories": 1,
+  "best_aspect": 0.667,
+  "neighborhoods": [
+   "rural",
+   "outside the limits"
+  ],
+  "triangles": 534,
+  "style": "pole barn, board-and-batten, metal roof, sliding doors, ridge cupola",
+  "roof": "metal",
+  "size_kb": 201,
+  "z_min_m": -0.6
+ },
+ {
+  "id": "church-brick",
+  "file": "models/archetypes/church-brick.glb",
+  "kinds": [
+   "church"
+  ],
+  "bbox_m": [
+   14.0,
+   27.95,
+   28.0
+  ],
+  "stories": 1,
+  "best_aspect": 0.501,
+  "neighborhoods": [
+   "Downtown",
+   "Garden District",
+   "Riverside",
+   "North End"
+  ],
+  "triangles": 2153,
+  "style": "brick church, gable nave with arched windows, brick tower with white belfry and spire on the front",
+  "roof": "shingle",
+  "size_kb": 404,
+  "z_min_m": -0.6,
+  "body_height_m": 9.94,
+  "note": "bbox_m[2] includes the steeple/belfry; scale height by the Atlas height over body_height_m (the nave ridge) rather than over bbox_m[2], or the tower is squashed."
+ },
+ {
+  "id": "church-frame",
+  "file": "models/archetypes/church-frame.glb",
+  "kinds": [
+   "church"
+  ],
+  "bbox_m": [
+   10.0,
+   20.02,
+   9.87
+  ],
+  "stories": 1,
+  "best_aspect": 0.5,
+  "neighborhoods": [
+   "Riverside",
+   "South of the river",
+   "rural",
+   "North End"
+  ],
+  "triangles": 841,
+  "style": "white clapboard country church, front gable, entry hood, small belfry",
+  "roof": "shingle",
+  "size_kb": 371,
+  "z_min_m": -0.6,
+  "body_height_m": 6.87,
+  "note": "bbox_m[2] includes the steeple/belfry; scale height by the Atlas height over body_height_m (the nave ridge) rather than over bbox_m[2], or the tower is squashed."
+ },
+ {
+  "id": "apartments-garden",
+  "file": "models/archetypes/apartments-garden.glb",
+  "kinds": [
+   "apartments"
+  ],
+  "bbox_m": [
+   40.0,
+   13.6,
+   10.77
+  ],
+  "stories": 3,
+  "best_aspect": 2.941,
+  "neighborhoods": [
+   "North End",
+   "Westport Acres",
+   "Uptown",
+   "Pinecrest",
+   "South of the river"
+  ],
+  "triangles": 3792,
+  "style": "three-story garden walk-up, brick ground floor, siding above, two open breezeway stairs, balconies, low hip roof",
+  "roof": "shingle",
+  "size_kb": 574,
+  "z_min_m": -0.6
+ },
+ {
+  "id": "motel-strip",
+  "file": "models/archetypes/motel-strip.glb",
+  "kinds": [
+   "motel"
+  ],
+  "bbox_m": [
+   35.64,
+   11.85,
+   6.9
+  ],
+  "stories": 2,
+  "best_aspect": 3.008,
+  "neighborhoods": [
+   "Ocean Highway",
+   "Highway strip"
+  ],
+  "triangles": 4198,
+  "style": "two-story strip motel, exterior walkway with railing, end stairs, mansard fascia, PTAC units",
+  "roof": "shingle",
+  "size_kb": 680,
+  "z_min_m": -0.6
+ }
+]

@@ -1,0 +1,35 @@
+{
+ "id": "courthouse",
+ "name": "Lindon County Courthouse",
+ "file": "models/landmarks/courthouse.glb",
+ "address": "129 Second Street",
+ "status": "Canon 2",
+ "atlas": {
+  "building_index": 0,
+  "center_atlas": [
+   -305.0,
+   286.5
+  ],
+  "front_heading_deg_atlas": 178.1,
+  "footprint_m": [
+   40.01,
+   60.03
+  ],
+  "atlas_kind": "civic",
+  "atlas_height_m": 17.0,
+  "street": "Jefferson Street",
+  "curb_line_local_y": -40.2
+ },
+ "height_m": 30.41,
+ "notes": "Interpretation (no reference image): a two-story neoclassical red-brick courthouse on a rusticated stone basement, stone quoins, belt course, keystone lintels and arched second-floor windows; a hexastyle giant-order portico with a pediment and oculus over a broad flight of granite steps; slate hip roof; a white cupola with four clock faces (no numerals), an octagonal colonnaded lantern and a verdigris copper dome. The site-specs method puts the front toward Jefferson Street (heading 178.1), not Second Street (its address); the Atlas building is 40.01 x 60.03 m with the long side running back from the street.",
+ "triangles": 11527,
+ "size_kb": 1549,
+ "bbox_local_m": [
+  -19.31,
+  19.31,
+  -30.11,
+  29.92,
+  -0.6,
+  30.41
+ ]
+}

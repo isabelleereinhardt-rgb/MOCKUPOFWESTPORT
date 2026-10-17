@@ -19,16 +19,16 @@
  "stories": 2,
  "style": "Dutch Colonial Revival (gambrel roof, full-width shed dormer)",
  "materials": [
-  "painted cedar shingles, sage green (#7A8C69), 5 in exposure",
+  "painted cedar shingles, sage green (#6B7C5C), 5 in exposure",
   "white painted trim, casings, Tuscan columns, K-style gutters",
   "white 6-over-1 double-hung windows, mulled in threes and pairs",
   "light grey architectural asphalt shingles; red brick chimneys",
   "bluestone steps and landing, fieldstone piers with cast-stone urns",
   "stained wood entry door with oval light, leaded sidelights, elliptical fanlight"
  ],
- "triangles": 38725,
- "triangles_house": 10933,
- "triangles_lot": 27792,
+ "triangles": 38765,
+ "triangles_house": 10957,
+ "triangles_lot": 27808,
  "files": {
   "house": "models/homes/rossi-house.glb",
   "lot": "models/homes/rossi-house-lot.glb"

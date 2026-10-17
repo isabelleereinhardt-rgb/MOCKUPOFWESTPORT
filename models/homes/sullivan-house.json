@@ -39,12 +39,12 @@
  },
  "house_bbox_m": [
   [
-   -13.51,
+   -11.71,
    -8.36,
    -0.6
   ],
   [
-   6.39,
+   8.19,
    6.02,
    9.66
   ]
@@ -56,5 +56,5 @@
   25.0
  ],
  "curb_line_local_y": -28.24,
- "notes": "Main block 13.2 x 9.0 m, floor 0.9 m up on a block foundation, 12:12 side-gable roof with three gabled front dormers, ridge 8.4 m (Atlas 8.5 m). Screened porch 5.0 x 7.0 m on the left (toward the Rossis) with a French door into the house and a screen door with steps to the side yard. All of the design is interpreted from the brief; there is no reference photo. The Atlas footprint (21.4 x 16.8 m) is larger than a cottage needs: the house plus porch fill 19.6 m of its width. Lot sides use corrected neighbor sides (site-specs.json neighbors_local x is mirrored): the Rossi house is on the left at (-40.1, 1.0), rotated -9.5 deg."
+ "notes": "Main block 13.2 x 9.0 m, floor 0.9 m up on a block foundation, 12:12 side-gable roof with three gabled front dormers, ridge 8.4 m (Atlas 8.5 m). Screened porch 5.0 x 7.0 m on the left (toward the Rossis) with a French door into the house and a screen door with steps to the side yard. All of the design is interpreted from the brief; there is no reference photo. The Atlas footprint (21.4 x 16.8 m) is larger than a cottage needs: the house plus porch fill 19.6 m of its width. Lot sides use corrected neighbor sides (site-specs.json neighbors_local x is mirrored): the Rossi house is on the left at (-40.1, 1.0), rotated -9.5 deg. Main block centred 0.8 m right of the footprint centre so the screened porch stays within 0.2 m of the footprint."
 }

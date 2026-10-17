@@ -1101,7 +1101,7 @@ def leafy_tree(g, base, H, spread, seed, clear=2.2, trunk_r=0.2, n_limbs=6, leaf
             leaf_spray(g, leaf_mat, q, rng.uniform(*clump_r), nrm, rng, col, nleaf=leaves)
 
 
-def bush(g, mat, c, size, seed, tone=1.0, n=6):
+def bush(g, mat, c, size, seed, tone=1.0, n=6, fine=False):
     """Light shrub: a few noisy masses, darker toward the ground."""
     rng = np.random.default_rng(seed)
     rx, ry, H = size
@@ -1113,7 +1113,8 @@ def bush(g, mat, c, size, seed, tone=1.0, n=6):
         s = rng.uniform(0.6, 0.78)
         cz = H * rng.uniform(0.45, 0.55) if i else H * 0.58
         t = tone * rng.uniform(0.9, 1.08)
-        blob(g, mat, (cx, cy, cz), (rx * s, ry * s, H * 0.45), seed=seed * 7 + i, rough=0.3, freq=2.4, sub=1 if i else 2,
+        blob(g, mat, (cx, cy, cz), (rx * s, ry * s, H * 0.45), seed=seed * 7 + i, rough=0.3, freq=2.4,
+             sub=2 if (fine or not i) else 1,
              colfn=lambda q, d, t=t: (t * (0.42 + 0.58 * min(1.0, max(0.0, q.z / max(H, 0.1)))),) * 3,
              flat_bottom=-0.03, nfn=nfn)
 
@@ -1413,31 +1414,42 @@ def make_materials():
 
 
 # ============================================================================ house parts
-def cwindow(g, F, uc, sill, w, h, upper=(3, 1), holes=None, head=True, mullion_with=None):
+def cwindow(g, F, uc, sill, w, h, upper=(3, 1), holes=None, head=True, left_casing=True, sill_apron=True):
     """Craftsman double-hung window: wide flat casing, a head casing with a drip cap, sill and apron;
     the upper sash has vertical muntins only (3-over-1)."""
     u0, u1, z0, z1 = uc - w / 2, uc + w / 2, sill, sill + h
     if holes is not None:
         holes.append((u0, u1, z0, z1))
     c = 0.12
-    fbox(g, 'Trim', F, u0 - c, u0, z0, z1, -0.005, 0.03)
+    if left_casing:
+        fbox(g, 'Trim', F, u0 - c, u0, z0, z1, -0.005, 0.03)
     fbox(g, 'Trim', F, u1, u1 + c, z0, z1, -0.005, 0.03)
     if head:
         fbox(g, 'Trim', F, u0 - c - 0.02, u1 + c + 0.02, z1, z1 + 0.2, -0.005, 0.035)
         fbox(g, 'Trim', F, u0 - c - 0.05, u1 + c + 0.05, z1 + 0.2, z1 + 0.24, -0.005, 0.07)
-    fbox(g, 'Trim', F, u0 - c - 0.04, u1 + c + 0.04, z0 - 0.05, z0, -0.08, 0.07)
-    fbox(g, 'Trim', F, u0 - c + 0.02, u1 + c - 0.02, z0 - 0.17, z0 - 0.05, -0.005, 0.025)
+    if sill_apron:
+        fbox(g, 'Trim', F, u0 - c - 0.04, u1 + c + 0.04, z0 - 0.05, z0, -0.08, 0.07)
+        fbox(g, 'Trim', F, u0 - c + 0.02, u1 + c - 0.02, z0 - 0.17, z0 - 0.05, -0.005, 0.025)
     sashes(g, F, u0, u1, z0, z1, cols=upper[0], rows=1, cols_lo=1, rows_lo=1, d=-0.08)
     # double-hung: the lower sash has no muntins; mask the upper sash's horizontal split
     return (u0 - c, u1 + c)
 
 
 def window_group(g, F, uc, sill, w, h, n, holes, gap=0.12, upper=(3, 1)):
-    """n ganged windows sharing mullion casings."""
+    """n ganged windows sharing one mullion casing between neighbours (no doubled faces)."""
     tot = n * w + (n - 1) * gap
+    joined = gap <= 0.24
     for i in range(n):
         u = uc - tot / 2 + w / 2 + i * (w + gap)
-        cwindow(g, F, u, sill, w, h, upper=upper, holes=holes)
+        cwindow(g, F, u, sill, w, h, upper=upper, holes=holes, left_casing=(i == 0 or not joined), head=not joined,
+                sill_apron=not joined)
+    if joined:                      # one continuous head, cap, sill and apron across the group
+        U0, U1, c = uc - tot / 2 - 0.12, uc + tot / 2 + 0.12, 0.0
+        z1 = sill + h
+        fbox(g, 'Trim', F, U0 - 0.02, U1 + 0.02, z1, z1 + 0.2, -0.005, 0.035)
+        fbox(g, 'Trim', F, U0 - 0.05, U1 + 0.05, z1 + 0.2, z1 + 0.24, -0.005, 0.07)
+        fbox(g, 'Trim', F, U0 - 0.04, U1 + 0.04, sill - 0.05, sill, -0.08, 0.07)
+        fbox(g, 'Trim', F, U0 + 0.02, U1 - 0.02, sill - 0.17, sill - 0.05, -0.005, 0.025)
 
 
 def bracket(g, F, u, z_sof, depth, mat='Trim'):
@@ -1729,8 +1741,8 @@ def build_lot():
     for y in (CY0 - 0.7, CY0 + 1.4, CY0 + 3.6, CY0 + 5.8):
         bush(gB, 'Boxwood', (CX1 + 0.1, y, 0), (0.45, 0.45, 0.8), 600 + k, 0.9); k += 1
     for s in (-1, 1):                                       # clipped boxwood globes at the foot of the walk
-        bush(gB, 'Boxwood', (ENT + s * 1.45, CURB + 4.2, 0), (0.6, 0.6, 1.0), 700 + k, 1.0); k += 1
-        bush(gB, 'Boxwood', (ENT + s * 1.45, ybot - 1.2, 0), (0.55, 0.55, 0.9), 700 + k, 1.0); k += 1
+        bush(gB, 'Boxwood', (ENT + s * 1.45, CURB + 4.2, 0), (0.6, 0.6, 1.0), 700 + k, 1.0, fine=True); k += 1
+        bush(gB, 'Boxwood', (ENT + s * 1.45, ybot - 1.2, 0), (0.55, 0.55, 0.9), 700 + k, 1.0, fine=True); k += 1
     for (x, y, r) in ((ENT - 1.35, ybot - 0.4, 0.45), (ENT + 1.35, ybot - 0.2, 0.38), (ENT - 1.8, ybot + 0.5, 0.3),
                       (ENT + 2.0, ybot + 0.6, 0.42)):
         boulder(gB, x, y, r, 800 + k); k += 1

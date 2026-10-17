@@ -1023,6 +1023,10 @@ def setup_render(samples, res, sun_az=212, sun_elev=46, exposure=0.4):
     sun.data.color = (1.0, 0.94, 0.84)
     sun.data.energy = 4.4
     sun.data.angle = math.radians(1.5)
+    cy_ = bpy.context.scene.cycles          # keep CPU finals affordable on a shared 4-core box
+    cy_.max_bounces, cy_.diffuse_bounces, cy_.glossy_bounces = 6, 3, 3
+    cy_.transmission_bounces, cy_.transparent_max_bounces = 4, 8
+    cy_.use_adaptive_sampling, cy_.adaptive_threshold = True, 0.02
     wnt = bpy.context.scene.world.node_tree
     bgn = wnt.nodes['Background']
     sky_link = bgn.inputs['Color'].links[0]
@@ -1626,7 +1630,7 @@ def main():
     if args.no_render:
         return
     out = args.out or os.path.join(REPO, 'renders')
-    samples = args.samples or (24 if args.quick else 96)
+    samples = args.samples or (24 if args.quick else 48)
     res = (640, 400) if args.quick else (1600, 1000)
     extras = render_extras()
     wp.finalize(extras)

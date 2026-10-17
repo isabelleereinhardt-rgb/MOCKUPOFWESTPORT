@@ -27,16 +27,16 @@
   "stained oak doors with glazed tops",
   "concrete porch floor and walks, asphalt clinic parking court"
  ],
- "triangles": 35812,
- "triangles_house": 12756,
- "triangles_lot": 23056,
+ "triangles": 36532,
+ "triangles_house": 12276,
+ "triangles_lot": 24256,
  "files": {
   "house": "models/homes/patel-house.glb",
   "lot": "models/homes/patel-house-lot.glb"
  },
  "file_mb": {
-  "house": 1.98,
-  "lot": 2.68
+  "house": 1.95,
+  "lot": 2.73
  },
  "house_bbox_m": [
   [

@@ -1023,6 +1023,10 @@ def setup_render(samples, res, sun_az=212, sun_elev=46, exposure=0.4):
     sun.data.color = (1.0, 0.94, 0.84)
     sun.data.energy = 4.4
     sun.data.angle = math.radians(1.5)
+    cy_ = bpy.context.scene.cycles          # keep CPU finals affordable on a shared 4-core box
+    cy_.max_bounces, cy_.diffuse_bounces, cy_.glossy_bounces = 6, 3, 3
+    cy_.transmission_bounces, cy_.transparent_max_bounces = 4, 8
+    cy_.use_adaptive_sampling, cy_.adaptive_threshold = True, 0.02
     wnt = bpy.context.scene.world.node_tree
     bgn = wnt.nodes['Background']
     sky_link = bgn.inputs['Color'].links[0]
@@ -1579,14 +1583,14 @@ def build_portico(gP, gR):
     arch_lr = [(1.45 - 1.07 * math.cos(math.pi * k / 16), CZ + rise_a * math.sin(math.pi * k / 16)) for k in range(17)]
     outline = [(0.0, CZ)] + arch_lr + [(2.9, CZ), (2.9, zpe), (1.45, apex), (0.0, zpe)]
     extrude(gP, 'Trim', F, outline, -0.32, 0.0)
-    fbox(gP, 'Trim', F, -0.04, 2.94, zpe - 0.06, zpe, -0.32, 0.04)
+    for ua, ub in ((-0.04, 0.42), (2.48, 2.94)):          # cornice returns, broken by the arch
+        fbox(gP, 'Trim', F, ua, ub, zpe - 0.06, zpe, -0.32, 0.04)
     # barrel vault ceiling
     for k in range(16):
         (ua, za), (ub, zb) = arch_lr[k], arch_lr[k + 1]
         poly(gP, 'Soffit', [(x0 + ua, PY + 0.32, za), (x0 + ub, PY + 0.32, zb), (x0 + ub, Y0, zb), (x0 + ua, Y0, za)], facing=(0, 0, -1))
     # portico gable roof, back end tucked into the skirt
     gable_roof(gR, x0, x1, PY, Y0 + 0.25 - 0.2, zpe, pitch, 0.2, 0.2, along='y', th=0.14)
-    fbox(gP, 'Trim', F, 0.0, 2.9, zpe, zpe + 0.1, -0.33, 0.02)
     # lanterns either side of the entry
     for sx in (-1, 1):
         lantern(gP, Fr((0, Y0, 0), (1, 0, 0), (0, -1, 0)), sx * 1.75, FF + 1.85)
@@ -1603,7 +1607,9 @@ def build_side_porch(gP, gR):
         tuscan(gP, x, y, zf, ztop, r=0.11)
     # entablature, flat roof with a low parapet cap
     e0, e1 = ztop, ztop + 0.45
-    box(gP, 'Trim', x0 + 0.05, x1, y0 + 0.07, y0 + 0.37, e0, e1)
+    box(gP, 'Trim', x0 + 0.07, x1, y0 + 0.07, y0 + 0.37, e0, e1)
+    box(gP, 'Trim', x0 - 0.06, x1, y0 - 0.06, y0 + 0.07, e1 - 0.12, e1)          # fascia
+    box(gP, 'Trim', x0 - 0.06, x0 + 0.07, y0 - 0.06, y1 + 0.06, e1 - 0.12, e1)
     box(gP, 'Trim', x0 + 0.07, x0 + 0.37, y0 + 0.07, y1 - 0.07, e0, e1)
     box(gP, 'Trim', x0 + 0.05, x1, y1 - 0.37, y1 - 0.07, e0, e1)
     box(gP, 'Trim', x0 - 0.1, x1, y0 - 0.08, y1 + 0.08, e1, e1 + 0.06)
@@ -1763,7 +1769,7 @@ def main():
     if args.no_render:
         return
     out = args.out or os.path.join(REPO, 'renders')
-    samples = args.samples or (24 if args.quick else 96)
+    samples = args.samples or (24 if args.quick else 48)
     res = (640, 400) if args.quick else (1600, 1000)
     extras = render_extras()
     wp.finalize(extras)

@@ -1,0 +1,37 @@
+{
+ "id": "pier-bar",
+ "name": "the pier and the pier bar",
+ "file": "models/landmarks/pier-bar.glb",
+ "address": "376 Harbor Drive",
+ "status": "locked",
+ "atlas": {
+  "building_index": 58,
+  "replaces_atlas_kind": "shop",
+  "center_atlas": [
+   300.0,
+   -225.0
+  ],
+  "front_heading_deg_atlas": 90.0,
+  "footprint_m": [
+   16.0,
+   20.0
+  ]
+ },
+ "pier_index": 12,
+ "pier_length_m": 175.12,
+ "distance_along_pier_m": 185.12,
+ "deck_z_m": 1.2,
+ "water_z_m": -0.7,
+ "notes": "Origin = the platform center at map grade z = 0; the deck top is z = 1.2 (PIER_DECK_Y = WATER_Y + 1.9), pilings run to z = -4. The app draws pier 12 as a 3 m deck (175.1 m long); this model brings its own 16 x 20 m pier-head platform that starts exactly at the seaward end of that polyline (so the app deck and rails do not overlap it) and runs 20 m on along the last segment; the 10 x 14 m bar sits on it with 3 m of deck all round. Front (-Y) faces back up the pier toward Harbor Drive; the rail has a 3.6 m opening where the pier comes in. Atlas building 58 (a shop at the old pier-bar point) is the bar it replaces; hide it. distance_along_pier_m is the platform center measured from the land end, 10 m past the polyline end.",
+ "height_m": 6.2,
+ "triangles": 6504,
+ "size_kb": 923,
+ "bbox_local_m": [
+  -8.05,
+  8.05,
+  -10.05,
+  10.05,
+  -4.0,
+  6.2
+ ]
+}

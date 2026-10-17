@@ -1101,7 +1101,7 @@ def leafy_tree(g, base, H, spread, seed, clear=2.2, trunk_r=0.2, n_limbs=6, leaf
             leaf_spray(g, leaf_mat, q, rng.uniform(*clump_r), nrm, rng, col, nleaf=leaves)
 
 
-def bush(g, mat, c, size, seed, tone=1.0, n=6):
+def bush(g, mat, c, size, seed, tone=1.0, n=6, fine=False):
     """Light shrub: a few noisy masses, darker toward the ground."""
     rng = np.random.default_rng(seed)
     rx, ry, H = size
@@ -1113,7 +1113,8 @@ def bush(g, mat, c, size, seed, tone=1.0, n=6):
         s = rng.uniform(0.6, 0.78)
         cz = H * rng.uniform(0.45, 0.55) if i else H * 0.58
         t = tone * rng.uniform(0.9, 1.08)
-        blob(g, mat, (cx, cy, cz), (rx * s, ry * s, H * 0.45), seed=seed * 7 + i, rough=0.3, freq=2.4, sub=1 if i else 2,
+        blob(g, mat, (cx, cy, cz), (rx * s, ry * s, H * 0.45), seed=seed * 7 + i, rough=0.3, freq=2.4,
+             sub=2 if (fine or not i) else 1,
              colfn=lambda q, d, t=t: (t * (0.42 + 0.58 * min(1.0, max(0.0, q.z / max(H, 0.1)))),) * 3,
              flat_bottom=-0.03, nfn=nfn)
 
