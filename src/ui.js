@@ -102,7 +102,7 @@ export class UI {
       const d = e.target.closest('[data-dist]'); if (d) { this.distOrigin = this.sel; this.togglePanel('dist', true); this.renderDist(); }
     });
   }
-  syncSeg() { document.querySelectorAll('#segStyle button').forEach(b => b.classList.toggle('on', +b.dataset.v === this.app.style)); document.body.dataset.theme = this.app.style === 2 ? 'shadows' : 'atlas'; document.body.dataset.style = this.app.style; }
+  syncSeg() { document.querySelectorAll('#segStyle button').forEach(b => b.classList.toggle('on', +b.dataset.v === this.app.style)); const th = this.app.style === 2 ? 'dark' : this.app.style === 0 ? null : 'light'; if (th) document.documentElement.dataset.theme = th; else delete document.documentElement.dataset.theme; document.body.dataset.style = this.app.style; }
   togglePanel(id, force) {
     const el = $(id); const on = force ?? el.classList.contains('hidden');
     for (const p of ['layers', 'measure', 'dist', 'qa', 'about']) if (p !== id && on && ['measure', 'dist', 'qa', 'about'].includes(id) && ['measure', 'dist', 'qa', 'about'].includes(p)) { $(p).classList.add('hidden'); $(p + 'Btn')?.classList.remove('on'); }

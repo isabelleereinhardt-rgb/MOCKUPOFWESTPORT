@@ -15,12 +15,13 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,400;0,500;1,400&family=Alegreya+Sans:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
-:root, [data-theme="atlas"] {
+:root {
   --ground: #f4f1ea; --panel: #fbf9f5; --line: #ddd5c8; --ink: #2a2621; --ink-muted: #6f675c; --hover: #f1ece2; --on: #ece6da;
   --lab: #ffffff; --lab-halo: rgba(20, 22, 24, .78); --lab-water: #cfe3f1; --lab-street: #f4f2ee;
   --display: 'Alegreya', Georgia, 'Times New Roman', serif; --sans: 'Alegreya Sans', 'Segoe UI', Helvetica, Arial, sans-serif;
 }
-[data-theme="shadows"] { --ground: #0e0e11; --panel: #15151a; --line: #2b2b33; --ink: #ffffff; --ink-muted: #9c968c; --hover: #1d1d24; --on: #23232b; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --ground: #0e0e11; --panel: #15151a; --line: #2b2b33; --ink: #ffffff; --ink-muted: #9c968c; --hover: #1d1d24; --on: #23232b; } }
+:root[data-theme="dark"] { --ground: #0e0e11; --panel: #15151a; --line: #2b2b33; --ink: #ffffff; --ink-muted: #9c968c; --hover: #1d1d24; --on: #23232b; }
 body[data-style="1"] { --lab: #4b443c; --lab-halo: rgba(255, 255, 255, .92); --lab-water: #3b6c8e; --lab-street: #4b443c; }
 body[data-style="3"] { --lab: #3a3631; --lab-halo: rgba(255, 255, 255, .9); --lab-water: #4f6f86; --lab-street: #3a3631; }
 * { box-sizing: border-box; }
@@ -139,7 +140,7 @@ ol.issues { margin: 6px 0 0; padding-left: 18px; font-size: 13px; } ol.issues li
 }
 </style>
 </head>
-<body data-theme="atlas" data-style="0">
+<body data-style="0">
 <div id="view"></div>
 <div id="labels"></div>
 <div id="mtags"></div>

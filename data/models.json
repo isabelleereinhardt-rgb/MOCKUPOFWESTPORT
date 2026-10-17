@@ -1,0 +1,57 @@
+{
+ "version": 1,
+ "homes": [
+  {
+   "id": "monet-williams-house",
+   "name": "Monet Williams's house",
+   "address": "648 Oak Street",
+   "neighborhood": "Garden District",
+   "residents": [
+    "Monet Williams",
+    "Calista Yuen",
+    "Victor Yuen",
+    "Gordy Yuen"
+   ],
+   "status": "Canon 2 (address); design from the author's photo (reference/monet-house.webp)",
+   "house": "models/homes/monet-williams-house.glb",
+   "lot": "models/homes/monet-williams-house-lot.glb",
+   "at": [
+    -1974.88,
+    1231.88
+   ],
+   "heading": -92.2,
+   "building": 6973,
+   "render": null,
+   "aerial": null,
+   "style": "Lowcountry Victorian farmhouse",
+   "stories": 2,
+   "ridge": 12.51,
+   "footprint": [
+    23.52,
+    20.01
+   ],
+   "materials": [
+    "painted lap siding, pale blue-grey (#B6C2CD), 115 mm exposure",
+    "white painted trim, corner boards, scalloped fascia valance",
+    "navy louvered shutters (#2B3350)",
+    "weathered grey architectural asphalt shingles",
+    "old red brick piers, steps, cheek walls and chimneys",
+    "white diagonal lattice and slatted porch skirting",
+    "grey painted porch floor, pale blue beadboard porch ceiling"
+   ],
+   "notes": "Main block 12.4 x 11.0 m, first floor raised 0.95 m on brick piers, eaves 7.8 m, ridge 12.5 m. The photo shows a long ridge with near-vertical roof ends, so the hip ends are pitched steeper (60 deg) than the front and back (38 deg). Wraparound porch 3.0 m deep on the front and both sides; the left return ends short of the side wing, the right return has brick steps down to the driveway. Interpretations (not in the photo): side and rear elevations, the rear kitchen ell, chimney positions (rear slope), shell driveway, the third live oak behind the house on the left, porch furniture. The photo's porch skirting is horizontal slats, used here; the house block uses lattice between brick piers per the brief.",
+   "triangles": 234005,
+   "lotRect": [
+    -21.2,
+    -28.66,
+    22.5,
+    22.5
+   ]
+  }
+ ],
+ "landmarks": [],
+ "archetypes": [],
+ "replaces": [
+  6973
+ ]
+}
