@@ -75,9 +75,9 @@ else {
       vec2 cq = q / vec2(28., 22.), ci = floor(cq), cf = fract(cq);
       float edge = min(min(cf.x, 1. - cf.x) * 28., min(cf.y, 1. - cf.y) * 22.);
       float aa = fwidth(edge) + .02;
-      col = h12(ci + vSeed) < .5 ? asp : con * .82;
+      col = h12(ci + vSeed) < .3 ? asp * vec3(1.12, 1.11, 1.08) : con * .82;   // weathered asphalt lots among concrete
       col = mix(col, srgb(vec3(.5, .49, .47)) * (.9 + .1 * m), smoothstep(.12 + aa, .12 - aa, edge) * .6); // expansion joint
-      col = mix(col, lawn(p, .5), step(.68, h12(ci * 1.37 + vSeed + 2.)) * smoothstep(1.6 + aa, 1.6 - aa, edge) * .95);
+      col = mix(col, lawn(p, .5), step(.72, h12(ci * 1.37 + vSeed + 2.)) * smoothstep(1.6 + aa, 1.6 - aa, edge) * .95);
     } else col = mix(grav * .88, con * .8, smoothstep(.45, .55, m));
     rough = .85;
   } else if (cls == 10.) {                        // parking: asphalt with painted stalls

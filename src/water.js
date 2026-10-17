@@ -46,7 +46,12 @@ export function buildWater(shoreTex) {
       }
     `,
   });
-  const g = new THREE.PlaneGeometry(400000, 400000, 1, 1); g.rotateX(-Math.PI / 2);
+  // A two-triangle plane this size loses depth precision near the camera, enough for the water to show
+  // through driveways and walks on the modeled lots. A grid packed toward the town keeps triangles small there.
+  const g = new THREE.PlaneGeometry(2, 2, 160, 160); g.rotateX(-Math.PI / 2);
+  const pos = g.attributes.position, warp = t => Math.sign(t) * 200000 * Math.abs(t) ** 3;
+  for (let i = 0; i < pos.count; i++) pos.setXYZ(i, warp(pos.getX(i)), 0, warp(pos.getZ(i)));
+  g.computeBoundingSphere();
   const mesh = new THREE.Mesh(g, m); mesh.position.y = WATER_Y; mesh.receiveShadow = true; mesh.name = 'water';
   // painted first among the flat layers; nothing at ground level writes depth, so nothing can fight
   m.depthWrite = false; mesh.renderOrder = 5;

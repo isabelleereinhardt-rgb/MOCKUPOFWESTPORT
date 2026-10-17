@@ -27,7 +27,9 @@ const pick = (arr, r) => arr[Math.floor(r * arr.length) % arr.length];
 
 // ---------------------------------------------------------------- shaders
 const FACADE = /* glsl */`
-  float kind = vB.x, seed = vB.y, eave = vB.z, wm = vB.w;
+  // per-building codes arrive as interpolated varyings and can land a hair off their integer value,
+  // which flips == tests pixel by pixel into speckle: snap them back first
+  float kind = floor(vB.x + .5), seed = floor(vB.y + .5) / 255. * 100., eave = vB.z / 4., wm = floor(vB.w + .5);
   float u = vW.x, v = vW.y, wl = vW.z, front = vW.w;
   vec2 p = vec2(vWPos.x, -vWPos.z);
   float cd = length(vWPos - cameraPosition);
@@ -118,7 +120,7 @@ const FACADE = /* glsl */`
 `;
 
 const ROOFSH = /* glsl */`
-  float type = vR.z, seed = vR.w;
+  float type = floor(vR.z + .5), seed = vR.w;
   vec2 ruv = vR.xy;
   vec2 p = vec2(vWPos.x, -vWPos.z);
   if (uStyle > .5) {
@@ -146,7 +148,7 @@ function wallMaterial() {
     key: 'walls',
     uniforms: { tSiding: { value: loadTex('assets/tex/wall_siding.jpg') }, tBrick: { value: loadTex('assets/tex/wall_brick.jpg') }, tStucco: { value: loadTex('assets/tex/wall_stucco.jpg') } },
     vHead: 'attribute vec4 aW; attribute vec4 aB; varying vec4 vW; varying vec4 vB;',
-    vMain: 'vW = aW; vB = vec4(aB.x, aB.y / 255. * 100., aB.z / 4., aB.w);',
+    vMain: 'vW = aW; vB = aB;',
     fHead: 'uniform sampler2D tSiding; uniform sampler2D tBrick; uniform sampler2D tStucco; varying vec4 vW; varying vec4 vB; const vec3 DOORS[6] = vec3[6](vec3(.48,.18,.16), vec3(.13,.15,.18), vec3(.18,.23,.32), vec3(.93,.92,.88), vec3(.36,.25,.17), vec3(.24,.31,.24)); const vec3 SHUTS[5] = vec3[5](vec3(.13,.15,.18), vec3(.18,.23,.32), vec3(.24,.31,.24), vec3(.36,.25,.17), vec3(.42,.5,.53));',
     color: 'vec3 baseC = pow(vColor.rgb, vec3(2.2));\n' + FACADE,
   });
@@ -429,6 +431,8 @@ export function buildBuildings(D, opts = {}) {
     if (c.list) c.list.push(b);
     building(b, c.G, c.R, D, b.front);
     // contact shadow quad, slightly larger than the footprint, in the footprint's own frame
+    // (none under buildings a Blender model replaces: the model grounds itself, and the pier bar stands over water)
+    if (b.hero) continue;
     const p = b.poly, ux = (p[2] - p[0]) / b.w, uy = (p[3] - p[1]) / b.w, vx = (p[6] - p[0]) / b.d, vy = (p[7] - p[1]) / b.d;
     const hw = b.w / 2 + tooth, hd = b.d / 2 + tooth, o = cp.length / 3;
     for (const [sa, sb] of [[-1, -1], [1, -1], [1, 1], [-1, 1]]) {

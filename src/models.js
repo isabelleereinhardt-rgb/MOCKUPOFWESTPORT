@@ -47,7 +47,7 @@ export class Models {
     for (const m of list) {
       const it = { ...m, state: 'idle', root: new THREE.Group() };
       it.root.name = 'model ' + m.id;
-      it.root.position.set(m.at[0], 0, -m.at[1]);
+      it.root.position.set(m.at[0], 0.04, -m.at[1]); // 4 cm of margin keeps the map's ground layers from bleeding over walks and drives
       it.root.rotation.y = headingToRotation(m.heading ?? 90);
       this.group.add(it.root);
       this.items.push(it);
