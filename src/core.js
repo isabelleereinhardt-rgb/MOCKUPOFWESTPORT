@@ -168,6 +168,16 @@ export function nearestAddress(D, x, y, R = 80) {
   return best;
 }
 
+// True if (x, y) lies on a drivable road surface (within half width + margin of any non-bridge road).
+export function onRoadSurface(D, x, y, margin = 0) {
+  let hit = false;
+  D.rGrid.query(x - 12, y - 12, x + 12, y + 12, id => {
+    const s = D.segs[id], r = D.roads[s[4]]; if (r.cls === 'path' || r.bridge) return;
+    if (segDist(x, y, s[0], s[1], s[2], s[3])[0] < HALF[r.cls] + margin) { hit = true; return false; }
+  });
+  return hit;
+}
+
 // Modeled lots (the Nine's homes): oriented rectangles in each home's local frame (x right, y back; front = -y).
 export function setHeroLots(D, homes) {
   D.heroLots = (homes || []).filter(h => h.lotRect).map(h => {

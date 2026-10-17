@@ -2,7 +2,7 @@
 // (in driveways, in the painted stalls of parking lots, beside mobile homes). Everything is checked
 // against buildings, roads, water and the modeled lots so nothing lands where it should not.
 import * as THREE from 'three';
-import { HALF, hash, Grid, pointInPoly, pointInRing, nearestRoad, inHeroLot, ringBBox } from './core.js';
+import { HALF, hash, Grid, pointInPoly, pointInRing, nearestRoad, inHeroLot, ringBBox, onRoadSurface } from './core.js';
 import { U } from './shaders.js';
 
 const CAR_COLORS = ['#f2f2f0', '#f2f2f0', '#e9e9e6', '#1d1f22', '#1d1f22', '#2b2d31', '#8d9196', '#b4b8bc', '#b4b8bc', '#6b6f74', '#7b1e22', '#9a2a25', '#23395d', '#2f4f6f', '#3b4a3a', '#c9bfa8', '#5a3b2a', '#d8d2c2'];
@@ -52,6 +52,15 @@ export function buildLots(D) {
     });
     return hit;
   };
+  // a parked car (4.8 x 1.9 m) must clear buildings, roads, water and the modeled lots at every corner
+  const carClear = (x, y, ang, self) => {
+    const fx = Math.sin(ang), fy = -Math.cos(ang), sx = -fy, sy = fx;
+    for (const [a, b] of [[0, 0], [2.5, 1.0], [2.5, -1.0], [-2.5, 1.0], [-2.5, -1.0]]) {
+      const px = x + fx * a + sx * b, py = y + fy * a + sy * b;
+      if (blocked(px, py, self) || onRoadSurface(D, px, py, 0.4)) return false;
+    }
+    return true;
+  };
   // driveways: from one front corner of each house straight out to its street
   for (const b of D.buildings) {
     if (b.hero || !['house', 'duplex', 'townhouse'].includes(b.kind) || b.fnx == null) continue;
@@ -94,8 +103,9 @@ export function buildLots(D) {
   drives.forEach((d, k) => {
     if (R(k * 7 + 3) > 0.62) return;
     const t = 2.5 + R(k * 11) * 2.5, L = Math.hypot(d.x1 - d.x0, d.y1 - d.y0); if (L < t + 3.5) return;
-    const x = d.x0 + d.nx * (t + 2.4), y = d.y0 + d.ny * (t + 2.4);
-    cars.push({ x, y, ang: Math.atan2(d.nx, -d.ny) + (R(k * 13) < 0.5 ? Math.PI : 0), kind: R(k * 17) < 0.3 ? 1 : R(k * 19) < 0.25 ? 2 : 0, color: CAR_COLORS[Math.floor(R(k * 23) * CAR_COLORS.length)] });
+    const x = d.x0 + d.nx * (t + 2.4), y = d.y0 + d.ny * (t + 2.4), ang = Math.atan2(d.nx, -d.ny) + (R(k * 13) < 0.5 ? Math.PI : 0);
+    if (!carClear(x, y, ang, d.b)) return;
+    cars.push({ x, y, ang, kind: R(k * 17) < 0.3 ? 1 : R(k * 19) < 0.25 ? 2 : 0, color: CAR_COLORS[Math.floor(R(k * 23) * CAR_COLORS.length)] });
   });
   // parking lots: the same stall grid the ground shader paints (18 m modules, 2.75 m stalls)
   for (const l of D.lu) {
@@ -112,9 +122,9 @@ export function buildLots(D) {
       const s = (Math.imul(l.i, 9973) ^ Math.imul(k, 7919) ^ Math.imul(m * 2 + (rowc > 9 ? 1 : 0), 104729)) >>> 0;
       if (R(s) > busy) continue;
       if (!pointInPoly(x, y, l.rings) || !pointInPoly(x + ca * 1.5, y + sa * 1.5, l.rings) || !pointInPoly(x - ca * 1.5, y - sa * 1.5, l.rings) || !pointInPoly(x - sa * 2.7, y + ca * 2.7, l.rings) || !pointInPoly(x + sa * 2.7, y - ca * 2.7, l.rings)) continue;
-      if (blocked(x, y, null)) continue;
-      const nr = nearestRoad(D, x, y, 12); if (nr && nr.d < HALF[nr.road.cls] + 1.5) continue;
-      cars.push({ x, y, ang: Math.atan2(-sa, -ca) + (R(s * 3) < 0.5 ? Math.PI : 0) + (R(s * 5) - 0.5) * 0.06, kind: R(s * 7) < 0.35 ? 1 : R(s * 11) < 0.2 ? 2 : 0, color: CAR_COLORS[Math.floor(R(s * 13) * CAR_COLORS.length)] });
+      const ang = Math.atan2(-sa, -ca) + (R(s * 3) < 0.5 ? Math.PI : 0) + (R(s * 5) - 0.5) * 0.06;
+      if (!carClear(x, y, ang, null)) continue;
+      cars.push({ x, y, ang, kind: R(s * 7) < 0.35 ? 1 : R(s * 11) < 0.2 ? 2 : 0, color: CAR_COLORS[Math.floor(R(s * 13) * CAR_COLORS.length)] });
       n++;
     }
   }
@@ -123,9 +133,9 @@ export function buildLots(D) {
     if (b.kind !== 'mobile' || b.hero || b.fnx == null || hash(b.i * 313) > 0.5) continue;
     const ex = -b.fny, ey = b.fnx, side = hash(b.i * 17) < 0.5 ? -1 : 1;
     const x = b.cx + b.fnx * (b.fd / 2 - 3.2) + ex * side * (b.fw / 2 + 1.6), y = b.cy + b.fny * (b.fd / 2 - 3.2) + ey * side * (b.fw / 2 + 1.6);
-    if (blocked(x, y, b) || blocked(x + b.fnx * 2.4, y + b.fny * 2.4, b) || blocked(x - b.fnx * 2.4, y - b.fny * 2.4, b)) continue;
-    const nr = nearestRoad(D, x, y, 8); if (nr && nr.d < HALF[nr.road.cls] + 1.2) continue;
-    cars.push({ x, y, ang: Math.atan2(b.fnx, -b.fny), kind: hash(b.i * 7) < 0.45 ? 2 : 0, color: CAR_COLORS[Math.floor(hash(b.i * 29) * CAR_COLORS.length)] });
+    const ang = Math.atan2(b.fnx, -b.fny);
+    if (!carClear(x, y, ang, null)) continue;
+    cars.push({ x, y, ang, kind: hash(b.i * 7) < 0.45 ? 2 : 0, color: CAR_COLORS[Math.floor(hash(b.i * 29) * CAR_COLORS.length)] });
   }
   D.cars = cars;
   // merge cars per 1 km chunk (static, vertex-colored)
@@ -170,7 +180,9 @@ export function buildLamps(D) {
         const o = (half + 0.7) * side; const x = cx - uy * o, y = cy + ux * o;
         side = -side;
         if (city && !pointInRing(x, y, city)) continue;
-        if (!near(x, y, 50) || !(D.mask.at(x, y) & 1) || inHeroLot(D, x, y, 1)) continue;
+        if (!near(x, y, 50) || !(D.mask.at(x, y) & 1) || (D.mask.at(x, y) & 2) || inHeroLot(D, x, y, 1)) continue;
+        const hx = x + (cx - x) * 1.9 / Math.max(1, Math.hypot(cx - x, cy - y)), hy = y + (cy - y) * 1.9 / Math.max(1, Math.hypot(cx - x, cy - y));
+        if (onRoadSurface(D, x, y, 0.3) || !(D.mask.at(hx, hy) & 1)) continue;
         // keep off driveways, buildings and other roads
         let bad = false;
         D.driveGrid.query(x - 3, y - 3, x + 3, y + 3, k => { const d = D.drives[k]; const ddx = d.x1 - d.x0, ddy = d.y1 - d.y0, L2 = ddx * ddx + ddy * ddy; const tt = Math.max(0, Math.min(1, ((x - d.x0) * ddx + (y - d.y0) * ddy) / L2)); if (Math.hypot(d.x0 + ddx * tt - x, d.y0 + ddy * tt - y) < d.w / 2 + 1.2) { bad = true; return false; } });

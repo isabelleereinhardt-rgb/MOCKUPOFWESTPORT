@@ -261,3 +261,46 @@ The footprints for this check are rebuilt from the fix lists exactly as written 
 - `renders/qa/08-labels.png`: Label "Westport River" off its water. Moved onto the water it names.
 
 In each picture, the left half is the Atlas as it is and the right half has the fixes applied. Red means removed, orange changed, green added by QA, and blue dots are moved points (a thin line joins each to where it was).
+
+## Road network (added after the first pass)
+
+The first pass checked roads one at a time. A second check, `tools/qa/connect.mjs`, looks at the whole network the way a driver would. Before any repair, the Atlas roads fall into **88 separate pieces**: whole subdivisions have streets that stop 50 to 70 m short of the road they should meet, and Riverside (the trailer park and the Hernandez house) connects to nothing.
+
+- **Extended (proposed):** 69 streets that stopped short now continue in a straight line until they meet their road. Each extension is under 120 m and clears every building by at least 1.5 m. They are drawn on the 3D map and listed in `data/qa.json` under `fixes.add_roads`.
+- **Flagged (18):** the longer gaps, or gaps where a straight link would run through a building. They are not drawn. The distance router assumes a connection across each one so that every place can be reached, and the measure tool tells you when a route crosses one. The biggest of these is Riverside, whose streets stop 250 to 350 m short of River Road.
+
+The register's commute figures assume roads the Atlas does not have. See `docs/DISTANCES.md`: Dalton's trailer to Westport High is 7.5 miles by road on this map. If Jefferson Street ran about 350 m further south to Spencer Street, it would be 5.2 miles, which matches the register.
+
+| Flagged gap | Where (Atlas x, y) |
+|---|---|
+| Heron Court stops 54 m short of Osprey Circle, and a straight link would run through a building. Nothing on the map reaches it by road. The router assumes a connection here so distances work; draw the real street in the Atlas to settle it. | 5161, 4894 |
+| Dove Court stops 54 m short of Bluebird Drive, and a straight link would run through a building. Nothing on the map reaches it by road. The router assumes a connection here so distances work; draw the real street in the Atlas to settle it. | 3658, 3940 |
+| Lark Court stops 54 m short of Bluebird Drive, and a straight link would run through a building. Nothing on the map reaches it by road. The router assumes a connection here so distances work; draw the real street in the Atlas to settle it. | 3608, 4110 |
+| Killdeer Lane stops 54 m short of Swallow Drive, and a straight link would run through a building. Nothing on the map reaches it by road. The router assumes a connection here so distances work; draw the real street in the Atlas to settle it. | 5605, 4124 |
+| Bufflehead Drive stops 54 m short of Bluebird Drive, and a straight link would run through a building. Nothing on the map reaches it by road. The router assumes a connection here so distances work; draw the real street in the Atlas to settle it. | 4732, 5174 |
+| Lassiter Street stops 56 m short of Lane Lane, and a straight link would run through a building. Nothing on the map reaches it by road. The router assumes a connection here so distances work; draw the real street in the Atlas to settle it. | -843, -3802 |
+| Canady Lane stops 57 m short of Small Avenue, and a straight link would run through a building. Nothing on the map reaches it by road. The router assumes a connection here so distances work; draw the real street in the Atlas to settle it. | -1214, -3766 |
+| Nelson Road stops 57 m short of Chadwick Street, and a straight link would run through a building. Nothing on the map reaches it by road. The router assumes a connection here so distances work; draw the real street in the Atlas to settle it. | -2952, -3870 |
+| Longleaf Lane stops 60 m short of Cherry Road, and a straight link would run through a building. Nothing on the map reaches it by road. The router assumes a connection here so distances work; draw the real street in the Atlas to settle it. | 450, 5559 |
+| Hemlock Lane stops 60 m short of Holly Court, and a straight link would run through a building. Nothing on the map reaches it by road. The router assumes a connection here so distances work; draw the real street in the Atlas to settle it. | -974, 2939 |
+| Mulberry Lane stops 60 m short of Honeysuckle Circle, and a straight link would run through a building. Nothing on the map reaches it by road. The router assumes a connection here so distances work; draw the real street in the Atlas to settle it. | -989, 5244 |
+| Briar Court stops 60 m short of Dogwood Lane, and a straight link would run through a building. Nothing on the map reaches it by road. The router assumes a connection here so distances work; draw the real street in the Atlas to settle it. | 1441, 4833 |
+| Gardenia Circle stops 61 m short of Cardinal Lane, and a straight link would run through a building. Nothing on the map reaches it by road. The router assumes a connection here so distances work; draw the real street in the Atlas to settle it. | -2679, 7579 |
+| Plover Drive stops 71 m short of Osprey Lane, and a straight link would run through a building. Nothing on the map reaches it by road. The router assumes a connection here so distances work; draw the real street in the Atlas to settle it. | 7247, -1274 |
+| Bayberry Court stops 101 m short of Willow Lane, and a straight link would run through a building. Nothing on the map reaches it by road. The router assumes a connection here so distances work; draw the real street in the Atlas to settle it. | 1883, 2626 |
+| Bobwhite Lane stops 122 m short of the road network. Nothing on the map reaches it by road. The router assumes a connection here so distances work; draw the real street in the Atlas to settle it. | -3361, 6884 |
+| Long Point Drive stops 73 m short of Harborview Drive, and a straight link would run through a building. Nothing on the map reaches it by road. The router assumes a connection here so distances work; draw the real street in the Atlas to settle it. | 5186, 799 |
+| Country Club Road stops 200 m short of Ocean Highway. Nothing on the map reaches it by road. The router assumes a connection here so distances work; draw the real street in the Atlas to settle it. | -4658, 1738 |
+
+## Everything the 3D map adds (scene check)
+
+The 3D map adds things the Atlas does not draw: driveways, parked cars, streetlights and trees. `tools/qa/scene-audit.js` checks every one of them against the buildings (after the fixes above), the road surfaces, the water and marsh, and the modeled lots of the Nine's homes. It runs inside the map page.
+
+| Object | Count checked | In a building | On a road | In water or marsh | In a modeled lot |
+|---|---|---|---|---|---|
+| Trees (city limits, every cell) | 1,862,924 | 0 | 0 | 0 | 0 |
+| Parked cars (driveways, lots, mobile homes) | 48,230 | 0 | 0 | 0 | 0 |
+| Streetlights | 10,622 | 0 | 0 | 0 | not placed there |
+| Driveways (house to street) | 24,482 | 0 (other buildings) | they end at the road edge | 0 | not placed there |
+
+The first run found 714 cars touching buildings, 778 on roads and 39 in water, mostly in parking lots that run up to a street, plus 8 streetlights out of place. Each car is now tested at its four corners and its center before it is placed, and each streetlight against every road and the water, which brings all of these to zero.
