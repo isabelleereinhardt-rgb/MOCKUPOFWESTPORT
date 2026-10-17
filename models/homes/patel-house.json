@@ -1,0 +1,73 @@
+{
+ "id": "patel-house",
+ "name": "The Patel house and clinic",
+ "address": "1003 Sandpiper Lane",
+ "neighborhood": "Harborview",
+ "residents": [
+  "Reya Patel",
+  "Amit Patel",
+  "Kavita Patel",
+  "Nisha Patel"
+ ],
+ "status": "Canon 2 (address, \"Patel house and clinic\"); design interpreted from reference/board-23.jpg",
+ "atlas_building_index": 23310,
+ "footprint_m": [
+  23.05,
+  17.46
+ ],
+ "ridge_height_m": 9.5,
+ "top_height_m": 10.85,
+ "stories": 2,
+ "style": "Craftsman / Prairie foursquare with a one-story clinic wing",
+ "materials": [
+  "dark red-brown brick ground floor, porch piers, knee walls, chimney and clinic wing",
+  "painted cedar shingles above the belt course, muted olive-khaki",
+  "cream painted trim, wide flat casings, brackets, tapered porch columns",
+  "brown-grey architectural asphalt shingles",
+  "stained oak doors with glazed tops",
+  "concrete porch floor and walks, asphalt clinic parking court"
+ ],
+ "triangles": 35812,
+ "triangles_house": 12756,
+ "triangles_lot": 23056,
+ "files": {
+  "house": "models/homes/patel-house.glb",
+  "lot": "models/homes/patel-house-lot.glb"
+ },
+ "file_mb": {
+  "house": 1.98,
+  "lot": 2.68
+ },
+ "house_bbox_m": [
+  [
+   -11.84,
+   -9.89,
+   -0.6
+  ],
+  [
+   11.61,
+   7.19,
+   10.85
+  ]
+ ],
+ "lot_bbox_m": [
+  [
+   -19.67,
+   -26.04,
+   -0.5
+  ],
+  [
+   12.28,
+   8.0,
+   15.53
+  ]
+ ],
+ "lot_local_rect_m": [
+  -21.5,
+  -26.04,
+  23.0,
+  25.0
+ ],
+ "curb_line_local_y": -26.04,
+ "notes": "House 12.6 x 12.0 m, two stories, low hip roof (25 deg) with 0.78 m eaves, ridge 9.5 m (Atlas height 7.5 m; within the 30% allowance). From board-23: the brick ground floor, deep hipped eaves, the front gable dormer with three windows, the wide porch on brick piers with a low gable over the steps, the stair-landing window, the stepped walk with clipped boxwood globes and landscape boulders, the big shade tree. Per the brief: shingles above the belt course (the photo is brick throughout), tapered columns on the piers, and the clinic wing on the right: one story, its own stoop under a small gable on tapered posts, a 1:12 ramp with steel rails, a blank bronze plaque (no text) by the door, and three striped parking stalls with wheel stops off a paved court that meets the curb. Interpreted: side and rear elevations, rear doors, the exterior chimney, beds and props. No fence or hedge on the frontage."
+}

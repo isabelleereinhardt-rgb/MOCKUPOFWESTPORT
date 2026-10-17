@@ -47,6 +47,53 @@
    ]
   },
   {
+   "id": "al-hassan-house",
+   "name": "The Al-Hassan house",
+   "address": "1552 Spinnaker Court",
+   "neighborhood": "Harborview",
+   "residents": [
+    "Zane Al-Hassan",
+    "Dr. Nadir Al-Hassan",
+    "Dr. Amina Al-Hassan"
+   ],
+   "status": "Canon 2 (address); design interpreted from the brief (no reference photo)",
+   "house": "models/homes/al-hassan-house.glb",
+   "lot": "models/homes/al-hassan-house-lot.glb",
+   "at": [
+    5728.62,
+    37.88
+   ],
+   "heading": 95.3,
+   "building": 21135,
+   "render": "renders/al-hassan-house.jpg",
+   "aerial": null,
+   "style": "Contemporary coastal (modern farmhouse) with an attached garage",
+   "stories": 2,
+   "ridge": 9.67,
+   "footprint": [
+    24.63,
+    18.61
+   ],
+   "materials": [
+    "white painted board-and-batten",
+    "charcoal standing-seam metal roofing",
+    "black-framed tall windows with thin white flat casings",
+    "stained cedar porch posts, beams and ceilings",
+    "grey composite porch decking",
+    "painted grey foundation (raised 0.75 m)",
+    "charcoal flush garage doors with a glass band",
+    "black screen mesh on the back porch"
+   ],
+   "notes": "Main block 12.6 x 9.2 m, 35 deg side gable, roof surface 6.45 m at the walls, ridge 9.7 m (Atlas height 7.5 m; within the 30% allowance), with a steeper (44 deg) front cross gable over the entry holding three tall black-framed windows and a clerestory. All of it is interpreted from the brief (no reference photo): deep full-width front porch with a standing-seam shed roof, cedar posts and black picket rail; screened porch at the back right under its own gable; attached two-car garage on the left; concrete drive and paver walk both meet the curb line; beds with hydrangeas and ornamental grasses; one multi-stem river birch. No fence or hedge on the frontage.",
+   "triangles": 30404,
+   "lotRect": [
+    -20.5,
+    -28.94,
+    22,
+    25
+   ]
+  },
+  {
    "id": "delacroix-house",
    "name": "Delacroix house",
    "address": "3064 Harbor Drive",
@@ -95,6 +142,53 @@
    ]
   },
   {
+   "id": "hernandez-house",
+   "name": "Hernandez house",
+   "address": "1022 Mercer Street",
+   "neighborhood": "Riverside",
+   "residents": [
+    "Morgan Hernandez",
+    "Carlos Hernandez",
+    "Maria Hernandez",
+    "Isabella Hernandez"
+   ],
+   "status": "Canon 2 (address); design interpreted from the brief (no reference photo)",
+   "house": "models/homes/hernandez-house.glb",
+   "lot": "models/homes/hernandez-house-lot.glb",
+   "at": [
+    224.12,
+    -1769.25
+   ],
+   "heading": 84.3,
+   "building": 30499,
+   "render": null,
+   "aerial": null,
+   "style": "front-gable bungalow (post-war, Riverside)",
+   "stories": 1,
+   "ridge": 5.66,
+   "footprint": [
+    10.55,
+    12.54
+   ],
+   "materials": [
+    "vinyl Dutch-lap siding, warm tan (#CFB68B), 4 in exposure",
+    "white aluminum/vinyl trim, corner boards, vented soffits, K-style gutters",
+    "dark brown louvered vinyl shutters on the front windows",
+    "brown-grey architectural asphalt shingles",
+    "red brick crawlspace foundation and porch skirt; grey painted concrete porch slab",
+    "concrete steps, walk, driveway and carport pad; aluminum carport roof",
+    "galvanized 4 ft chain-link fence"
+   ],
+   "notes": "Main body 10.0 x 10.3 m, floor 0.6 m above grade on a brick crawlspace, 8 ft walls, 24 deg front-gable roof, ridge 5.7 m (Atlas 4.5 m). Offset front-gable porch 5.7 x 2.6 m on square columns with a low railing. Attached aluminum carport on the right over a car-length pad; the concrete driveway runs to the curb line. Chain-link fence 3.7 m behind the curb (walk gate), along the driveway, the left and back lot lines and across behind the carport (second gate). All of it is interpreted from the brief; there is no reference photo. Lot side limits use corrected neighbor sides (site-specs.json neighbors_local x is mirrored): house 30498 at +16.6 m (right), duplex 30500 at -18.1 m (left); the back limit stops at 14.6 m, halfway to the house behind (29.4 m).",
+   "triangles": 25359,
+   "lotRect": [
+    -9.06,
+    -23.19,
+    8.31,
+    14.6
+   ]
+  },
+  {
    "id": "monet-williams-house",
    "name": "Monet Williams's house",
    "address": "648 Oak Street",
@@ -139,6 +233,188 @@
     -28.66,
     22.5,
     22.5
+   ]
+  },
+  {
+   "id": "patel-house",
+   "name": "The Patel house and clinic",
+   "address": "1003 Sandpiper Lane",
+   "neighborhood": "Harborview",
+   "residents": [
+    "Reya Patel",
+    "Amit Patel",
+    "Kavita Patel",
+    "Nisha Patel"
+   ],
+   "status": "Canon 2 (address, \"Patel house and clinic\"); design interpreted from reference/board-23.jpg",
+   "house": "models/homes/patel-house.glb",
+   "lot": "models/homes/patel-house-lot.glb",
+   "at": [
+    4609.88,
+    163.88
+   ],
+   "heading": -23.2,
+   "building": 23310,
+   "render": null,
+   "aerial": null,
+   "style": "Craftsman / Prairie foursquare with a one-story clinic wing",
+   "stories": 2,
+   "ridge": 9.5,
+   "footprint": [
+    23.05,
+    17.46
+   ],
+   "materials": [
+    "dark red-brown brick ground floor, porch piers, knee walls, chimney and clinic wing",
+    "painted cedar shingles above the belt course, muted olive-khaki",
+    "cream painted trim, wide flat casings, brackets, tapered porch columns",
+    "brown-grey architectural asphalt shingles",
+    "stained oak doors with glazed tops",
+    "concrete porch floor and walks, asphalt clinic parking court"
+   ],
+   "notes": "House 12.6 x 12.0 m, two stories, low hip roof (25 deg) with 0.78 m eaves, ridge 9.5 m (Atlas height 7.5 m; within the 30% allowance). From board-23: the brick ground floor, deep hipped eaves, the front gable dormer with three windows, the wide porch on brick piers with a low gable over the steps, the stair-landing window, the stepped walk with clipped boxwood globes and landscape boulders, the big shade tree. Per the brief: shingles above the belt course (the photo is brick throughout), tapered columns on the piers, and the clinic wing on the right: one story, its own stoop under a small gable on tapered posts, a 1:12 ramp with steel rails, a blank bronze plaque (no text) by the door, and three striped parking stalls with wheel stops off a paved court that meets the curb. Interpreted: side and rear elevations, rear doors, the exterior chimney, beds and props. No fence or hedge on the frontage.",
+   "triangles": 35812,
+   "lotRect": [
+    -21.5,
+    -26.04,
+    23,
+    25
+   ]
+  },
+  {
+   "id": "rossi-house",
+   "name": "Rossi house",
+   "address": "2623 Bay Drive",
+   "neighborhood": null,
+   "residents": [
+    "Elio Rossi",
+    "Lorenzo Rossi",
+    "Francesca Rossi"
+   ],
+   "status": "proposed (address); design from reference/board-43.jpg",
+   "house": "models/homes/rossi-house.glb",
+   "lot": "models/homes/rossi-house-lot.glb",
+   "at": [
+    6910.25,
+    -1732.62
+   ],
+   "heading": -109.8,
+   "building": 21164,
+   "render": null,
+   "aerial": null,
+   "style": "Dutch Colonial Revival (gambrel roof, full-width shed dormer)",
+   "stories": 2,
+   "ridge": 8.27,
+   "footprint": [
+    19.14,
+    16.45
+   ],
+   "materials": [
+    "painted cedar shingles, sage green (#7A8C69), 5 in exposure",
+    "white painted trim, casings, Tuscan columns, K-style gutters",
+    "white 6-over-1 double-hung windows, mulled in threes and pairs",
+    "light grey architectural asphalt shingles; red brick chimneys",
+    "bluestone steps and landing, fieldstone piers with cast-stone urns",
+    "stained wood entry door with oval light, leaded sidelights, elliptical fanlight"
+   ],
+   "notes": "Main block 12.6 x 9.2 m, floor 0.75 m up, first-floor walls to 3.6 m, gambrel 64/22 deg with a 30 deg flared kick at the eave, ridge 8.3 m (Atlas 7.0 m; the gambrel needs the extra height). From the reference: sage shingles, the gambrel with the near full-width shed dormer (pairs left/right, a short triple in the middle), mulled triples of 6-over-1 windows, the arched gable portico on Tuscan columns, elliptical fanlight and sidelights, bluestone steps with fieldstone piers and urns, the flat-roofed side porch on the left, two ridge chimneys, white gutters and downspouts, foundation beds, white picket fence on the side. Interpreted: side and rear elevations, the plain rear gambrel, back stoop, asphalt driveway on the right to a parking pad, maple and dogwood. Neighbourhood not named in the register. Lot sides use corrected neighbor sides (site-specs.json neighbors_local x is mirrored): the Sullivan house is on the right (+39.7 m).",
+   "triangles": 38725,
+   "lotRect": [
+    -23.4,
+    -26.3,
+    19.8,
+    25
+   ]
+  },
+  {
+   "id": "sullivan-house",
+   "name": "Sullivan house",
+   "address": "2639 Bay Drive",
+   "neighborhood": null,
+   "residents": [
+    "Nellie Sullivan",
+    "David Sullivan"
+   ],
+   "status": "proposed (address); design interpreted from the brief (no reference photo)",
+   "house": "models/homes/sullivan-house.glb",
+   "lot": "models/homes/sullivan-house-lot.glb",
+   "at": [
+    6949.5,
+    -1740.75
+   ],
+   "heading": -100.3,
+   "building": 21165,
+   "render": null,
+   "aerial": null,
+   "style": "coastal shingle-style cottage",
+   "stories": 1.5,
+   "ridge": 8.39,
+   "footprint": [
+    21.38,
+    16.77
+   ],
+   "materials": [
+    "weathered (unpainted) cedar shakes, silver-grey with brown strays, 5.5 in exposure",
+    "white painted trim, wide corner boards, belt course, K-style gutters",
+    "white 6-over-6 double-hung windows; teal-blue glazed front door",
+    "dark grey architectural asphalt shingles, 12:12 pitch",
+    "red brick exterior chimney; painted block foundation; white lattice skirt",
+    "screened porch: shingled knee wall, bronze screen panels, beadboard ceiling",
+    "brick paver walk, crushed-shell driveway with a concrete apron"
+   ],
+   "notes": "Main block 13.2 x 9.0 m, floor 0.9 m up on a block foundation, 12:12 side-gable roof with three gabled front dormers, ridge 8.4 m (Atlas 8.5 m). Screened porch 5.0 x 7.0 m on the left (toward the Rossis) with a French door into the house and a screen door with steps to the side yard. All of the design is interpreted from the brief; there is no reference photo. The Atlas footprint (21.4 x 16.8 m) is larger than a cottage needs: the house plus porch fill 19.6 m of its width. Lot sides use corrected neighbor sides (site-specs.json neighbors_local x is mirrored): the Rossi house is on the left at (-40.1, 1.0), rotated -9.5 deg.",
+   "triangles": 25092,
+   "lotRect": [
+    -20,
+    -28.24,
+    20.8,
+    25
+   ]
+  },
+  {
+   "id": "thompson-house",
+   "name": "The Thompson house",
+   "address": "665 Pelican Point Drive",
+   "neighborhood": "Harborview",
+   "residents": [
+    "Charlie Thompson",
+    "Richard Thompson III",
+    "Victoria Thompson"
+   ],
+   "status": "Canon 2 (address); design interpreted from reference/board-10.jpg crossed with board-02.jpg",
+   "house": "models/homes/thompson-house.glb",
+   "lot": "models/homes/thompson-house-lot.glb",
+   "at": [
+    3440.75,
+    923.75
+   ],
+   "heading": 167.5,
+   "building": 22180,
+   "render": null,
+   "aerial": null,
+   "style": "Red-brick Colonial Revival, two stories plus dormers, with a garage wing",
+   "stories": 2,
+   "ridge": 10.94,
+   "footprint": [
+    24.14,
+    18.44
+   ],
+   "materials": [
+    "red-brown running-bond brick with light mortar, projecting base course with a cast-stone cap",
+    "slate-grey slate-style roofing, copper flashing and downspouts",
+    "white painted trim: frieze with dentils, portico, cornice returns, dormers",
+    "cast-stone jack-arch lintels with keystones and stone sills",
+    "black louvered shutters",
+    "dark green six-panel entry door with brass hardware",
+    "stained wood carriage-house garage doors"
+   ],
+   "notes": "Main block 14.8 x 9.4 m, side-gabled at 40 deg, roof surface 7.0 m at the walls, ridge 10.9 m (Atlas height 8.5 m; within the 30% allowance). From board-10: the projecting front-gable bay on the left with a Palladian (arched centre) window and a half-round attic vent, the white pedimented entry portico, black shutters, slate-grey roof, interior end chimneys. From board-02: gabled dormers, jack-arch heads, copper accents. Interpreted: the 1.5-story front-gabled garage wing with carriage doors joined by a one-story hyphen on the right (the brief asks for a side garage wing), the rear one-story family-room wing and brick-and-stone terrace, side and rear elevations, the asphalt drive with a Belgian-block edge, the brick front walk to the curb, foundation beds, one big shade tree front left and a dogwood by the garage. No fence or hedge along the frontage (the lot owns its frontage; the walk and drive run to the curb line).",
+   "triangles": 53058,
+   "lotRect": [
+    -16.5,
+    -29.73,
+    26,
+    25
    ]
   }
  ],
@@ -556,7 +832,13 @@
  ],
  "replaces": [
   173,
+  21135,
   23936,
-  6973
+  30499,
+  6973,
+  23310,
+  21164,
+  21165,
+  22180
  ]
 }

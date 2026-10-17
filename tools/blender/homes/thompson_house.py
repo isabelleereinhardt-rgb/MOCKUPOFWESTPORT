@@ -1085,7 +1085,8 @@ def leafy_tree(g, base, H, spread, seed, clear=2.2, trunk_r=0.2, n_limbs=6, leaf
         centers.append((p, f))
     cc = Vector((fork.x, fork.y, cz - Rz * 0.25))
     for ci, (p, f) in enumerate(centers):
-        if bounds and not (bounds[0] + 0.9 < p.x < bounds[2] - 0.9 and bounds[1] + 0.9 < p.y < bounds[3] - 0.9):
+        mg = 2.3 * cluster_r + clump_r[1] + 0.1
+        if bounds and not (bounds[0] + mg < p.x < bounds[2] - mg and bounds[1] + mg < p.y < bounds[3] - mg):
             continue
         rad = (p - Vector((fork.x, fork.y, cz))).length
         outer = min(1.0, rad / max(R, 0.1))
@@ -1400,18 +1401,20 @@ def make_materials():
                              rough=0.55)
     M['Terracotta'] = wp.mat('Terracotta', '#8f4f36', rough=0.8)
     # lot
-    M['Asphalt'] = wp.mat('Asphalt', tex=wp.tex_ground('th_asphalt', kind='asphalt', n=512, tile=4.0, seed=110), rough=0.9)
-    M['Paver'] = wp.mat('Paver', tex=wp.tex_brick('th_paver', color='#8a4c3a', mortar='#a59a86', var=0.16, n=512, seed=111),
-                        rough=0.88)
-    M['Cobble'] = wp.mat('Cobble', tex=wp.tex_ground('th_cobble', kind='pavers', color='#8d8a84', n=512, tile=2.0, seed=112),
-                         rough=0.9)
+    M['Asphalt'] = wp.mat('Asphalt', tex=(wp.tex_ground('th_asphalt', kind='asphalt', n=512, tile=4.0, seed=110)[0], None, 4.0),
+                          rough=0.9)
+    M['Paver'] = wp.mat('Paver', tex=(wp.tex_brick('th_paver', color='#8a4c3a', mortar='#a59a86', var=0.16, n=512,
+                                                   seed=111)[0], None, 1.0), rough=0.88)
+    M['Cobble'] = wp.mat('Cobble', tex=(wp.tex_ground('th_cobble', kind='pavers', color='#8d8a84', n=512, tile=2.0,
+                                                      seed=112)[0], None, 2.0), rough=0.9)
     M['Concrete'] = wp.mat('Concrete', tex=(wp.tex_ground('th_conc', kind='concrete', n=512, tile=3.0, seed=113)[0], None, 3.0),
                            rough=0.9)
-    M['Mulch'] = wp.mat('Mulch', tex=tex_straw('th_mulch', n=512), rough=0.95)
+    M['Mulch'] = wp.mat('Mulch', tex=(tex_straw('th_mulch', n=512)[0], None, 1.5), rough=0.95)
     M['Bark'] = wp.mat('Bark', tex=tex_bark('th_bark', n=512), rough=0.92)
     M['Leaves'] = vc_material('Leaves', tex_canopy('th_leaves', '#5b7a35', n=512, tile=0.8, seed=114, lo=0.6), rough=0.62,
                               double=True)
-    M['Boxwood'] = vc_material('Boxwood', tex_leaves('th_boxwood', '#3e5f29', n=512, tile=0.6, seed=115), rough=0.6)
+    M['Boxwood'] = vc_material('Boxwood', (tex_leaves('th_boxwood', '#3e5f29', n=512, tile=0.6, seed=115)[0], None, 0.6),
+                               rough=0.6)
     M['Flowers'] = vc_material('Flowers', tex_leaves('th_flowers', '#4c6b31', n=512, tile=0.5, seed=116, flowers='#f3f1ee',
                                                      fcov=0.35, fsize=40), rough=0.65)
     M['Post'] = wp.mat('Post', tex=tex_paint('th_post', '#efede6', seed=117), rough=0.45)
@@ -1897,7 +1900,7 @@ def build_lot():
         bush(gB, 'Flowers', (x, BY0 - 1.5, 0), (0.42, 0.38, 0.6), 500 + k, 1.0, n=4); k += 1
     # shade tree (front left, like board-10's big hardwood) and a dogwood by the garage
     leafy_tree(gT, TREE, 14.5, 9.5, 41, clear=3.6, trunk_r=0.32, n_limbs=7, density=1.0, tone=(0.6, 0.7, 0.38),
-               bounds=LOT)
+               bounds=LOT, sprays=12, clump_r=(0.34, 0.5))
     slab(gB, 'Mulch', ngon(TREE[0], TREE[1], 1.4, n=16, jitter=0.05, seed=3), 0.035, -0.05)
     leafy_tree(gD, (15.6, -7.0), 6.0, 5.2, 77, clear=1.5, trunk_r=0.12, n_limbs=5, density=0.9, clump_r=(0.22, 0.34),
                tone=(0.62, 0.72, 0.4), cluster_r=0.35, sprays=10, bounds=LOT)

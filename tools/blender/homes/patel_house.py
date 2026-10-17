@@ -1084,7 +1084,8 @@ def leafy_tree(g, base, H, spread, seed, clear=2.2, trunk_r=0.2, n_limbs=6, leaf
         centers.append((p, f))
     cc = Vector((fork.x, fork.y, cz - Rz * 0.25))
     for ci, (p, f) in enumerate(centers):
-        if bounds and not (bounds[0] + 0.9 < p.x < bounds[2] - 0.9 and bounds[1] + 0.9 < p.y < bounds[3] - 0.9):
+        mg = 2.3 * cluster_r + clump_r[1] + 0.1
+        if bounds and not (bounds[0] + mg < p.x < bounds[2] - mg and bounds[1] + mg < p.y < bounds[3] - mg):
             continue
         rad = (p - Vector((fork.x, fork.y, cz))).length
         outer = min(1.0, rad / max(R, 0.1))
@@ -1728,7 +1729,7 @@ def build_lot():
     for y in (CY0 - 0.7, CY0 + 1.4, CY0 + 3.6, CY0 + 5.8):
         bush(gB, 'Boxwood', (CX1 + 0.1, y, 0), (0.45, 0.45, 0.8), 600 + k, 0.9); k += 1
     for s in (-1, 1):                                       # clipped boxwood globes at the foot of the walk
-        bush(gB, 'Boxwood', (ENT + s * 1.45, CURB + 2.6, 0), (0.6, 0.6, 1.0), 700 + k, 1.0); k += 1
+        bush(gB, 'Boxwood', (ENT + s * 1.45, CURB + 4.2, 0), (0.6, 0.6, 1.0), 700 + k, 1.0); k += 1
         bush(gB, 'Boxwood', (ENT + s * 1.45, ybot - 1.2, 0), (0.55, 0.55, 0.9), 700 + k, 1.0); k += 1
     for (x, y, r) in ((ENT - 1.35, ybot - 0.4, 0.45), (ENT + 1.35, ybot - 0.2, 0.38), (ENT - 1.8, ybot + 0.5, 0.3),
                       (ENT + 2.0, ybot + 0.6, 0.42)):
@@ -1769,7 +1770,7 @@ META = {
               "rear elevations, rear doors, the exterior chimney, beds and props. No fence or hedge on the frontage.")}
 
 CAMS = {
-    'hero': dict(loc=(-7.5, -29.0, 1.7), target=(0.0, -4.0, 3.9), lens=27),
+    'hero': dict(loc=(-9.5, -33.0, 1.7), target=(0.6, -4.0, 4.0), lens=29),
     'aerial': dict(loc=(36.0, -50.0, 42.0), target=(0.0, -6.0, 1.5), lens=34),
 }
 

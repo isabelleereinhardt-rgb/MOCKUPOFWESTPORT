@@ -1,0 +1,60 @@
+{
+ "id": "rossi-house",
+ "name": "Rossi house",
+ "address": "2623 Bay Drive",
+ "neighborhood": null,
+ "residents": [
+  "Elio Rossi",
+  "Lorenzo Rossi",
+  "Francesca Rossi"
+ ],
+ "status": "proposed (address); design from reference/board-43.jpg",
+ "atlas_building_index": 21164,
+ "footprint_m": [
+  19.14,
+  16.45
+ ],
+ "ridge_height_m": 8.27,
+ "top_height_m": 9.62,
+ "stories": 2,
+ "style": "Dutch Colonial Revival (gambrel roof, full-width shed dormer)",
+ "materials": [
+  "painted cedar shingles, sage green (#7A8C69), 5 in exposure",
+  "white painted trim, casings, Tuscan columns, K-style gutters",
+  "white 6-over-1 double-hung windows, mulled in threes and pairs",
+  "light grey architectural asphalt shingles; red brick chimneys",
+  "bluestone steps and landing, fieldstone piers with cast-stone urns",
+  "stained wood entry door with oval light, leaded sidelights, elliptical fanlight"
+ ],
+ "triangles": 38725,
+ "triangles_house": 10933,
+ "triangles_lot": 27792,
+ "files": {
+  "house": "models/homes/rossi-house.glb",
+  "lot": "models/homes/rossi-house-lot.glb"
+ },
+ "file_mb": {
+  "house": 3.25,
+  "lot": 3.43
+ },
+ "house_bbox_m": [
+  [
+   -9.8,
+   -7.69,
+   -0.6
+  ],
+  [
+   6.55,
+   6.3,
+   9.62
+  ]
+ ],
+ "lot_local_rect_m": [
+  -23.4,
+  -26.3,
+  19.8,
+  25.0
+ ],
+ "curb_line_local_y": -26.3,
+ "notes": "Main block 12.6 x 9.2 m, floor 0.75 m up, first-floor walls to 3.6 m, gambrel 64/22 deg with a 30 deg flared kick at the eave, ridge 8.3 m (Atlas 7.0 m; the gambrel needs the extra height). From the reference: sage shingles, the gambrel with the near full-width shed dormer (pairs left/right, a short triple in the middle), mulled triples of 6-over-1 windows, the arched gable portico on Tuscan columns, elliptical fanlight and sidelights, bluestone steps with fieldstone piers and urns, the flat-roofed side porch on the left, two ridge chimneys, white gutters and downspouts, foundation beds, white picket fence on the side. Interpreted: side and rear elevations, the plain rear gambrel, back stoop, asphalt driveway on the right to a parking pad, maple and dogwood. Neighbourhood not named in the register. Lot sides use corrected neighbor sides (site-specs.json neighbors_local x is mirrored): the Sullivan house is on the right (+39.7 m)."
+}

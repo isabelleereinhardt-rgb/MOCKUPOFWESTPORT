@@ -1,0 +1,73 @@
+{
+ "id": "thompson-house",
+ "name": "The Thompson house",
+ "address": "665 Pelican Point Drive",
+ "neighborhood": "Harborview",
+ "residents": [
+  "Charlie Thompson",
+  "Richard Thompson III",
+  "Victoria Thompson"
+ ],
+ "status": "Canon 2 (address); design interpreted from reference/board-10.jpg crossed with board-02.jpg",
+ "atlas_building_index": 22180,
+ "footprint_m": [
+  24.14,
+  18.44
+ ],
+ "ridge_height_m": 10.94,
+ "top_height_m": 12.65,
+ "stories": 2,
+ "style": "Red-brick Colonial Revival, two stories plus dormers, with a garage wing",
+ "materials": [
+  "red-brown running-bond brick with light mortar, projecting base course with a cast-stone cap",
+  "slate-grey slate-style roofing, copper flashing and downspouts",
+  "white painted trim: frieze with dentils, portico, cornice returns, dormers",
+  "cast-stone jack-arch lintels with keystones and stone sills",
+  "black louvered shutters",
+  "dark green six-panel entry door with brass hardware",
+  "stained wood carriage-house garage doors"
+ ],
+ "triangles": 53058,
+ "triangles_house": 27766,
+ "triangles_lot": 25292,
+ "files": {
+  "house": "models/homes/thompson-house.glb",
+  "lot": "models/homes/thompson-house-lot.glb"
+ },
+ "file_mb": {
+  "house": 2.67,
+  "lot": 2.83
+ },
+ "house_bbox_m": [
+  [
+   -11.42,
+   -9.27,
+   -0.6
+  ],
+  [
+   12.3,
+   13.69,
+   12.65
+  ]
+ ],
+ "lot_bbox_m": [
+  [
+   -16.49,
+   -29.73,
+   -0.5
+  ],
+  [
+   18.51,
+   5.5,
+   14.89
+  ]
+ ],
+ "lot_local_rect_m": [
+  -16.5,
+  -29.73,
+  26.0,
+  25.0
+ ],
+ "curb_line_local_y": -29.73,
+ "notes": "Main block 14.8 x 9.4 m, side-gabled at 40 deg, roof surface 7.0 m at the walls, ridge 10.9 m (Atlas height 8.5 m; within the 30% allowance). From board-10: the projecting front-gable bay on the left with a Palladian (arched centre) window and a half-round attic vent, the white pedimented entry portico, black shutters, slate-grey roof, interior end chimneys. From board-02: gabled dormers, jack-arch heads, copper accents. Interpreted: the 1.5-story front-gabled garage wing with carriage doors joined by a one-story hyphen on the right (the brief asks for a side garage wing), the rear one-story family-room wing and brick-and-stone terrace, side and rear elevations, the asphalt drive with a Belgian-block edge, the brick front walk to the curb, foundation beds, one big shade tree front left and a dogwood by the garage. No fence or hedge along the frontage (the lot owns its frontage; the walk and drive run to the curb line)."
+}

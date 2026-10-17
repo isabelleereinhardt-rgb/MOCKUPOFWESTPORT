@@ -1,0 +1,60 @@
+{
+ "id": "sullivan-house",
+ "name": "Sullivan house",
+ "address": "2639 Bay Drive",
+ "neighborhood": null,
+ "residents": [
+  "Nellie Sullivan",
+  "David Sullivan"
+ ],
+ "status": "proposed (address); design interpreted from the brief (no reference photo)",
+ "atlas_building_index": 21165,
+ "footprint_m": [
+  21.38,
+  16.77
+ ],
+ "ridge_height_m": 8.39,
+ "top_height_m": 9.66,
+ "stories": 1.5,
+ "style": "coastal shingle-style cottage",
+ "materials": [
+  "weathered (unpainted) cedar shakes, silver-grey with brown strays, 5.5 in exposure",
+  "white painted trim, wide corner boards, belt course, K-style gutters",
+  "white 6-over-6 double-hung windows; teal-blue glazed front door",
+  "dark grey architectural asphalt shingles, 12:12 pitch",
+  "red brick exterior chimney; painted block foundation; white lattice skirt",
+  "screened porch: shingled knee wall, bronze screen panels, beadboard ceiling",
+  "brick paver walk, crushed-shell driveway with a concrete apron"
+ ],
+ "triangles": 25092,
+ "triangles_house": 8452,
+ "triangles_lot": 16640,
+ "files": {
+  "house": "models/homes/sullivan-house.glb",
+  "lot": "models/homes/sullivan-house-lot.glb"
+ },
+ "file_mb": {
+  "house": 2.64,
+  "lot": 2.73
+ },
+ "house_bbox_m": [
+  [
+   -13.51,
+   -8.36,
+   -0.6
+  ],
+  [
+   6.39,
+   6.02,
+   9.66
+  ]
+ ],
+ "lot_local_rect_m": [
+  -20.0,
+  -28.24,
+  20.8,
+  25.0
+ ],
+ "curb_line_local_y": -28.24,
+ "notes": "Main block 13.2 x 9.0 m, floor 0.9 m up on a block foundation, 12:12 side-gable roof with three gabled front dormers, ridge 8.4 m (Atlas 8.5 m). Screened porch 5.0 x 7.0 m on the left (toward the Rossis) with a French door into the house and a screen door with steps to the side yard. All of the design is interpreted from the brief; there is no reference photo. The Atlas footprint (21.4 x 16.8 m) is larger than a cottage needs: the house plus porch fill 19.6 m of its width. Lot sides use corrected neighbor sides (site-specs.json neighbors_local x is mirrored): the Rossi house is on the left at (-40.1, 1.0), rotated -9.5 deg."
+}

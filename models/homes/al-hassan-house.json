@@ -1,0 +1,74 @@
+{
+ "id": "al-hassan-house",
+ "name": "The Al-Hassan house",
+ "address": "1552 Spinnaker Court",
+ "neighborhood": "Harborview",
+ "residents": [
+  "Zane Al-Hassan",
+  "Dr. Nadir Al-Hassan",
+  "Dr. Amina Al-Hassan"
+ ],
+ "status": "Canon 2 (address); design interpreted from the brief (no reference photo)",
+ "atlas_building_index": 21135,
+ "footprint_m": [
+  24.63,
+  18.61
+ ],
+ "ridge_height_m": 9.67,
+ "top_height_m": 10.59,
+ "stories": 2,
+ "style": "Contemporary coastal (modern farmhouse) with an attached garage",
+ "materials": [
+  "white painted board-and-batten",
+  "charcoal standing-seam metal roofing",
+  "black-framed tall windows with thin white flat casings",
+  "stained cedar porch posts, beams and ceilings",
+  "grey composite porch decking",
+  "painted grey foundation (raised 0.75 m)",
+  "charcoal flush garage doors with a glass band",
+  "black screen mesh on the back porch"
+ ],
+ "triangles": 30404,
+ "triangles_house": 7220,
+ "triangles_lot": 23184,
+ "files": {
+  "house": "models/homes/al-hassan-house.glb",
+  "lot": "models/homes/al-hassan-house-lot.glb"
+ },
+ "file_mb": {
+  "house": 1.05,
+  "lot": 2.68
+ },
+ "house_bbox_m": [
+  [
+   -12.1,
+   -8.45,
+   -0.6
+  ],
+  [
+   9.9,
+   9.59,
+   10.59
+  ]
+ ],
+ "lot_bbox_m": [
+  [
+   -12.88,
+   -28.94,
+   -0.5
+  ],
+  [
+   18.93,
+   6.3,
+   10.02
+  ]
+ ],
+ "lot_local_rect_m": [
+  -20.5,
+  -28.94,
+  22.0,
+  25.0
+ ],
+ "curb_line_local_y": -28.94,
+ "notes": "Main block 12.6 x 9.2 m, 35 deg side gable, roof surface 6.45 m at the walls, ridge 9.7 m (Atlas height 7.5 m; within the 30% allowance), with a steeper (44 deg) front cross gable over the entry holding three tall black-framed windows and a clerestory. All of it is interpreted from the brief (no reference photo): deep full-width front porch with a standing-seam shed roof, cedar posts and black picket rail; screened porch at the back right under its own gable; attached two-car garage on the left; concrete drive and paver walk both meet the curb line; beds with hydrangeas and ornamental grasses; one multi-stem river birch. No fence or hedge on the frontage."
+}

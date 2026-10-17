@@ -48,6 +48,7 @@ function standIn(id, lod) {
 // ---------------------------------------------------------------- materials (wind sway + style)
 function treeMaterial(kind) {
   const m = new THREE.MeshStandardMaterial({ name: 'tree-' + kind, vertexColors: true, roughness: kind === 'leaves' ? 0.82 : 0.9, metalness: 0 });
+  m.customProgramCacheKey = () => 'tree-' + kind; // bark and leaves compile differently
   m.onBeforeCompile = sh => {
     Object.assign(sh.uniforms, { uTime: U.uTime, uStyle: U.uStyle });
     sh.vertexShader = sh.vertexShader.replace('#include <common>', '#include <common>\nuniform float uTime;')
@@ -57,8 +58,25 @@ function treeMaterial(kind) {
         float sway = smoothstep(2., 18., transformed.y) * (.05 + .04 * sin(uTime * 1.7 + ph));
         transformed.x += sway * sin(uTime * .9 + ph); transformed.z += sway * cos(uTime * .7 + ph);
       #endif`);
-    sh.fragmentShader = sh.fragmentShader.replace('#include <common>', '#include <common>\nuniform float uStyle;')
+    sh.vertexShader = sh.vertexShader.replace('#include <common>', '#include <common>\nvarying vec3 vLeafP;').replace('#include <project_vertex>', `#include <project_vertex>
+      { vec4 lp = vec4(transformed, 1.0);
+      #ifdef USE_INSTANCING
+        lp = instanceMatrix * lp;
+      #endif
+        vLeafP = (modelMatrix * lp).xyz; }`);
+    sh.fragmentShader = sh.fragmentShader.replace('#include <common>', `#include <common>
+      uniform float uStyle; varying vec3 vLeafP;
+      float lh(vec3 p){ p = fract(p * .3183099 + .1); p *= 17.; return fract(p.x * p.y * p.z * (p.x + p.y + p.z)); }
+      float ln(vec3 x){ vec3 i = floor(x), f = fract(x); f = f * f * (3. - 2. * f);
+        return mix(mix(mix(lh(i), lh(i + vec3(1, 0, 0)), f.x), mix(lh(i + vec3(0, 1, 0)), lh(i + vec3(1, 1, 0)), f.x), f.y),
+                   mix(mix(lh(i + vec3(0, 0, 1)), lh(i + vec3(1, 0, 1)), f.x), mix(lh(i + vec3(0, 1, 1)), lh(i + vec3(1, 1, 1)), f.x), f.y), f.z); }`)
       .replace('#include <color_fragment>', `#include <color_fragment>
+      ${kind === 'leaves' ? `{ // leaf-scale mottling: small sunlit and shaded leaf masses inside each clump
+        float d = length(vLeafP - cameraPosition);
+        float n = ln(vLeafP * 2.3) * .6 + ln(vLeafP * 5.7) * .4;
+        float k = mix(.62 + .75 * n, 1., smoothstep(250., 900., d));
+        diffuseColor.rgb *= k * vec3(1., 1.02, .96);
+      }` : ''}
       if (uStyle > .5) { diffuseColor.rgb = uStyle < 1.5 ? vec3(.62, .72, .5) : uStyle < 2.5 ? vec3(.06, .09, .065) : vec3(.92); }`);
   };
   return m;

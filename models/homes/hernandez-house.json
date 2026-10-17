@@ -1,0 +1,62 @@
+{
+ "id": "hernandez-house",
+ "name": "Hernandez house",
+ "address": "1022 Mercer Street",
+ "neighborhood": "Riverside",
+ "residents": [
+  "Morgan Hernandez",
+  "Carlos Hernandez",
+  "Maria Hernandez",
+  "Isabella Hernandez"
+ ],
+ "status": "Canon 2 (address); design interpreted from the brief (no reference photo)",
+ "atlas_building_index": 30499,
+ "footprint_m": [
+  10.55,
+  12.54
+ ],
+ "ridge_height_m": 5.66,
+ "top_height_m": 5.69,
+ "stories": 1,
+ "style": "front-gable bungalow (post-war, Riverside)",
+ "materials": [
+  "vinyl Dutch-lap siding, warm tan (#CFB68B), 4 in exposure",
+  "white aluminum/vinyl trim, corner boards, vented soffits, K-style gutters",
+  "dark brown louvered vinyl shutters on the front windows",
+  "brown-grey architectural asphalt shingles",
+  "red brick crawlspace foundation and porch skirt; grey painted concrete porch slab",
+  "concrete steps, walk, driveway and carport pad; aluminum carport roof",
+  "galvanized 4 ft chain-link fence"
+ ],
+ "triangles": 25359,
+ "triangles_house": 6071,
+ "triangles_lot": 19288,
+ "files": {
+  "house": "models/homes/hernandez-house.glb",
+  "lot": "models/homes/hernandez-house-lot.glb"
+ },
+ "file_mb": {
+  "house": 2.3,
+  "lot": 2.32
+ },
+ "house_bbox_m": [
+  [
+   -6.21,
+   -7.66,
+   -0.6
+  ],
+  [
+   8.0,
+   8.14,
+   5.69
+  ]
+ ],
+ "lot_local_rect_m": [
+  -9.06,
+  -23.19,
+  8.31,
+  14.6
+ ],
+ "curb_line_local_y": -23.19,
+ "notes": "Main body 10.0 x 10.3 m, floor 0.6 m above grade on a brick crawlspace, 8 ft walls, 24 deg front-gable roof, ridge 5.7 m (Atlas 4.5 m). Offset front-gable porch 5.7 x 2.6 m on square columns with a low railing. Attached aluminum carport on the right over a car-length pad; the concrete driveway runs to the curb line. Chain-link fence 3.7 m behind the curb (walk gate), along the driveway, the left and back lot lines and across behind the carport (second gate). All of it is interpreted from the brief; there is no reference photo. Lot side limits use corrected neighbor sides (site-specs.json neighbors_local x is mirrored): house 30498 at +16.6 m (right), duplex 30500 at -18.1 m (left); the back limit stops at 14.6 m, halfway to the house behind (29.4 m)."
+}
