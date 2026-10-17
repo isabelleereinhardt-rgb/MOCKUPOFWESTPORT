@@ -37,6 +37,7 @@ export class Archetypes {
         for (const [name, e] of groups) {
           const geo = mergeGeometries(e.geos); if (!geo) continue;
           const mat = e.mat.clone(); mat.name = name;
+          mat.vertexColors = false; // per-vertex colors are dropped when merging; tint comes from instance colors
           const im = new THREE.InstancedMesh(geo, mat, 1200); im.count = 0; im.castShadow = im.receiveShadow = true; im.frustumCulled = false; im.name = `arch ${a.id} ${name}`;
           im.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
           if (TINT[name]) im.instanceColor = new THREE.InstancedBufferAttribute(new Float32Array(1200 * 3), 3);
