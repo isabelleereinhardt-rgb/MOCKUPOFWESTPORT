@@ -324,7 +324,7 @@ export class UI {
     const f = this.dFilter || 'all';
     const shown = rows.filter(r => f === 'all' || (f === 'nine' ? r.group === 'The Nine' : f === 'homes' ? r.kind === 'home' : r.kind === 'place')).sort((a, b) => a.road - b.road);
     el.innerHTML = `<p class="hint">From <b>${esc(name)}</b> to every place and home in the gazetteer, nearest first. Pick any card's “Distances to everything” to change the starting point.</p>
-      <div class="filters">${['all', 'nine', 'places', 'homes'].map(k => `<button data-f="${k}" class="${k === f ? 'on' : ''}">${{ all: 'Everything', nine: 'The Nine', places: 'Places', homes: 'Homes' }[k]}</button>`).join('')}<a class="dl" href="data/distances.csv" download>Download all (CSV)</a></div>
+      <div class="filters">${['all', 'nine', 'places', 'homes'].map(k => `<button data-f="${k}" class="${k === f ? 'on' : ''}">${{ all: 'Everything', nine: 'The Nine', places: 'Places', homes: 'Homes' }[k]}</button>`).join('')}${LOCAL ? '<a class="dl" href="data/distances.csv" download>Download all (CSV)</a>' : `<a class="dl" href="${REPO_RAW}data/distances.csv" target="_blank" rel="noopener">Download all (CSV)</a>`}</div>
       <table class="dt"><thead><tr><th>To</th><th>By road</th><th>Drive</th><th>Straight</th></tr></thead><tbody>${shown.map(r => `<tr data-go="${r.at.join(',')}"><td>${esc(r.name)}</td><td>${r.road >= 0 ? fmtDist(r.road, u) : '–'}</td><td>${r.drive >= 0 ? fmtTime(r.drive) : '–'}</td><td>${fmtDist(r.straight, u)}</td></tr>`).join('')}</tbody></table>`;
     el.querySelectorAll('[data-f]').forEach(b => b.onclick = () => { this.dFilter = b.dataset.f; this.renderDist(); });
     el.querySelectorAll('[data-go]').forEach(r => r.onclick = () => { const [x, y] = r.dataset.go.split(',').map(Number); this.flyTo([x, y], 350); this.mark([x, y]); });
@@ -356,7 +356,10 @@ export class UI {
   }
   fromHash(first) {
     if (location.hash === this._own) return;
-    const P = new URLSearchParams(location.hash.slice(1));
+    let h = location.hash.slice(1);
+    // the homes gallery leaves its "See it on the map" view in storage too, for hosts that drop #state from links
+    if (first) { const g = localGet('wp-goto'); if (g) { localSet('wp-goto', ''); if (!h) h = g; } }
+    const P = new URLSearchParams(h);
     if (P.get('v')) this.app.applyView(P.get('v'));
     if (P.get('st')) { this.app.setStyle(+P.get('st')); this.syncSeg(); }
     if (P.get('p')) this.open({ kind: 'person', name: P.get('p') }, !P.get('v'));
@@ -369,5 +372,7 @@ function chipCls(s) { return s === 'canon2' || s === 'locked' || s === 'confirme
 function cap(s) { return s ? s[0].toUpperCase() + s.slice(1) : ''; }
 function clock(h) { const H = Math.floor(h), M = Math.round((h - H) * 60); const ap = H >= 12 ? 'pm' : 'am'; return `${((H + 11) % 12) + 1}:${String(M).padStart(2, '0')} ${ap}`; }
 function dims(w, d, u) { return u === 'metric' ? `${w.toFixed(1)} × ${d.toFixed(1)} m` : `${Math.round(w * 3.28084)} × ${Math.round(d * 3.28084)} ft`; }
+const REPO_RAW = 'https://github.com/isabelleereinhardt-rgb/MOCKUPOFWESTPORT/raw/claude/friendly-faraday-qe6vvd/';
+const LOCAL = location.protocol === 'file:' || /^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname);
 function localGet(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
 function localSet(k, v) { try { localStorage.setItem(k, v); } catch (e) { /* storage unavailable */ } }

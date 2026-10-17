@@ -68,6 +68,10 @@ import { Sky } from 'three/addons/objects/Sky.js';
 
 const NINE = ['Calista Yuen', 'Lori Delacroix', 'Reya Patel', 'Nellie Sullivan', 'Charlie Thompson', 'Dalton Abernathy', 'Zane Al-Hassan', 'Morgan Hernandez', 'Elio Rossi'];
 const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
+// Served from this folder, files download directly; on a hosted copy that blocks downloads, they open from the repository.
+const REPO_RAW = 'https://github.com/isabelleereinhardt-rgb/MOCKUPOFWESTPORT/raw/claude/friendly-faraday-qe6vvd/';
+const LOCAL = location.protocol === 'file:' || /^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname);
+const dl = (path, label) => LOCAL ? `<a href="${path}" download>${label}</a>` : `<a href="${REPO_RAW}${path}" target="_blank" rel="noopener">${label}</a>`;
 const [manifest, gaz] = await Promise.all([fetch('data/models.json').then(r => r.ok ? r.json() : null).catch(() => null), fetch('data/gaz.json').then(r => r.json())]);
 const people = gaz.people;
 const homes = (manifest && manifest.homes || []).map(h => {
@@ -151,17 +155,19 @@ function show(id) {
         <div><h3>Materials</h3><ul>${(h.materials || []).map(x => `<li>${esc(x)}</li>`).join('')}</ul></div>
       </div>
       ${h.notes ? `<h3 style="margin-top:18px">What came from your photo and what is interpretation</h3><p class="notes">${esc(h.notes)}</p>` : ''}
-      <div class="acts"><a href="${mapLink}">See it on the map</a><a href="${h.house}" download>Download house (GLB)</a>${h.lot ? `<a href="${h.lot}" download>Download lot (GLB)</a>` : ''}<a href="tools/blender/homes/${h.id.replace(/-/g, '_')}.py" download>Blender script</a></div>`;
+      <div class="acts"><a href="${mapLink}" data-goto>See it on the map</a>${dl(h.house, 'Download house (GLB)')}${h.lot ? dl(h.lot, 'Download lot (GLB)') : ''}${dl(`tools/blender/homes/${h.id.replace(/-/g, '_')}.py`, 'Blender script')}</div>`;
     viewer.mount(document.getElementById('vw'));
     const files = mode => mode === 'house' ? [h.house] : [h.house, h.lot];
     const curb = h.lotRect ? h.lotRect[1] : null;
     viewer.show(files('both'), { curb });
     detail.querySelectorAll('.vb button').forEach(b => b.onclick = () => { detail.querySelectorAll('.vb button').forEach(x => x.classList.toggle('on', x === b)); viewer.show(files(b.dataset.v), { curb }); });
   } else {
-    detail.innerHTML = `<h2>${esc(m.name)}</h2><p class="sub">${esc(m.notes || '')}</p><div class="viewer" id="vw"><div class="msg"></div></div><div class="acts"><a href="index.html#v=${Math.round(m.at[0])},${Math.round(m.at[1])},220,0,60&st=0">See it on the map</a><a href="${m.file}" download>Download (GLB)</a></div>`;
+    detail.innerHTML = `<h2>${esc(m.name)}</h2><p class="sub">${esc(m.notes || '')}</p><div class="viewer" id="vw"><div class="msg"></div></div><div class="acts"><a href="index.html#v=${Math.round(m.at[0])},${Math.round(m.at[1])},220,0,60&st=0" data-goto>See it on the map</a>${dl(m.file, 'Download (GLB)')}</div>`;
     viewer.mount(document.getElementById('vw')); viewer.show([m.file]);
   }
 }
+// "See it on the map" also leaves the view in storage, for hosts that drop a link's #state on the way
+detail.addEventListener('click', e => { const a = e.target.closest('a[data-goto]'); if (a) try { localStorage.setItem('wp-goto', a.getAttribute('href').split('#')[1] || ''); } catch (err) { /* storage unavailable */ } });
 list.onclick = e => { const b = e.target.closest('button[data-id]'); if (b) show(b.dataset.id); };
 if (!homes.length && !marks.length) detail.innerHTML = '<p class="empty">No home models are in data/models.json yet.</p>';
 else show([...homes, ...marks].some(x => x.id === location.hash.slice(1)) ? location.hash.slice(1) : (homes[0] || marks[0]).id);
