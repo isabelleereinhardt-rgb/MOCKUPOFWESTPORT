@@ -73,5 +73,10 @@
  "curb_line_local_y": -10.95,
  "lane_centerline_local_y": -13.7,
  "access_stub_local_x": -6.94,
- "notes": "Box 4.88 x 18.70 m (16 x 61 ft) inside the 5.0 x 19.0 m Atlas footprint; floor 0.86 m above grade on the chassis, side walls to 3.04 m, bowed roof crown 3.26 m (Atlas height 3.5 m). From the photo: the single-wide type and proportions, grey and white horizontal siding, the low metal roof with rust, skirting to the ground, aluminum windows, the wooden steps with a railing. From the brief: door on the long side facing the stub, landing with steps and railing, window AC, gravel pad, propane cylinder, trash bins, folding chair, short clothesline. Interpreted (not in the photo or brief): the two-tone split at sill height, cross-seam spacing, the window layout (living room at the lane end, bedrooms at the north end), the back door and its stoop, roof jacks, the storm door, the second cylinder, the recycling cart, the power pedestal, hose and loose blocks. The lot is the strip beside the trailer only (neighbours stand 11.5 m east and west, so it is held to x = -5.7..5.7); the gravel pad meets the lane edge at y = -10.95 and opens toward the access stub on its west side."
+ "notes": "Box 4.88 x 18.70 m (16 x 61 ft) inside the 5.0 x 19.0 m Atlas footprint; floor 0.86 m above grade on the chassis, side walls to 3.04 m, bowed roof crown 3.26 m (Atlas height 3.5 m). From the photo: the single-wide type and proportions, grey and white horizontal siding, the low metal roof with rust, skirting to the ground, aluminum windows, the wooden steps with a railing. From the brief: door on the long side facing the stub, landing with steps and railing, window AC, gravel pad, propane cylinder, trash bins, folding chair, short clothesline. Interpreted (not in the photo or brief): the two-tone split at sill height, cross-seam spacing, the window layout (living room at the lane end, bedrooms at the north end), the back door and its stoop, roof jacks, the storm door, the second cylinder, the recycling cart, the power pedestal, hose and loose blocks. The lot is the strip beside the trailer only (neighbours stand 11.5 m east and west, so it is held to x = -5.7..5.7); the gravel pad meets the lane edge at y = -10.95 and opens toward the access stub on its west side.",
+ "front_heading_deg_atlas": -91.51,
+ "center_atlas": [
+  -1937.25,
+  -2151.25
+ ]
 }

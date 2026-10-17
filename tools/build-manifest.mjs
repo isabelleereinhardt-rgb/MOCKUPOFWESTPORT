@@ -17,7 +17,8 @@ for (const f of list('models/homes').filter(f => f.endsWith('.json'))) {
   out.homes.push({
     id: m.id, name: m.name, address: m.address, neighborhood: m.neighborhood, residents: m.residents || [], status: m.status,
     house: m.files.house, lot: exists(m.files.lot) ? m.files.lot : null,
-    at: s.center_atlas, heading: s.front_heading_deg_atlas, building: m.atlas_building_index ?? s.building_index,
+    // a home's own JSON may correct its frontage (the trailer faces its lane, not the nearest road)
+    at: m.center_atlas || s.center_atlas, heading: m.front_heading_deg_atlas ?? s.front_heading_deg_atlas, building: m.atlas_building_index ?? s.building_index,
     render: exists(`renders/${m.id}.jpg`) ? `renders/${m.id}.jpg` : null, aerial: exists(`renders/${m.id}-aerial.jpg`) ? `renders/${m.id}-aerial.jpg` : null,
     style: m.style, stories: m.stories, ridge: m.ridge_height_m, footprint: m.footprint_m, materials: m.materials, notes: m.notes, triangles: m.triangles,
     lotRect: m.lot_local_rect_m,

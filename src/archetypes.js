@@ -50,7 +50,8 @@ export class Archetypes {
   }
   pick(b) {
     const arr = this.byKind.get(b.kind) || (b.kind === 'townhouse' ? this.byKind.get('duplex') : null); if (!arr || !arr.length) return null;
-    const asp = (b.fw || b.w) / Math.max(1, b.fd || b.d), stories = b.h > 8 ? 2 : 1;
+    let asp = (b.fw || b.w) / Math.max(1, b.fd || b.d); const stories = b.h > 8 ? 2 : 1;
+    if (b.kind === 'mobile' || b.kind === 'shed') asp = Math.min(asp, 1 / asp); // these turn to fit (see update)
     const scored = arr.map(a => ({ a, s: Math.abs(Math.log(asp / (a.best_aspect || a.bbox_m[0] / a.bbox_m[1]))) + 0.35 * Math.abs((a.stories || 1) - stories) })).sort((x, y) => x.s - y.s);
     const top = scored.filter(x => x.s < scored[0].s + 0.25).slice(0, 3);
     return top[Math.floor(hash(b.i * 31337) * top.length)].a;
@@ -71,8 +72,12 @@ export class Archetypes {
       for (const b of c.list) {
         if (b.hero) continue;
         const a = this.pick(b); if (!a || !a.parts) { continue; }
-        const [bw, bd, bh] = a.bbox_m;
-        q.setFromAxisAngle(up, Math.atan2(b.fnx, -b.fny)); s.set((b.fw || b.w) / bw, Math.max(2.4, b.h) / bh, (b.fd || b.d) / bd); p.set(b.cx, 0, -b.cy);
+        const [bw, bd, bh] = a.bbox_m, fw = b.fw || b.w, fd = b.fd || b.d;
+        // mobile homes and sheds whose long side faces the street turn 90 degrees, door side to the street
+        const turn = (b.kind === 'mobile' || b.kind === 'shed') && (bw / bd - 1) * (fw / fd - 1) < 0;
+        if (turn) { q.setFromAxisAngle(up, Math.atan2(-b.fny, -b.fnx)); s.set(fd / bw, Math.max(2.4, b.h) / bh, fw / bd); }
+        else { q.setFromAxisAngle(up, Math.atan2(b.fnx, -b.fny)); s.set(fw / bw, Math.max(2.4, b.h) / bh, fd / bd); }
+        p.set(b.cx, 0, -b.cy);
         m.compose(p, q, s);
         for (const im of a.parts) {
           if (im.count >= im.instanceMatrix.count) continue;
