@@ -2,7 +2,7 @@
 // (in driveways, in the painted stalls of parking lots, beside mobile homes). Everything is checked
 // against buildings, roads, water and the modeled lots so nothing lands where it should not.
 import * as THREE from 'three';
-import { HALF, hash, Grid, pointInPoly, nearestRoad, inHeroLot, ringBBox } from './core.js';
+import { HALF, hash, Grid, pointInPoly, pointInRing, nearestRoad, inHeroLot, ringBBox } from './core.js';
 import { U } from './shaders.js';
 
 const CAR_COLORS = ['#f2f2f0', '#f2f2f0', '#e9e9e6', '#1d1f22', '#1d1f22', '#2b2d31', '#8d9196', '#b4b8bc', '#b4b8bc', '#6b6f74', '#7b1e22', '#9a2a25', '#23395d', '#2f4f6f', '#3b4a3a', '#c9bfa8', '#5a3b2a', '#d8d2c2'];
@@ -148,6 +148,74 @@ export function buildLots(D) {
   for (const [k, a] of chunks) {
     const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.Float32BufferAttribute(a.pos, 3)); g.setAttribute('normal', new THREE.Float32BufferAttribute(a.nrm, 3)); g.setAttribute('color', new THREE.Float32BufferAttribute(a.col, 3)); g.computeBoundingSphere();
     const mesh = new THREE.Mesh(g, mat); mesh.castShadow = true; mesh.receiveShadow = true; mesh.name = 'cars ' + k; group.add(mesh); group.userData.carMeshes.push(mesh);
+  }
+  return group;
+}
+
+// ---------------------------------------------------------------- streetlights (poles by day, lit heads and light pools at night)
+export function buildLamps(D) {
+  const group = new THREE.Group(); group.name = 'lamps';
+  const city = D.limits && D.limits[0];
+  const spots = [];
+  const near = (x, y, R) => { let n = 0; D.bGrid.query(x - R, y - R, x + R, y + R, () => { n++; if (n > 1) return false; }); return n > 1; };
+  for (const r of D.roads) {
+    if (r.bridge || !['residential', 'tertiary', 'secondary', 'primary', 'trunk'].includes(r.cls)) continue;
+    const p = r.pts, half = HALF[r.cls]; let acc = 0, side = r.i % 2 ? 1 : -1, next = 14;
+    for (let i = 2; i < p.length; i += 2) {
+      const x0 = p[i - 2], y0 = p[i - 1], dx = p[i] - x0, dy = p[i + 1] - y0, L = Math.hypot(dx, dy); if (!L) continue;
+      const ux = dx / L, uy = dy / L;
+      while (next <= acc + L) {
+        const t = next - acc, cx = x0 + ux * t, cy = y0 + uy * t;
+        next += r.cls === 'residential' ? 46 : 38;
+        const o = (half + 0.7) * side; const x = cx - uy * o, y = cy + ux * o;
+        side = -side;
+        if (city && !pointInRing(x, y, city)) continue;
+        if (!near(x, y, 50) || !(D.mask.at(x, y) & 1) || inHeroLot(D, x, y, 1)) continue;
+        // keep off driveways, buildings and other roads
+        let bad = false;
+        D.driveGrid.query(x - 3, y - 3, x + 3, y + 3, k => { const d = D.drives[k]; const ddx = d.x1 - d.x0, ddy = d.y1 - d.y0, L2 = ddx * ddx + ddy * ddy; const tt = Math.max(0, Math.min(1, ((x - d.x0) * ddx + (y - d.y0) * ddy) / L2)); if (Math.hypot(d.x0 + ddx * tt - x, d.y0 + ddy * tt - y) < d.w / 2 + 1.2) { bad = true; return false; } });
+        if (bad) continue;
+        const nr = nearestRoad(D, x, y, 10, rr => rr.i !== r.i && rr.cls !== 'path'); if (nr && nr.d < HALF[nr.road.cls] + 1.5) continue;
+        let inB = false; D.bGrid.query(x - 1, y - 1, x + 1, y + 1, k => { const b = D.buildings[k]; const q = b.poly; const ax = (q[2] - q[0]) / b.w, ay = (q[3] - q[1]) / b.w, bx = (q[6] - q[0]) / b.d, by = (q[7] - q[1]) / b.d; const ddx = x - b.cx, ddy = y - b.cy; if (Math.abs(ddx * ax + ddy * ay) < b.w / 2 + 1 && Math.abs(ddx * bx + ddy * by) < b.d / 2 + 1) { inB = true; return false; } });
+        if (inB) continue;
+        spots.push({ x, y, ax: (uy * side) * -1, ay: (-ux * side) * -1, h: r.cls === 'residential' ? 7.5 : 9.5 }); // arm points toward the road
+      }
+      acc += L;
+    }
+  }
+  D.lamps = spots;
+  // merged poles per 1 km chunk
+  const chunks = new Map();
+  const box = (a, x0, y0, z0, x1, y1, z1, c) => { // axis box in a lamp's local frame already rotated by caller
+    const v = [[x0, y0, z0], [x1, y0, z0], [x1, y1, z0], [x0, y1, z0], [x0, y0, z1], [x1, y0, z1], [x1, y1, z1], [x0, y1, z1]];
+    for (const [i0, i1, i2, i3, n] of [[0, 3, 2, 1, [0, 0, -1]], [4, 5, 6, 7, [0, 0, 1]], [0, 4, 7, 3, [-1, 0, 0]], [1, 2, 6, 5, [1, 0, 0]], [3, 7, 6, 2, [0, 1, 0]], [0, 1, 5, 4, [0, -1, 0]]]) for (const k of [i0, i1, i2, i0, i2, i3]) { a.p.push(v[k]); a.n.push(n); a.c.push(c); }
+  };
+  const pool = { p: [], q: [] };
+  for (const L of spots) {
+    const k = Math.floor(L.x / 1000) + ':' + Math.floor(L.y / 1000); let a = chunks.get(k); if (!a) chunks.set(k, a = { p: [], n: [], c: [] });
+    const loc = { p: [], n: [], c: [] }, pole = [0.42, 0.43, 0.44], head = [2, 2, 2];
+    box(loc, -0.09, 0, -0.09, 0.09, L.h, 0.09, pole);
+    box(loc, -0.05, L.h - 0.15, 0, 0.05, L.h - 0.05, 1.9, pole);
+    box(loc, -0.2, L.h - 0.32, 1.55, 0.2, L.h - 0.08, 2.25, head);
+    const ang = Math.atan2(L.ax, -L.ay), ca = Math.cos(ang), sa = Math.sin(ang);
+    loc.p.forEach((v, i) => { const x = v[0] * ca + v[2] * sa, z = -v[0] * sa + v[2] * ca; a.p.push(L.x + x, v[1], -L.y + z); const n = loc.n[i]; a.n.push(n[0] * ca + n[2] * sa, n[1], -n[0] * sa + n[2] * ca); a.c.push(...loc.c[i]); });
+    const hx = L.x + L.ax * 1.9, hy = L.y + L.ay * 1.9; pool.p.push([hx, hy]);
+  }
+  const mat = new THREE.MeshStandardMaterial({ name: 'lamps', vertexColors: true, roughness: 0.5, metalness: 0.5 });
+  mat.onBeforeCompile = sh => { Object.assign(sh.uniforms, { uNight: U.uNight, uStyle: U.uStyle }); sh.fragmentShader = sh.fragmentShader.replace('#include <common>', '#include <common>\nuniform float uNight; uniform float uStyle;').replace('#include <color_fragment>', '#include <color_fragment>\n float lit = step(1.5, vColor.r); if (lit > .5) diffuseColor.rgb = vec3(.9); if (uStyle > .5) diffuseColor.rgb = uStyle < 1.5 ? vec3(.6) : uStyle < 2.5 ? vec3(.25) : vec3(.9);').replace('#include <emissivemap_fragment>', '#include <emissivemap_fragment>\n totalEmissiveRadiance += lit * uNight * vec3(1., .82, .55) * 6.;'); };
+  for (const [k, a] of chunks) {
+    const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.Float32BufferAttribute(a.p, 3)); g.setAttribute('normal', new THREE.Float32BufferAttribute(a.n, 3)); g.setAttribute('color', new THREE.Float32BufferAttribute(a.c, 3)); g.computeBoundingSphere();
+    const m = new THREE.Mesh(g, mat); m.castShadow = true; m.name = 'lamps ' + k; group.add(m);
+  }
+  // light pools on the pavement at night (additive)
+  const pp = [], pq = [], pi = [];
+  pool.p.forEach(([x, y], k) => { const R = 9, o = pp.length / 3; for (const [sx, sy] of [[-1, -1], [1, -1], [1, 1], [-1, 1]]) { pp.push(x + sx * R, 0.05, -(y + sy * R)); pq.push(sx, sy); } pi.push(o, o + 1, o + 2, o, o + 2, o + 3); });
+  if (pp.length) {
+    const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.Float32BufferAttribute(pp, 3)); g.setAttribute('aQ', new THREE.Float32BufferAttribute(pq, 2)); g.setIndex(new THREE.Uint32BufferAttribute(pi, 1)); g.computeBoundingSphere();
+    const m = new THREE.Mesh(g, new THREE.ShaderMaterial({ transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, uniforms: { uNight: U.uNight, uStyle: U.uStyle },
+      vertexShader: 'attribute vec2 aQ; varying vec2 vQ; void main(){ vQ = aQ; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.); }',
+      fragmentShader: 'uniform float uNight; uniform float uStyle; varying vec2 vQ; void main(){ float d = length(vQ); float a = pow(max(0., 1. - d), 2.5) * uNight * .32 * step(uStyle, .5); gl_FragColor = vec4(vec3(1., .78, .5) * a, 1.); }' }));
+    m.name = 'lamp-pools'; m.renderOrder = 18; m.frustumCulled = false; m.raycast = () => {}; group.add(m);
   }
   return group;
 }

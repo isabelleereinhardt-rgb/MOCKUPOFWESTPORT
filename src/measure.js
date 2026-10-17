@@ -17,7 +17,7 @@ export class Measure {
     this.matCase = new LineMaterial({ color: 0x15151a, linewidth: 7, worldUnits: false, depthTest: false, transparent: true, opacity: 0.7 });
     this.dotGeo = new THREE.CylinderGeometry(1, 1, 0.6, 20); this.dotMat = new THREE.MeshBasicMaterial({ color: 0xffffff, depthTest: false });
     this.graph = null;
-    this.ready = import('./roadgraph.js').then(m => { this.RG = m; this.graph = m.buildGraph(app.D.wp, { roadSnaps: (app.D.qa && app.D.qa.fixes && app.D.qa.fixes.road_snaps) || [] }); return true; }).catch(e => { console.warn('road router unavailable', e); return false; });
+    this.ready = import('./roadgraph.js').then(m => { this.RG = m; const fx = (app.D.qa && app.D.qa.fixes) || {}; this.graph = m.buildGraph(app.D.wp, { roadSnaps: fx.road_snaps || [], extraRoads: (fx.add_roads || []).map(r => [r.name, r.cls, r.bridge || 0, r.pts]) }); return true; }).catch(e => { console.warn('road router unavailable', e); return false; });
     this.tags = document.getElementById('mtags');
   }
   setMode(m) { this.mode = m; this.recompute(); }
@@ -35,12 +35,26 @@ export class Measure {
       let leg = { a, b, straight, meters: straight, seconds: null, path: [a, b], roads: [] };
       if (this.mode === 'road' && this.graph) {
         const r = this.RG.route(this.graph, a, b, { metric: 'time' });
-        if (r) leg = { ...leg, meters: r.meters, seconds: r.seconds, path: r.path, roads: r.roads || [] };
+        if (r) leg = { ...leg, meters: r.meters, seconds: r.seconds, path: r.path, roads: r.roads || [], gap: this.gapMeters(r.path) };
         else leg.noRoute = true;
       }
       this.legs.push(leg);
     }
     this.redraw(); this.render();
+  }
+
+  /** Meters of a route that run along a link the Atlas does not draw (see the map check). */
+  gapMeters(path) {
+    const links = (this.graph && this.graph.gapLinks) || []; if (!links.length) return 0;
+    let m = 0;
+    for (let i = 1; i < path.length; i++) {
+      const a = path[i - 1], b = path[i];
+      for (const L of links) {
+        const f = L.from, t = L.to;
+        if ((Math.hypot(a[0] - f[0], a[1] - f[1]) < 1.5 && Math.hypot(b[0] - t[0], b[1] - t[1]) < 1.5) || (Math.hypot(a[0] - t[0], a[1] - t[1]) < 1.5 && Math.hypot(b[0] - f[0], b[1] - f[1]) < 1.5)) { m += Math.hypot(b[0] - a[0], b[1] - a[1]); break; }
+      }
+    }
+    return m;
   }
 
   redraw() {
@@ -67,8 +81,10 @@ export class Measure {
     if (this.mode === 'road' && this.legs.length) html += `<div class="msum">${fmtTime(secs)} by car · ${fmtTime(tot / WALK)} on foot · ${fmtDist(st, unit)} straight</div>`;
     else if (this.legs.length) html += `<div class="msum">${fmtTime(tot / WALK)} on foot · ${fmtTime(tot / 13.4)} by car at 30 mph</div>`;
     if (this.legs.length > 1 || (this.legs[0] && this.legs[0].roads.length)) {
-      html += '<ol class="legs">' + this.legs.map((l, i) => `<li><b>${fmtDist(l.meters, unit)}</b>${l.seconds != null ? ' · ' + fmtTime(l.seconds) : ''}${l.noRoute ? ' · no road route, straight line shown' : ''}${l.roads.length ? `<div class="via">via ${l.roads.filter(r => r.name).slice(0, 4).map(r => esc(r.name)).join(', ')}</div>` : ''}</li>`).join('') + '</ol>';
+      html += '<ol class="legs">' + this.legs.map((l, i) => `<li><b>${fmtDist(l.meters, unit)}</b>${l.seconds != null ? ' · ' + fmtTime(l.seconds) : ''}${l.noRoute ? ' · no road route, straight line shown' : ''}${l.roads.length ? `<div class="via">via ${(rn => rn.slice(0, 7).join(', ') + (rn.length > 7 ? ' and ' + (rn.length - 7) + ' more' : ''))([...new Set(l.roads.filter(r => r.name).map(r => esc(r.name)))])}</div>` : ''}</li>`).join('') + '</ol>';
     }
+    const gap = this.legs.reduce((s, l) => s + (l.gap || 0), 0);
+    if (gap > 1) html += `<p class="hint">This route crosses ${fmtDist(gap, unit)} where the Atlas has no street (a gap flagged in the map check). The router assumes a connection there.</p>`;
     out.innerHTML = html;
     // chips at leg midpoints
     this.tags.innerHTML = this.legs.map((l, i) => { const m = l.path[Math.floor(l.path.length / 2)]; return `<div class="mtag" data-x="${m[0]}" data-y="${m[1]}">${fmtDist(l.meters, unit)}</div>`; }).join('');

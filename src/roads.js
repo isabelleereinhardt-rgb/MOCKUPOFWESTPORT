@@ -48,6 +48,7 @@ export function roadMaterial(layer) {
         vec3 c = texture2D(tConcrete, p / 3.).rgb * (.92 + .1 * fbm(p * .2));
         float joint = step(fract(u / 1.524), .012);
         col = c * (1. - .3 * joint * smoothstep(250., 60., cd)); rough = .85;
+        col = mix(col, col * vec3(.62, .66, .58), smoothstep(700., 2600., cd) * step(8.5, cls)); // thin walks fade into the verge from afar
       } else {
         vec3 asp = texture2D(tAsphalt, p / 4.).rgb * (.8 + .32 * fbm(p * .045));
         if (cls == 5.) asp *= vec3(1.12, 1.11, 1.08);          // older, greyer service drives

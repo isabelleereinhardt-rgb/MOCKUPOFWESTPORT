@@ -395,7 +395,7 @@ function contactMaterial() {
     transparent: true, depthWrite: false,
     uniforms: { uStyle: { value: 0 } },
     vertexShader: 'attribute vec4 aQ; varying vec4 vQ; void main(){ vQ = aQ; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.); }',
-    fragmentShader: 'uniform float uStyle; varying vec4 vQ; void main(){ vec2 d = max(abs(vQ.xy) - vQ.zw, 0.); float e = length(d) / 2.2; float a = pow(1. - smoothstep(0., 1., e), 1.6) * .5; if (uStyle > .5) a *= .3; gl_FragColor = vec4(0., 0., 0., a); }',
+    fragmentShader: 'uniform float uStyle; varying vec4 vQ; void main(){ vec2 d = max(abs(vQ.xy) - vQ.zw, 0.); float e = length(d) / 1.6; float a = pow(1. - smoothstep(0., 1., e), 2.2) * .3; if (uStyle > .5) a *= .3; gl_FragColor = vec4(0., 0., 0., a); }',
   });
   return m;
 }
@@ -411,7 +411,7 @@ export function buildBuildings(D, opts = {}) {
   const rep = new Map();
   const getRep = (x, y) => { const k = Math.floor(x / RCH) + ':' + Math.floor(y / RCH); let c = rep.get(k); if (!c) rep.set(k, c = { G: new GB(), R: new GB(), list: [], i: Math.floor(x / RCH), j: Math.floor(y / RCH) }); return c; };
   const cp = [], cq = [], ci = [];
-  const tooth = 2.2; // contact shadow reach (m)
+  const tooth = 1.6; // contact shadow reach (m)
   for (const b of D.buildings) {
     if (skip.has(b.i)) continue;
     if (separate.has(b.i)) b.hero = true;

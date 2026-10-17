@@ -95,6 +95,7 @@ export function decode(wp, gaz, qa) {
   const snaps = fx.road_snaps || [];
   D.roads = wp.roads.map(([n, c, br, p], i) => ({ i, name: nm(n), cls: CLS[c] || 'residential', bridge: !!br, pts: p.slice() }));
   for (const s of snaps) { const r = D.roads[s.road]; if (r && r.pts.length > s.vertex * 2 + 1) { r.pts[s.vertex * 2] = s.to[0]; r.pts[s.vertex * 2 + 1] = s.to[1]; } }
+  for (const a of fx.add_roads || []) D.roads.push({ i: D.roads.length, name: a.name, cls: a.cls || 'residential', bridge: !!a.bridge, pts: a.pts.slice(), added: true, why: a.why });
   D.rail = wp.rail.map(([yard, p]) => ({ yard: !!yard, pts: p }));
   D.lu = wp.lu.map(([kind, under, outer, holes], i) => ({ i, kind, under: !!under, rings: [outer, ...(holes || [])] }));
   D.land = wp.land; D.marsh = wp.marsh; D.shoal = wp.shoal; D.creeks = wp.creeks; D.piers = wp.piers; D.limits = wp.limits;

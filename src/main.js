@@ -10,7 +10,7 @@ import { U } from './shaders.js';
 import { buildGround, shoreTexture } from './ground.js';
 import { buildWater } from './water.js';
 import { buildRoads, roadMaterial } from './roads.js';
-import { buildLots, updateLots } from './lots.js';
+import { buildLots, updateLots, buildLamps } from './lots.js';
 import { buildBuildings } from './buildings.js';
 import { Atmosphere } from './sky.js';
 import { Trees } from './trees.js';
@@ -70,6 +70,7 @@ export class App {
     await tick(); say('Laying driveways and parking the cars');
     this.lots = buildLots(this.D); this.scene.add(this.lots);
     { const m = new THREE.Mesh(this.lots.userData.driveGeometry, roadMaterial(7)); m.name = 'driveways'; m.receiveShadow = true; m.renderOrder = 17.1; this.lots.add(m); }
+    this.lamps = buildLamps(this.D); this.scene.add(this.lamps);
     await tick(); say('Planting the trees');
     this.trees = new Trees(this); await this.trees.init(); this.trees.update(true);
     this.arch = new Archetypes(this, models && models.archetypes);

@@ -50,8 +50,8 @@ export class Atmosphere {
     const warm = THREE.MathUtils.smoothstep(0.35 - up, 0.0, 0.3);
     this.sun.color.setRGB(1, 0.96 - warm * 0.22, 0.9 - warm * 0.42);
     this.sun.intensity = Math.max(0, THREE.MathUtils.smoothstep(up, -0.02, 0.15)) * 2.6;
-    this.hemi.intensity = 0.12 + 0.26 * THREE.MathUtils.smoothstep(up, -0.1, 0.4);
-    this.hemi.color.setRGB(0.78 - night * 0.6, 0.86 - night * 0.6, 1.0 - night * 0.5);
+    this.hemi.intensity = 0.12 + 0.26 * THREE.MathUtils.smoothstep(up, -0.1, 0.4) + night * 0.5;
+    this.hemi.color.setRGB(0.78 - night * 0.55, 0.86 - night * 0.52, 1.0 - night * 0.35); // moonlit blue at night
     for (const sk of [this.sky, this.envSky]) sk.material.uniforms.sunPosition.value.copy(this.dir);
     const fogC = new THREE.Color().setRGB(0.76 - warm * 0.05, 0.82 - warm * 0.1, 0.86 - warm * 0.2).multiplyScalar(1 - night * 0.85);
     this.fog.color.copy(fogC);
