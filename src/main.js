@@ -50,7 +50,7 @@ export class App {
     say('Reading the Atlas');
     const [wp, gaz, qa, models] = await Promise.all([loadJSON('data/wpdata.json'), loadJSON('data/gaz.json', true), loadJSON('data/qa.json', true), loadJSON('data/models.json', true)]);
     this.D = decode(wp, gaz, qa); this.D.models = models;
-    setHeroLots(this.D, models && models.homes);
+    setHeroLots(this.D, models && [...models.homes, ...(models.landmarks || [])]);
     await tick(); say('Laying out the coastline');
     this.shore = shoreTexture(this.D);
     this.water = buildWater(this.shore); this.scene.add(this.water);

@@ -2,7 +2,7 @@
 // and the shore-distance texture the water reads.
 import * as THREE from 'three';
 import { patch, loadTex, U } from './shaders.js';
-import { ringArea, ringBBox, WATER_Y } from './core.js';
+import { ringArea, ringBBox, pointInPoly, WATER_Y } from './core.js';
 
 export const GCLS = ['land', 'residential', 'commercial', 'industrial', 'park', 'golf', 'cemetery', 'school', 'hospital', 'civic', 'parking', 'yard', 'plaza', 'pitch', 'track', 'pool', 'woods', 'forest', 'farm', 'field', 'beach', 'airport', 'marsh', 'creek', 'bank', 'apron'];
 const CI = Object.fromEntries(GCLS.map((k, i) => [k, i]));
@@ -70,7 +70,15 @@ else {
     vec3 con = texture2D(tConcrete, p / 3.).rgb, grav = texture2D(tGravel, p / 4.).rgb;
     float m = fbm(p * .04 + vSeed);
     vec3 asp = texture2D(tAsphalt, p / 4.).rgb * (.85 + .25 * fbm(p * .05));
-    col = cls == 2. ? mix(mix(asp, con * .82, smoothstep(.42, .5, fbm(p * .02 + 7.))), lawn(p, .5), smoothstep(.56, .63, m) * .9) : mix(grav * .88, con * .8, smoothstep(.45, .55, m));
+    if (cls == 2.) {
+      // commercial ground reads as parcels: lots paved in asphalt or concrete, some edged with planting strips
+      vec2 cq = q / vec2(28., 22.), ci = floor(cq), cf = fract(cq);
+      float edge = min(min(cf.x, 1. - cf.x) * 28., min(cf.y, 1. - cf.y) * 22.);
+      float aa = fwidth(edge) + .02;
+      col = h12(ci + vSeed) < .5 ? asp : con * .82;
+      col = mix(col, srgb(vec3(.5, .49, .47)) * (.9 + .1 * m), smoothstep(.12 + aa, .12 - aa, edge) * .6); // expansion joint
+      col = mix(col, lawn(p, .5), step(.68, h12(ci * 1.37 + vSeed + 2.)) * smoothstep(1.6 + aa, 1.6 - aa, edge) * .95);
+    } else col = mix(grav * .88, con * .8, smoothstep(.45, .55, m));
     rough = .85;
   } else if (cls == 10.) {                        // parking: asphalt with painted stalls
     vec3 a = texture2D(tAsphalt, p / 4.).rgb * (.9 + .2 * fbm(p * .05));
@@ -88,7 +96,10 @@ else {
     rough = .08;
   } else if (cls == 16. || cls == 17.) {          // woods: forest floor near, canopy far
     float cov; vec3 cr = crowns(p, cls == 17. ? 5. : 6.5, .96, cov);
-    vec3 floorc = srgb(vec3(.25, .22, .14)) * (.7 + .5 * fbm(p * .2));
+    // coastal pine woods: pine straw and leaf litter, patched with yaupon, fern and grass understory
+    vec3 straw = srgb(vec3(.46, .35, .23)) * (.75 + .4 * fbm(p * .35));
+    float under = smoothstep(.45, .7, fbm(p * .07 + 3.)) * .7 + .2 * smoothstep(.55, .8, fbm(p * .6));
+    vec3 floorc = mix(straw, lawn(p, .15) * vec3(.78, .95, .68), under);
     vec3 gap = srgb(vec3(.09, .12, .07));
     vec3 canopy = mix(gap, cr, cov);
     col = mix(floorc, canopy, smoothstep(uTreeRange * .7, uTreeRange * 1.05, cd));
@@ -191,7 +202,18 @@ export function buildGround(D) {
   const layers = [new Builder(), new Builder(), new Builder(), new Builder(), new Builder(), new Builder(), new Builder()];
   // 0: apron + land + banks, 1: lu under, 2: woods, 3: farm/beach/field, 4: marsh, 5: other lu, 6: creeks
   D.land.forEach((poly, k) => { const n0 = layers[0].idx.length; layers[0].addPoly(poly, CI.land); if (window.WP_DEBUG) console.log('land', k, poly.map(r => r.length / 2).join('/'), 'tris', (layers[0].idx.length - n0) / 3, 'area', Math.round(ringArea(poly[0]) / 1e6) + ' km2'); });
+  // land-use areas that lie out over open water (the park the Atlas marks at the end of the town pier)
+  // would paint lawn on the bay: skip any whose sampled interior is mostly water
+  D.luOverWater = [];
+  const overWater = l => {
+    if (l.kind === 'beach' || l.kind === 'marsh' || !D.mask) return false;
+    const [x0, y0, x1, y1] = l.bbox || ringBBox(l.rings[0]), st = Math.max(2, Math.min(x1 - x0, y1 - y0) / 8);
+    let n = 0, dry = 0;
+    for (let x = x0 + st / 2; x < x1; x += st) for (let y = y0 + st / 2; y < y1; y += st) if (pointInPoly(x, y, l.rings)) { n++; if (D.mask.at(x, y) & 1) dry++; }
+    return n > 0 && dry / n < 0.35;
+  };
   D.lu.forEach(l => {
+    if (overWater(l)) { D.luOverWater.push(l.i); return; }
     const k = l.kind in CI ? CI[l.kind] : CI.land;
     const ang = ringAngle(l.rings[0]), seed = (l.i * 0.618) % 1 * 100;
     const L = l.under ? 1 : (l.kind === 'woods' || l.kind === 'forest') ? 2 : (l.kind === 'farm' || l.kind === 'beach' || l.kind === 'field') ? 3 : 5;

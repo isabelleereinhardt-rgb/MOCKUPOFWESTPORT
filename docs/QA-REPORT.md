@@ -304,3 +304,16 @@ The 3D map adds things the Atlas does not draw: driveways, parked cars, streetli
 | Driveways (house to street) | 24,482 | 0 (other buildings) | they end at the road edge | 0 | not placed there |
 
 The first run found 714 cars touching buildings, 778 on roads and 39 in water, mostly in parking lots that run up to a street, plus 8 streetlights out of place. Each car is now tested at its four corners and its center before it is placed, and each streetlight against every road and the water, which brings all of these to zero.
+
+## The modeled homes and landmarks on the map (final placement pass)
+
+Each of the nine homes and six landmarks was photographed in place on the map and checked against its street, its neighbors and the ground under it.
+
+| What | Found | What changed |
+|---|---|---|
+| Side-to-side frame of the site specs | `tools/qa/site-specs.py` measured "local x" toward the viewer's left, while Blender models and the map use the viewer's right. Neighbor positions in `docs/site-specs.json` were mirrored. | Fixed in the script and regenerated. The map's lot checks (trees, cars, sidewalks kept out of modeled lots) use the same right-hand frame. No neighbor's house overlaps any of the nine lots, in either frame. |
+| Water tower | The Atlas point put the tower about 13 m from the centerline of the road beside it, so a leg stood at the curb. | Moved 6 m back, so it sits 19.5 m from the centerline, and turned so the lettering faces the road. Trees are kept 11.5 m clear of its center. |
+| Pier bar | The Atlas marks a 30 x 30 m "park" at the end of the town pier, which the map painted as a square of lawn floating on the bay. | Land-use areas whose interior is mostly open water are no longer painted (one area, at the pier end). The bar stands on its own deck at the seaward end of the pier, facing land. |
+| Churches | The brick church model includes its steeple, so scaling the whole model to the Atlas height squashed the body. | Churches scale by the height of their walls, so the steeple keeps its proportion. |
+| Chadwick's | The Atlas gives the building 12 m; a one-story diner is about 5 m. | Modeled at 5 m. |
+| Courthouse and library | Fronts face the nearest named streets (Jefferson Street and Fourth Street). | None. |

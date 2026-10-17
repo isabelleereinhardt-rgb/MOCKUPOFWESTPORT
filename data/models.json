@@ -430,7 +430,8 @@
    "heading": 87.6,
    "building": 4,
    "height": 11.65,
-   "notes": "Interpretation (no reference image): a small 1912 Beaux-Arts Carnegie library in buff brick on a raised ashlar base; a projecting pedimented entry pavilion with two columns in antis, bronze doors and a lunette over a flight of eight steps with lamp standards; tall arched windows with stone keystones; stone corner pilasters, entablature, a balustraded parapet and a low verdigris dome over the reading room. The site-specs method puts the front toward Fourth Street (heading 87.6) although the address is on Third Street."
+   "notes": "Interpretation (no reference image): a small 1912 Beaux-Arts Carnegie library in buff brick on a raised ashlar base; a projecting pedimented entry pavilion with two columns in antis, bronze doors and a lunette over a flight of eight steps with lamp standards; tall arched windows with stone keystones; stone corner pilasters, entablature, a balustraded parapet and a low verdigris dome over the reading room. The site-specs method puts the front toward Fourth Street (heading 87.6) although the address is on Third Street.",
+   "lotRect": null
   },
   {
    "id": "chadwicks",
@@ -443,7 +444,8 @@
    "heading": -93.9,
    "building": 3730,
    "height": 5,
-   "notes": "Interpretation: a classic one-story diner filling the Atlas footprint: a full-width dining room across the front with a continuous band of big windows (stainless mullions, see-through glass), cream enamel and a red stripe, a rounded stainless roof edge, a glass entry vestibule and deep red canvas awnings; inside a checkerboard floor, booths along the windows, a counter with eleven stools, a back bar and lit pendants; a painted-block kitchen behind with rooftop units. The Atlas height (12 m) is far above a one-story diner; the model is 5.0 m. No sign or name on the building."
+   "notes": "Interpretation: a classic one-story diner filling the Atlas footprint: a full-width dining room across the front with a continuous band of big windows (stainless mullions, see-through glass), cream enamel and a red stripe, a rounded stainless roof edge, a glass entry vestibule and deep red canvas awnings; inside a checkerboard floor, booths along the windows, a counter with eleven stools, a back bar and lit pendants; a painted-block kitchen behind with rooftop units. The Atlas height (12 m) is far above a one-story diner; the model is 5.0 m. No sign or name on the building.",
+   "lotRect": null
   },
   {
    "id": "courthouse",
@@ -456,7 +458,8 @@
    "heading": 178.1,
    "building": 0,
    "height": 30.41,
-   "notes": "Interpretation (no reference image): a two-story neoclassical red-brick courthouse on a rusticated stone basement, stone quoins, belt course, keystone lintels and arched second-floor windows; a hexastyle giant-order portico with a pediment and oculus over a broad flight of granite steps; slate hip roof; a white cupola with four clock faces (no numerals), an octagonal colonnaded lantern and a verdigris copper dome. The site-specs method puts the front toward Jefferson Street (heading 178.1), not Second Street (its address); the Atlas building is 40.01 x 60.03 m with the long side running back from the street."
+   "notes": "Interpretation (no reference image): a two-story neoclassical red-brick courthouse on a rusticated stone basement, stone quoins, belt course, keystone lintels and arched second-floor windows; a hexastyle giant-order portico with a pediment and oculus over a broad flight of granite steps; slate hip roof; a white cupola with four clock faces (no numerals), an octagonal colonnaded lantern and a verdigris copper dome. The site-specs method puts the front toward Jefferson Street (heading 178.1), not Second Street (its address); the Atlas building is 40.01 x 60.03 m with the long side running back from the street.",
+   "lotRect": null
   },
   {
    "id": "pier-bar",
@@ -469,20 +472,27 @@
    "heading": 90,
    "building": 58,
    "height": 6.15,
-   "notes": "Origin = the platform center at map grade z = 0; the deck top is z = 1.2 (PIER_DECK_Y = WATER_Y + 1.9), pilings run to z = -4. The app draws pier 12 as a 3 m deck (175.1 m long); this model brings its own 16 x 20 m pier-head platform that starts exactly at the seaward end of that polyline (so the app deck and rails do not overlap it) and runs 20 m on along the last segment; the 10 x 14 m bar sits on it with 3 m of deck all round. Front (-Y) faces back up the pier toward Harbor Drive; the rail has a 3.6 m opening where the pier comes in. Atlas building 58 (a shop at the old pier-bar point) is the bar it replaces; hide it. distance_along_pier_m is the platform center measured from the land end, 10 m past the polyline end."
+   "notes": "Origin = the platform center at map grade z = 0; the deck top is z = 1.2 (PIER_DECK_Y = WATER_Y + 1.9), pilings run to z = -4. The app draws pier 12 as a 3 m deck (175.1 m long); this model brings its own 16 x 20 m pier-head platform that starts exactly at the seaward end of that polyline (so the app deck and rails do not overlap it) and runs 20 m on along the last segment; the 10 x 14 m bar sits on it with 3 m of deck all round. Front (-Y) faces back up the pier toward Harbor Drive; the rail has a 3.6 m opening where the pier comes in. Atlas building 58 (a shop at the old pier-bar point) is the bar it replaces; hide it. distance_along_pier_m is the platform center measured from the land end, 10 m past the polyline end.",
+   "lotRect": null
   },
   {
    "id": "water-tower",
    "name": "water tower (FOUNDED 1625)",
    "file": "models/landmarks/water-tower.glb",
    "at": [
-    1145.23,
-    2353.15
+    1140.06,
+    2356.56
    ],
-   "heading": 0,
+   "heading": -33.4,
    "building": 57,
    "height": 44.5,
-   "notes": "Classic six-leg elevated steel tank, pale blue-grey (#A7B8C4), 13 m tank on battered tubular legs with tie-rod X bracing, a balcony at the shell bottom, central riser and a caged ladder. Lettering is real geometry (DejaVu Sans Bold, navy), WESTPORT over FOUNDED 1625, on the front (toward Mariner Drive) and the back. Center is the QA-moved place point (qa.json move_places), which is also the center of Atlas building 57 (kind civic in the Atlas, not \"tower\"). Leg footings spread to a 16.4 m circle, a little beyond the 12 m Atlas square."
+   "notes": "Classic six-leg elevated steel tank, pale blue-grey (#A7B8C4), 13 m tank on battered tubular legs with tie-rod X bracing, a balcony at the shell bottom, central riser and a caged ladder. Lettering is real geometry (DejaVu Sans Bold, navy), WESTPORT over FOUNDED 1625, on the front (toward Mariner Drive) and the back. Center is the QA-moved place point (qa.json move_places), which is also the center of Atlas building 57 (kind civic in the Atlas, not \"tower\"). Leg footings spread to a 16.4 m circle, a little beyond the 12 m Atlas square. Placed 19.5 m back from the centerline of the road beside it (the Atlas point put its legs at the curb), front turned to the road.",
+   "lotRect": [
+    -11.5,
+    -11.5,
+    11.5,
+    11.5
+   ]
   },
   {
    "id": "williams-funeral-home",
@@ -495,7 +505,8 @@
    "heading": -92.4,
    "building": 3160,
    "height": 12.68,
-   "notes": "Interpretation (no reference image): a two-story Greek Revival house in white-painted brick under a slate hip roof, with a full-height four-column portico and pediment, black shutters on 6-over-6 windows, lanterns, a small balcony over the entry, a one-story chapel wing on the left, a porte-cochere and garage on the right and a rear ell. No signs. Front faces Main Street; the building sits back from the curb as the Atlas footprint does."
+   "notes": "Interpretation (no reference image): a two-story Greek Revival house in white-painted brick under a slate hip roof, with a full-height four-column portico and pediment, black shutters on 6-over-6 windows, lanterns, a small balcony over the entry, a one-story chapel wing on the left, a porte-cochere and garage on the right and a rear ell. No signs. Front faces Main Street; the building sits back from the curb as the Atlas footprint does.",
+   "lotRect": null
   }
  ],
  "archetypes": [

@@ -36,7 +36,8 @@ for (const f of list('models/landmarks').filter(f => f.endsWith('.json'))) {
   const heading = a.front_heading_deg_atlas ?? a.heading ?? 90;
   const bi = a.building_index ?? a.atlas_building_index ?? null;
   if (!at) continue;
-  out.landmarks.push({ id, name: m.name || id, file, at, heading, building: bi, height: m.height_m || null, notes: m.notes || '' });
+  // clearing_local_rect_m keeps generated trees, cars and lamps clear of a landmark's grounds (the water tower's legs)
+  out.landmarks.push({ id, name: m.name || id, file, at, heading, building: bi, height: m.height_m || null, notes: m.notes || '', lotRect: m.clearing_local_rect_m || null });
   if (bi != null && bi >= 0) out.replaces.push(bi);
 }
 

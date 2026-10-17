@@ -94,6 +94,13 @@ const FACADE = /* glsl */`
       vec2 sm2 = 1. - smoothstep(-aw, aw, sd);
       shut = sm2.x * sm2.y * inBays * step(v, eave - .25) * (1. - store);
     }
+    // far away a window shrinks below a pixel and aliases into speckle: fade to its average coverage
+    vec2 fpx = fwidth(vec2(u, v));
+    float far = smoothstep(.3, .75, max(fpx.x / ww, fpx.y / wh)) * (1. - store);
+    float cell = inBays * step(.3, v) * step(v, eave - .25) / (bw * flh);
+    win = mix(win, ww * wh * cell * .9, far);
+    frame = mix(frame, ((ww + .18) * (wh + .18) - ww * wh) * cell, far);
+    shut *= 1. - far; door *= 1. - far * .6;
     vec3 trim = kind == 2. ? srgb(vec3(.75)) : srgb(vec3(.93, .92, .88));
     vec3 glass = srgb(vec3(.05, .065, .075));
     col = mix(col, trim, frame);

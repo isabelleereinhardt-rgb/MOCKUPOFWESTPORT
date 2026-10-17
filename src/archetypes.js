@@ -3,6 +3,7 @@
 // rectangle, turned to face the street and tinted with the same colors the far version uses.
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { imageTextures, loadModel } from './models.js';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 import { hash } from './core.js';
 import { U } from './shaders.js';
@@ -19,10 +20,10 @@ export class Archetypes {
   }
   async init() {
     if (!this.list.length) return;
-    const loader = new GLTFLoader();
+    const loader = imageTextures(new GLTFLoader());
     for (const a of this.list) {
       try {
-        const gl = await loader.loadAsync(a.file);
+        const gl = await loadModel(loader, a.file);
         a.parts = []; const groups = new Map();
         gl.scene.updateMatrixWorld(true);
         gl.scene.traverse(o => {

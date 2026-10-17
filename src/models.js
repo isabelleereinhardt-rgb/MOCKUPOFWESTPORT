@@ -5,7 +5,27 @@ import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { U } from './shaders.js';
 
-const loader = new GLTFLoader();
+// Embedded GLB textures decode through <img> rather than fetch(): a host with a strict connect-src
+// (such as a published artifact) refuses fetch() of the blob: URLs the loader makes for them.
+export function imageTextures(loader) {
+  loader.register(parser => { parser.textureLoader = new THREE.TextureLoader(parser.options.manager).setCrossOrigin(parser.options.crossOrigin); return { name: 'WP_image_textures' }; });
+  return loader;
+}
+// A hosted copy that cannot serve .glb files ships each model base64-packed in "<name>.glb.json"
+// (tools/pack-models.mjs); a local checkout loads the .glb directly.
+export const PACKED = !(location.protocol === 'file:' || /^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname));
+export async function loadModel(loader, url) {
+  if (PACKED) {
+    const r = await fetch(url + '.json');
+    if (r.ok) {
+      const s = (await r.json()).glb, bin = new Uint8Array(s.length * 3 / 4 - (s.endsWith('==') ? 2 : s.endsWith('=') ? 1 : 0));
+      const raw = atob(s); for (let i = 0; i < bin.length; i++) bin[i] = raw.charCodeAt(i);
+      return loader.parseAsync(bin.buffer, url.replace(/[^/]*$/, ''));
+    }
+  }
+  return loader.loadAsync(url);
+}
+const loader = imageTextures(new GLTFLoader());
 const LOAD_RANGE = 2600; // meters from the camera before a model streams in
 
 export function headingToRotation(deg) {
@@ -37,7 +57,7 @@ export class Models {
     it.state = 'loading';
     try {
       for (const f of [it.house || it.file, it.lot].filter(Boolean)) {
-        const g = await loader.loadAsync(f);
+        const g = await loadModel(loader, f);
         g.scene.traverse(o => {
           if (o.isMesh) {
             o.castShadow = true; o.receiveShadow = true;

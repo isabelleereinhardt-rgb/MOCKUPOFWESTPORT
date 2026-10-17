@@ -3,6 +3,7 @@
 // kit (models/vegetation) when present, and simple procedural stand-ins otherwise.
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { imageTextures, loadModel } from './models.js';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 import { U } from './shaders.js';
 import { HALF, hash, rng, pointInPoly, nearestRoad, inHeroLot } from './core.js';
@@ -93,7 +94,7 @@ export class Trees {
 
   async init() {
     const kit = await fetch('models/vegetation/index.json').then(r => (r.ok ? r.json() : null)).catch(() => null);
-    const loader = new GLTFLoader();
+    const loader = imageTextures(new GLTFLoader());
     const geo = {};
     for (const id of SPECIES) {
       geo[id] = [];
@@ -102,7 +103,7 @@ export class Trees {
         const entry = kit && kit.find(k => k.id === id);
         if (entry) {
           try {
-            const gl = await loader.loadAsync(`models/vegetation/${id}${lod ? '-lod1' : ''}.glb`);
+            const gl = await loadModel(loader, `models/vegetation/${id}${lod ? '-lod1' : ''}.glb`);
             g = splitByMaterial(gl.scene);
           } catch (e) { g = null; }
         }
