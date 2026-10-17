@@ -298,10 +298,10 @@ The 3D map adds things the Atlas does not draw: driveways, parked cars, streetli
 
 | Object | Count checked | In a building | On a road | In water or marsh | In a modeled lot |
 |---|---|---|---|---|---|
-| Trees (city limits, every cell) | 1,862,924 | 0 | 0 | 0 | 0 |
-| Parked cars (driveways, lots, mobile homes) | 48,230 | 0 | 0 | 0 | 0 |
-| Streetlights | 10,622 | 0 | 0 | 0 | not placed there |
-| Driveways (house to street) | 24,482 | 0 (other buildings) | they end at the road edge | 0 | not placed there |
+| Trees (city limits, every cell) | 1,862,860 | 0 | 0 | 0 | 0 |
+| Parked cars (driveways, lots, mobile homes) | 48,222 | 0 | 0 | 0 | 0 |
+| Streetlights | 10,619 | 0 | 0 | 0 | not placed there |
+| Driveways (house to street) | 24,475 | 0 (other buildings) | they end at the road edge | 0 | not placed there |
 
 The first run found 714 cars touching buildings, 778 on roads and 39 in water, mostly in parking lots that run up to a street, plus 8 streetlights out of place. Each car is now tested at its four corners and its center before it is placed, and each streetlight against every road and the water, which brings all of these to zero.
 
@@ -317,3 +317,5 @@ Each of the nine homes and six landmarks was photographed in place on the map an
 | Churches | The brick church model includes its steeple, so scaling the whole model to the Atlas height squashed the body. | Churches scale by the height of their walls, so the steeple keeps its proportion. |
 | Chadwick's | The Atlas gives the building 12 m; a one-story diner is about 5 m. | Modeled at 5 m. |
 | Courthouse and library | Fronts face the nearest named streets (Jefferson Street and Fourth Street). | None. |
+| Trees at landmarks | Trees skipped the footprint check for every building a model replaces, but only the homes have a lot that keeps trees out. The re-run scene check found one tree inside the courthouse. | Trees now keep clear of every footprint. The scene check above was re-run after this pass: all zeros. |
+| Rendering | Three faults made things look out of place without moving them. Downtown walls and roofs were speckled, because each building's style codes are interpolated and some pixels landed just off their value. The water plane showed through the driveways, walks and beds of the modeled lots when seen from a distance. With ambient occlusion on, black squares appeared under streetlights and beside buildings. | Fixed, and each was checked against before and after renders of the same view. |

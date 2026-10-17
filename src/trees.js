@@ -138,7 +138,7 @@ export class Trees {
       if (!(D.mask.at(x, y) & 1) || (D.mask.at(x, y) & 2)) return false;
       let ok = true;
       D.bGrid.query(x - r - 2, y - r - 2, x + r + 2, y + r + 2, k => {
-        const b = D.buildings[k]; if (b.hero) return; const p = b.poly;
+        const b = D.buildings[k], p = b.poly; // model-replaced footprints too (landmarks have no lot of their own)
         // distance from point to the rectangle (in its own frame)
         const ux = (p[2] - p[0]) / b.w, uy = (p[3] - p[1]) / b.w, vx = (p[6] - p[0]) / b.d, vy = (p[7] - p[1]) / b.d;
         const dx = x - b.cx, dy = y - b.cy, a = Math.abs(dx * ux + dy * uy) - b.w / 2, bb = Math.abs(dx * vx + dy * vy) - b.d / 2;
