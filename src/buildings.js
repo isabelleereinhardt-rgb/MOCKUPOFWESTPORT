@@ -468,6 +468,8 @@ export function buildBuildings(D, opts = {}) {
   const g = new THREE.BufferGeometry();
   g.setAttribute('position', new THREE.Float32BufferAttribute(cp, 3));
   g.setAttribute('aQ', new THREE.Float32BufferAttribute(cq, 4));
+  // flat, facing up: the ambient-occlusion pre-pass draws every mesh with its normals, and none reads as fully occluded
+  g.setAttribute('normal', new THREE.Float32BufferAttribute(cp.map((_, k) => (k % 3 === 1 ? 1 : 0)), 3));
   g.setIndex(new THREE.Uint32BufferAttribute(ci, 1));
   const cm = new THREE.Mesh(g, contactMaterial()); cm.name = 'contact-shadows'; cm.renderOrder = 17.2; cm.frustumCulled = false; cm.raycast = () => {};
   group.add(cm);

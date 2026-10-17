@@ -8,6 +8,7 @@ Fictional town · map data generated for TBOS · not a real survey.
 
 - `index.html`: the interactive map. Serve the folder over HTTP (for example `npx http-server .`) and open it in a desktop browser with WebGL 2. The first load builds the whole town and takes a few seconds.
 - `homes.html`: the Nine's homes, with Blender renders, an interactive 3D model of each house and lot, and downloads.
+- A hosted copy of both pages is published as a private claude.ai artifact: https://claude.ai/artifact/PNmbeKZzNHmYG8j76fDkic (share it from its Share menu). Hosts like that one cannot serve `.glb` files, so the hosted copy carries each model base64-packed as `<name>.glb.json` (`node tools/pack-models.mjs <out dir>`), and the map reads those automatically whenever it is not running from a local server.
 
 ## What the map does
 
@@ -35,7 +36,7 @@ Fictional town · map data generated for TBOS · not a real survey.
 | Surface textures | `assets/tex/` (made by `tools/textures/web_textures.py` from the same generators as the models) |
 | Map code | `src/` (three.js 0.186.1) |
 
-`src/` modules: `core.js` (data and lookups), `ground.js`, `water.js`, `roads.js`, `buildings.js`, `lots.js` (driveways and parked cars), `trees.js`, `models.js` (Blender homes and landmarks), `archetypes.js` (close-range building models), `sky.js`, `labels.js`, `measure.js`, `ui.js`, `main.js`.
+`src/` modules: `core.js` (data and lookups), `ground.js`, `water.js`, `roads.js`, `buildings.js`, `lots.js` (driveways and parked cars), `trees.js`, `models.js` (Blender homes and landmarks, and the loader for packed models), `archetypes.js` (close-range building models), `sky.js`, `labels.js`, `measure.js`, `ui.js`, `main.js`.
 
 ### Rebuild
 
@@ -45,6 +46,7 @@ python3 tools/blender/homes/monet_williams_house.py      # any model script
 node tools/qa/audit.mjs                                  # map check
 node tools/dist/distances.mjs                            # distance tables
 node tools/build-manifest.mjs                            # refresh data/models.json
+node tools/pack-models.mjs dist                          # packed models for a host that cannot serve .glb
 python3 tools/textures/web_textures.py                   # surface textures
 ```
 

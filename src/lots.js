@@ -223,7 +223,7 @@ export function buildLamps(D) {
   const pp = [], pq = [], pi = [];
   pool.p.forEach(([x, y], k) => { const R = 9, o = pp.length / 3; for (const [sx, sy] of [[-1, -1], [1, -1], [1, 1], [-1, 1]]) { pp.push(x + sx * R, 0.05, -(y + sy * R)); pq.push(sx, sy); } pi.push(o, o + 1, o + 2, o, o + 2, o + 3); });
   if (pp.length) {
-    const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.Float32BufferAttribute(pp, 3)); g.setAttribute('aQ', new THREE.Float32BufferAttribute(pq, 2)); g.setIndex(new THREE.Uint32BufferAttribute(pi, 1)); g.computeBoundingSphere();
+    const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.Float32BufferAttribute(pp, 3)); g.setAttribute('aQ', new THREE.Float32BufferAttribute(pq, 2)); g.setAttribute('normal', new THREE.Float32BufferAttribute(pp.map((_, k) => (k % 3 === 1 ? 1 : 0)), 3)); /* up normals for the AO pre-pass */ g.setIndex(new THREE.Uint32BufferAttribute(pi, 1)); g.computeBoundingSphere();
     const m = new THREE.Mesh(g, new THREE.ShaderMaterial({ transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, uniforms: { uNight: U.uNight, uStyle: U.uStyle },
       vertexShader: 'attribute vec2 aQ; varying vec2 vQ; void main(){ vQ = aQ; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.); }',
       fragmentShader: 'uniform float uNight; uniform float uStyle; varying vec2 vQ; void main(){ float d = length(vQ); float a = pow(max(0., 1. - d), 2.5) * uNight * .32 * step(uStyle, .5); gl_FragColor = vec4(vec3(1., .78, .5) * a, 1.); }' }));
