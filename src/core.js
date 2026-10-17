@@ -188,7 +188,7 @@ export function setHeroLots(D, homes) {
 export function inHeroLot(D, x, y, margin = 0) {
   for (const L of D.heroLots || []) {
     const vx = x - L.x, vy = y - L.y; if (vx * vx + vy * vy > 3600) continue;
-    const lx = vx * L.ny + vy * -L.nx, ly = -(vx * L.nx + vy * L.ny);
+    const lx = -vx * L.ny + vy * L.nx, ly = -(vx * L.nx + vy * L.ny); // x = viewer's right, as in Blender
     const [x0, y0, x1, y1] = L.rect;
     if (lx >= x0 - margin && lx <= x1 + margin && ly >= y0 - margin && ly <= y1 + margin) return L;
   }

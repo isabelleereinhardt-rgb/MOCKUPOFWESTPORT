@@ -7,7 +7,10 @@ hipped roof with three front dormers, a deep wraparound porch (turned posts, fan
 balusters, scalloped valance, beadboard ceiling), a balcony with flower boxes over the double entry,
 brick steps between brick cheek walls, navy shutters, a one-story hipped side wing on the left, a
 rear kitchen ell and two brick chimneys. The lot GLB carries the picket fence and gate, brick walk,
-shell driveway, beds, boxwood and azaleas, the rounded ornamental tree and three moss-hung live oaks.
+shell driveway, beds, boxwood and azaleas, the rounded ornamental tree and two moss-hung live oaks. Tree crowns
+follow the vegetation kit's approach: many small leaf clusters on the branch skeleton, coloured only by vertex colour,
+with Spanish moss as thin tapered ribbon strands hanging in clusters; each tree is a bark object plus a `_Leaves`
+object (leaves and moss, COLOR_0, no UVs).
 
 Run (rebuilds GLBs, JSON and the final renders):
     python3 tools/blender/homes/monet_williams_house.py
@@ -27,7 +30,7 @@ import wp  # noqa: E402
 import bpy  # noqa: E402,F401
 import bmesh  # noqa: E402
 import numpy as np  # noqa: E402
-from mathutils import Vector, noise as mnoise  # noqa: E402
+from mathutils import Matrix, Vector, noise as mnoise  # noqa: E402
 from PIL import Image  # noqa: E402
 
 ID = 'monet-williams-house'
@@ -593,35 +596,6 @@ def tex_leaves(key, color, n=1024, tile=1.5, seed=51, flowers=None, fcov=0.0, fs
     return wp._save(alb, key), wp._save(wp._normal_from_height(leaf, 1.6), key + '_n'), tile
 
 
-def tex_canopy(key, color, n=1024, tile=2.0, seed=58, lo=0.22):
-    """Tree canopy surface: leaf clusters ~10-15 cm with dark gaps (features that survive at 25 m),
-    fine leaves inside, sunlit yellow-green flecks."""
-    rng = np.random.default_rng(seed)
-    cl = wp._noise(n, 14 * tile, rng, 2)
-    cl2 = wp._noise(n, 26 * tile, rng, 2)
-    fine = wp._noise(n, 90 * tile, rng, 2)
-    big = wp._noise(n, 2 * tile, rng, 3)
-    clusters = np.clip((cl * 0.65 + cl2 * 0.35 - 0.36) * 3.2, 0, 1)
-    leaf = clusters * (0.65 + 0.35 * fine)
-    base = wp._rgb(color)
-    alb = base[None, None, :] * (lo + (1.17 - lo) * leaf[..., None]) * (0.85 + 0.3 * big[..., None])
-    hl = np.clip((fine - 0.62) * 4, 0, 1) * clusters
-    alb = alb * (1 - 0.35 * hl[..., None]) + wp._rgb('#a4ad5c')[None, None, :] * 0.35 * hl[..., None]
-    return wp._save(alb, key), wp._save(wp._normal_from_height(leaf, 2.4), key + '_n'), tile
-
-
-def tex_moss(key, n=512, tile=1.0, seed=61):
-    rng = np.random.default_rng(seed)
-    f = wp._noise(n, 60, rng, 2)
-    s = f.copy()
-    for k in range(1, 28):
-        s += np.roll(f, k * 3, 0)
-    s = (s - s.min()) / (s.max() - s.min())
-    base = wp._rgb('#878980')
-    alb = base[None, None, :] * (0.6 + 0.5 * s[..., None])
-    return wp._save(alb, key), wp._save(wp._normal_from_height(s, 1.0), key + '_n'), tile
-
-
 def tex_straw(key, n=1024, tile=1.5, seed=71):
     rng = np.random.default_rng(seed)
     f = wp._noise(n, 120, rng, 2)
@@ -674,6 +648,21 @@ def vc_material(name, tex, rough=0.75, double=False, spec=0.4):
     return m
 
 
+def leaf_material(name, rough=0.75, spec=0.3, double=False):
+    """Foliage and moss: white base colour x vertex colour (COLOR_0), no texture."""
+    m = wp.mat(name, '#ffffff', rough=rough, double_sided=double)
+    nt = m.node_tree
+    bs = nt.nodes['Principled BSDF']
+    ca = nt.nodes.new('ShaderNodeVertexColor')
+    ca.layer_name = 'Col'
+    nt.links.new(ca.outputs['Color'], bs.inputs['Base Color'])
+    try:
+        bs.inputs['Specular IOR Level'].default_value = spec
+    except Exception:
+        pass
+    return m
+
+
 def make_materials():
     M = {}
     M['Siding'] = wp.mat('Siding', tex=wp.tex_siding('mw_siding', color='#bfc8d1', exposure=0.115, seed=2), rough=0.55)
@@ -703,13 +692,12 @@ def make_materials():
                            rough=0.9)
     M['PineStraw'] = wp.mat('PineStraw', tex=tex_straw('mw_straw', n=512), rough=0.95)
     M['Bark'] = wp.mat('Bark', tex=tex_bark('mw_bark'), rough=0.92)
-    M['OakLeaves'] = vc_material('OakLeaves', tex_canopy('mw_oakleaves', '#5a6c31'), rough=0.72)
-    M['Moss'] = wp.mat('Moss', '#ffffff', tex=tex_moss('mw_moss', tile=0.6), rough=0.95, double_sided=True)
+    M['OakLeaves'] = leaf_material('OakLeaves', rough=0.75, spec=0.28)
+    M['Moss'] = leaf_material('Moss', rough=0.92, spec=0.15, double=True)
     M['Boxwood'] = vc_material('Boxwood', tex_leaves('mw_boxwood', '#40632a', n=512, tile=0.6, seed=55), rough=0.6)
     M['Azalea'] = vc_material('Azalea', tex_leaves('mw_azalea', '#3f6a2c', n=512, tile=0.7, seed=56, flowers='#e0558f',
                                                    fcov=0.33, fsize=45), rough=0.7)
-    M['Ornamental'] = vc_material('Ornamental', tex_canopy('mw_ornamental', '#5a8a38', n=512, tile=0.9, seed=57, lo=0.5),
-                                  rough=0.5)
+    M['Ornamental'] = leaf_material('Ornamental', rough=0.7, spec=0.25)
     M['MailMetal'] = wp.mat('MailMetal', '#202224', rough=0.4, metal=0.6)
     M['Condenser'] = wp.mat('Condenser', '#8d8f8a', rough=0.5, metal=0.3)
     M['Cart'] = wp.mat('Cart', '#2f4a36', rough=0.6)
@@ -1642,28 +1630,205 @@ def build_ell(gH, gR, gF, gP):
 
 
 # ============================================================================ the lot
-def foliage_clump(g, mat, c, size, seed, tone=1.0, inner=1.0, hue=0.0, nfn=None, n_sub=2):
-    """A leafy clump: two or three overlapping noisy masses, darker underneath and toward the crown interior."""
-    rng = np.random.default_rng(seed)
-    for i in range(n_sub):
-        off = np.clip(rng.normal(0, 1, 3), -1.5, 1.5) * np.array([0.42, 0.42, 0.18]) * size
-        r = size * rng.uniform(0.46, 0.62)
-        cc = (c[0] + off[0], c[1] + off[1], c[2] + off[2])
-        t = tone * rng.uniform(0.9, 1.1)
+# ---------------------------------------------------------------------------- foliage and moss (vertex colour only)
+# Same approach as tools/blender/vegetation/build.py: crowns are many small, softly displaced leaf clumps hung on
+# the branch skeleton, shaded only by COLOR_0 (dark interior and underside, lighter sunlit outer leaves, leaf-scale
+# speckle) with normals bent toward the crown envelope; Spanish moss is thin tapered ribbons in drooping clusters.
+def _lin(c):
+    c = np.clip(np.asarray(c, float), 0, 1)
+    return np.where(c <= 0.04045, c / 12.92, ((c + 0.055) / 1.055) ** 2.4)
 
-        def colfn(q, d, t=t):
-            under = 0.32 + 0.68 * min(1.0, max(0.0, (d.z + 0.55) / 1.25))
-            a = t * under * (0.66 + 0.34 * inner)
-            return (a * (1.0 + hue), a * 1.03, a * (0.9 - hue))
-        blob(g, mat, cc, (r, r * rng.uniform(0.85, 1.15), r * rng.uniform(0.66, 0.82)), seed=seed * 17 + i, rough=0.3,
-             freq=2.6, sub=2, colfn=colfn, nfn=nfn)
+
+def _hexc(h):
+    return np.array(wp._rgb(h), float)
+
+
+def _cl(x, a=0.0, b=1.0):
+    return a if x < a else b if x > b else x
+
+
+OAK_PAL = ('#18210f', '#34442a', '#6b7a4a')
+ORN_PAL = ('#18260f', '#344f24', '#6a8845')
+MOSS_COL = (_hexc('#5d6656'), _hexc('#8b9282'), _hexc('#aeb4a6'))
+
+
+class Crown:
+    """Crown envelope (ellipsoid) that drives the foliage shading and bends the clump normals."""
+
+    def __init__(self, C, R, pal, rng, bend=0.5, speck=1.0, base_frac=0.6):
+        self.C, self.R = Vector(C), Vector(R)
+        self.pal = [_hexc(p) for p in pal]
+        self.rng, self.bend, self.speck = rng, bend, speck
+        self.z0, self.z1 = self.C.z - self.R.z * base_frac, self.C.z + self.R.z
+
+    def q(self, p):
+        return Vector(((p.x - self.C.x) / self.R.x, (p.y - self.C.y) / self.R.y, (p.z - self.C.z) / self.R.z))
+
+    def normal(self, p, n_own):
+        qq = self.q(p)
+        gr = Vector((qq.x / self.R.x, qq.y / self.R.y, qq.z / self.R.z))
+        if gr.length < 1e-9:
+            return n_own
+        return (n_own * (1 - self.bend) + gr.normalized() * self.bend).normalized()
+
+    def color(self, p, n, tone, hue):
+        qq = self.q(p)
+        depth = qq.length
+        out = n.dot(qq.normalized()) if depth > 1e-6 else 0.0
+        th = _cl((p.z - self.z0) / max(0.1, self.z1 - self.z0))
+        L = 0.06 + 0.30 * th + 0.26 * _cl(0.5 + 0.6 * out) + 0.24 * _cl((depth - 0.4) / 0.55)
+        L -= 0.05 * max(0.0, -n.z)
+        L = L * tone + self.speck * (self.rng.normal(0, 0.045) - (0.15 if self.rng.random() < 0.13 else 0.0))
+        L = _cl(L)
+        d, m, l = self.pal
+        c = d + (m - d) * (L / 0.5) if L < 0.5 else m + (l - m) * ((L - 0.5) / 0.5)
+        if n.z < -0.2:
+            c = c * (1 + 0.25 * min(1.0, (-n.z - 0.2) / 0.6) * np.array([1.05, 1.0, 0.7]))
+        return tuple(_lin(c * hue))
+
+
+_UVT = {}
+
+
+def uv_tpl(kind):
+    """Low-poly unit sphere 'uvS_R' (S segments, R rings, staggered): uv7_4 = 42 tris, uv8_5 = 64 tris."""
+    if kind not in _UVT:
+        seg, rings = (int(v) for v in kind[2:].split('_'))
+        V = [(0.0, 0.0, 1.0)]
+        for i in range(1, rings):
+            ph = math.pi * i / rings
+            for k in range(seg):
+                a = 2 * math.pi * (k + 0.5 * (i % 2)) / seg
+                V.append((math.sin(ph) * math.cos(a), math.sin(ph) * math.sin(a), math.cos(ph)))
+        V.append((0.0, 0.0, -1.0))
+        S = len(V) - 1
+        F = [(0, 1 + k, 1 + (k + 1) % seg) for k in range(seg)]
+        for i in range(rings - 2):
+            a0 = 1 + i * seg
+            b0 = a0 + seg
+            for k in range(seg):
+                k1 = (k + 1) % seg
+                if i % 2 == 0:
+                    F += [(a0 + k, b0 + k, a0 + k1), (a0 + k1, b0 + k, b0 + k1)]
+                else:
+                    F += [(a0 + k, b0 + k, b0 + k1), (a0 + k, b0 + k1, a0 + k1)]
+        lr = 1 + (rings - 2) * seg
+        F += [(lr + k, S, lr + (k + 1) % seg) for k in range(seg)]
+        _UVT[kind] = (V, F)
+    return _UVT[kind]
+
+
+def leaf_clump(g, mat, crown, c, r3, rng, sub=1, amp=0.22, freq=2.1, flat=0.4, tone=1.0, hue=(1.0, 1.0, 1.0),
+               zmin=None):
+    """One leaf cluster: a small, irregularly displaced ellipsoid (flatter underneath), vertex-coloured."""
+    V0, F0 = ico(sub) if isinstance(sub, int) else uv_tpl(sub)
+    c = Vector(c)
+    off = Vector(rng.uniform(-50, 50, 3))
+    rot = Matrix.Rotation(rng.uniform(0, 2 * math.pi), 3, 'Z') @ Matrix.Rotation(rng.uniform(-0.3, 0.3), 3, 'X')
+    hue = np.asarray(hue, float)
+    V, N, C = [], [], []
+    for v in V0:
+        d = Vector(v)
+        s = 1 + amp * mnoise.noise(d * freq + off) + amp * 0.55 * mnoise.noise(d * freq * 2.7 + off * 1.3)
+        dd = Vector((d.x, d.y, d.z * (1 - flat) if d.z < 0 else d.z))
+        p = c + (rot @ Vector((dd.x * r3[0], dd.y * r3[1], dd.z * r3[2]))) * s
+        if zmin is not None and p.z < zmin:
+            p.z = zmin + (p.z - zmin) * 0.15
+        n_own = (rot @ Vector((dd.x / r3[0], dd.y / r3[1], dd.z / r3[2]))).normalized()
+        V.append(p)
+        N.append(tuple(crown.normal(p, n_own)))
+        C.append(crown.color(p, n_own, tone, hue))
+    g.add(V, F0, mat, smooth=True, colors=C, normals=N)
+
+
+def moss_strand(MV, MF, MC, top, L, w0, rng, tone):
+    """One beard of Spanish moss: a thin ribbon that tapers to a point, sways and twists as it hangs."""
+    nseg = 3 if L < 0.55 else (5 if L < 1.2 else 6)
+    phi = rng.uniform(0, 2 * math.pi)
+    twist = rng.uniform(-1.8, 1.8)
+    psi = rng.uniform(0, 2 * math.pi)
+    sway = Vector((math.cos(psi), math.sin(psi), 0)) * rng.uniform(0.04, 0.14) * L
+    ph = rng.uniform(0, 6)
+    kink = rng.uniform(0.006, 0.02)
+    b = len(MV)
+    for i in range(nseg + 1):
+        u = i / nseg
+        p = Vector(top) + Vector((0, 0, -L * u)) + sway * (u ** 1.6) + \
+            Vector((math.sin(u * 9 + ph) * kink, math.cos(u * 7 + ph) * kink, 0))
+        a = phi + twist * u
+        side = Vector((math.cos(a), math.sin(a), 0))
+        w = w0 * (1 - u) ** 0.7 * (0.8 + 0.35 * math.sin(math.pi * min(1.0, u * 1.6)))
+        k = u ** 0.75
+        cc = (MOSS_COL[0] + (MOSS_COL[1] - MOSS_COL[0]) * (k / 0.5) if k < 0.5 else
+              MOSS_COL[1] + (MOSS_COL[2] - MOSS_COL[1]) * ((k - 0.5) / 0.5)) * tone
+        col = tuple(_lin(cc))
+        if i < nseg:
+            MV.extend([p - side * w * 0.5, p + side * w * 0.5])
+            MC.extend([col, col])
+        else:
+            MV.append(p)
+            MC.append(col)
+    for i in range(nseg):
+        a0 = b + 2 * i
+        MF.append([a0, a0 + 1, a0 + 3, a0 + 2] if i < nseg - 1 else [a0, a0 + 1, a0 + 2])
+
+
+def moss_on_wood(g, wood, rng, max_strands, inside, floor_fn, density=1.0, Lscale=1.0):
+    """Clusters of hanging strands under the limbs, branches and twigs (densest on the big inner limbs)."""
+    sites = []
+    for pts, rad, lvl in wood:
+        if lvl == 0:
+            continue
+        f0, step, pk = {1: (0.18, 0.55, 0.55), 2: (0.0, 0.6, 0.5), 3: (0.0, 0.8, 0.3)}[lvl]
+        n = len(pts)
+        for i in range(1, n):
+            if i / (n - 1) < f0:
+                continue
+            a, b_ = pts[i - 1], pts[i]
+            L = (b_ - a).length
+            for k in range(max(1, int(L / step))):
+                if rng.random() > pk * density:
+                    continue
+                t = rng.uniform(0, 1)
+                p = a.lerp(b_, (k + t) / max(1, int(L / step)))
+                r = rad[i - 1] + (rad[i] - rad[i - 1]) * t
+                d = (b_ - a).normalized()
+                sites.append((p, r, d, lvl))
+    rng.shuffle(sites)
+    MV, MF, MC = [], [], []
+    nst = 0
+    for p, r, d, lvl in sites:
+        if nst >= max_strands:
+            break
+        Lc = float(np.clip(rng.lognormal(math.log(1.05 if lvl < 3 else 0.75), 0.45), 0.3, 2.5)) * Lscale
+        hd = Vector((d.x, d.y, 0))
+        hd = hd.normalized() if hd.length > 1e-3 else Vector((1, 0, 0))
+        sd = Vector((-hd.y, hd.x, 0))
+        tone = rng.uniform(0.86, 1.08)
+        for s_ in range(int(rng.integers(4, 10))):
+            top = p + hd * rng.uniform(-0.25, 0.25) + sd * rng.uniform(-0.6, 0.6) * r + \
+                Vector((0, 0, -r * rng.uniform(0.6, 0.95)))
+            if not inside(top, 0.4):
+                continue
+            L = Lc * rng.uniform(0.4, 1.1)
+            L = min(L, top.z - floor_fn(top))
+            if L < 0.22:
+                continue
+            moss_strand(MV, MF, MC, top, L, rng.uniform(0.05, 0.1), rng, tone * rng.uniform(0.95, 1.05))
+            nst += 1
+    if MV:
+        g.add(MV, MF, 'Moss', smooth=True, colors=MC)
+    return nst
 
 
 def oak_tree(g, base, seed, limbs, trunk_r=0.6, fork_z=3.0, lean=(0, 0), moss=1.0, leaf=1.0, bounds=None,
-             max_clumps=130, max_strands=2200, n_masses=12, rim=1.0, mass_max=4.6, mass_lift=0.0):
+             max_clumps=300, max_strands=1400, spacing=1.0, hi_detail=True, leaf_bend=1.0, moss_density=1.0,
+             twig_density=1.0, gl=None):
     """Live oak: buttressed, slightly sinuous trunk; long sweeping limbs (azimuth deg, elevation deg, length m)
     forking into secondary branches and twigs; leaf clumps on the upper and outer crown; heavy curtains of
     Spanish moss below. Stays clear of the house roofs and inside the lot rectangle."""
+    wood = []   # (points, radii, level 0 trunk / 1 limb / 2 branch / 3 twig): carries the foliage and the moss
+    gl = gl or g   # foliage and moss (vertex colour only) may go to their own object
     rng = np.random.default_rng(seed)
     bx, by = base
     LX0, LY0, LX1, LY1 = bounds or SITE['lot']
@@ -1678,6 +1843,7 @@ def oak_tree(g, base, seed, limbs, trunk_r=0.6, fork_z=3.0, lean=(0, 0), moss=1.
                           by + lean[1] * t ** 1.4 + 0.07 * math.cos(2.5 * t + seed), z)))
     tr = [trunk_r * 1.55, trunk_r * 1.42, trunk_r * 1.15, trunk_r * 1.02] + [trunk_r * (1.0 - 0.1 * k / 4) for k in (1, 2, 3, 4)]
     tube(g, 'Bark', tp, tr, seg=16, cap_end=True)
+    wood.append((tp, tr, 0))
     for k in range(6):
         a = 2 * math.pi * k / 6 + rng.uniform(-0.3, 0.3)
         p0 = (bx + math.cos(a) * trunk_r * 0.55, by + math.sin(a) * trunk_r * 0.55, 1.0)
@@ -1727,6 +1893,7 @@ def oak_tree(g, base, seed, limbs, trunk_r=0.6, fork_z=3.0, lean=(0, 0), moss=1.
         if len(pts) < 3:
             continue
         tube(g, 'Bark', pts, rad, seg=10)
+        wood.append((pts, rad, 1))
         moss_along(pts, rad, 0.2)
         sites.append((pts[-1] + up * 0.45, 1.35))
         for bnum in range(int(rng.integers(6, 10))):
@@ -1737,6 +1904,7 @@ def oak_tree(g, base, seed, limbs, trunk_r=0.6, fork_z=3.0, lean=(0, 0), moss=1.
             if len(bp) < 2:
                 continue
             tube(g, 'Bark', bp, br, seg=6)
+            wood.append((bp, br, 2))
             moss_along(bp, br, 0.0)
             sites.append((bp[-1] + up * 0.4, 1.15))
             if len(bp) > 3:
@@ -1748,162 +1916,132 @@ def oak_tree(g, base, seed, limbs, trunk_r=0.6, fork_z=3.0, lean=(0, 0), moss=1.
                 if len(tp_) < 2:
                     continue
                 tube(g, 'Bark', tp_, trr, seg=4, cap_end=False)
+                wood.append((tp_, trr, 3))
                 moss_along(tp_, trr, 0.0, every=0.5)
                 sites.append((tp_[-1] + up * 0.3, 1.0))
-    # canopy: foliage sites (upper and outer crown) grouped into a dozen big lumpy masses, plus small clumps
-    # around the rim so the outline stays broken; normals from the crown ellipsoid
-    if sites:
-        zs_ = np.array([p.z for p, _ in sites])
-        zcut = np.percentile(zs_, 25)
-        sites = [(p, s_) for p, s_ in sites if p.z >= zcut or (p - fork).length > 7.5]
-    sites = [(p, s_) for p, s_ in sites if inside(p, 1.6)]
-    cen = Vector((fork.x, fork.y, 0))
-    hue = rng.uniform(-0.035, 0.035)
-    if len(sites) >= 4:
-        P = np.array([tuple(p) for p, _ in sites])
-        K = int(min(n_masses, len(P) // 2))
-        C = P[rng.choice(len(P), K, replace=False)]
-        for _ in range(12):
-            lab = np.argmin(((P[:, None, :] - C[None, :, :]) * np.array([1, 1, 1.6])) ** 2 @ np.ones(3), axis=1)
-            for j in range(K):
-                if np.any(lab == j):
-                    C[j] = P[lab == j].mean(0)
-        ccen = P.mean(0)
-        ccen[2] = P[:, 2].min() + 0.25 * (P[:, 2].max() - P[:, 2].min())
-        crad = (max(3.0, np.abs(P[:, 0] - ccen[0]).max() + 2.0), max(3.0, np.abs(P[:, 1] - ccen[1]).max() + 2.0),
-                max(2.5, (P[:, 2].max() - ccen[2]) + 2.0))
-        nfn = crown_normals(tuple(ccen), crad, own=0.3)
-        for j in range(K):
-            Q = P[lab == j]
-            if len(Q) == 0:
+    # canopy: leafy sprays (a few small leaf clusters each) along the twigs and the outer branches; live-oak foliage
+    # sits in loose layered pads on the limbs, so the lower interior stays open and the limbs and moss read beneath
+    rng2 = np.random.default_rng(seed * 7 + 3)
+    for pts, rad, lvl in list(wood):          # fine twigs that carry the sprays
+        if lvl not in (2, 3):
+            continue
+        for i in range(1, len(pts)):
+            if rng2.random() > (0.55 if lvl == 2 else 0.35) * twig_density:
                 continue
-            m = Q.mean(0)
-            sd = Q.std(0) if len(Q) > 1 else np.zeros(3)
-            rx, ry = min(mass_max, 1.1 * sd[0] + 1.3), min(mass_max, 1.1 * sd[1] + 1.3)
-            rz = min(2.3, 0.6 * sd[2] + 0.9, 0.6 * max(rx, ry))
-            c = Vector((m[0], m[1], m[2] + 0.55 * rz + mass_lift))
-            # stay inside the lot
-            rx = min(rx, (c.x - LX0) / 1.35 - 0.2, (LX1 - c.x) / 1.35 - 0.2)
-            ry = min(ry, (c.y - LY0) / 1.35 - 0.2, (LY1 - c.y) / 1.35 - 0.2)
-            if rx < 0.8 or ry < 0.8:
+            d = pts[i] - pts[i - 1]
+            az = math.degrees(math.atan2(d.y, d.x)) + rng2.choice([-1, 1]) * rng2.uniform(30, 75)
+            tp_, trr = grow(pts[i], az, rng2.uniform(10, 50), rng2.uniform(0.9, 1.9), max(0.015, rad[i] * 0.55), 0.008,
+                            3, 6, 14)
+            if len(tp_) < 2:
                 continue
-            need = max(house_top(c.x + ox * rx, c.y + oy * ry) for ox in (-1, 0, 1) for oy in (-1, 0, 1)) + 0.4
-            if c.z - rz * 0.75 < need:
-                lift = need - (c.z - rz * 0.75)
-                if lift > 2.5:
-                    rz *= 0.6
-                    lift = need - (c.z - rz * 0.75)
-                c.z += lift
-            inner = min(1.0, (Vector((c.x, c.y, 0)) - cen).length / 8.0)
-            t = rng.uniform(0.86, 1.06)
-
-            def colfn(q, d, t=t, inner=inner):
-                under = 0.3 + 0.7 * min(1.0, max(0.0, (d.z + 0.45) / 1.2))
-                a = t * under * (0.68 + 0.32 * inner)
-                return (a * (1.0 + hue), a * 1.03, a * (0.9 - hue))
-            blob(g, 'OakLeaves', tuple(c), (rx, ry, rz), seed=seed * 300 + j, rough=0.3, freq=1.5,
-                 sub=4 if max(rx, ry) > 2.4 else 3, colfn=colfn, nfn=nfn, flat_bottom=c.z - rz * 0.72)
-            for mm in range(int(4 + 2 * rx)):
-                a = rng.uniform(0, 2 * math.pi)
-                anchors.append((Vector((c.x + math.cos(a) * rx * rng.uniform(0.2, 0.8),
-                                        c.y + math.sin(a) * ry * rng.uniform(0.2, 0.8), c.z - rz * 0.5)),
-                                0.0, Vector((math.cos(a), math.sin(a), 0))))
-            # small clumps on the rim of the mass break up its outline
-            for mm in range(int(rim * (2 + rx))):
-                a = rng.uniform(0, 2 * math.pi)
-                hz = rng.uniform(-0.2, 0.75)
-                rr = math.sqrt(max(0.05, 1 - hz * hz))
-                q = Vector((c.x + math.cos(a) * rx * rr * 0.98, c.y + math.sin(a) * ry * rr * 0.98, c.z + hz * rz * 0.9))
-                if not inside(q, 1.2) or q.z - 0.6 < house_top(q.x, q.y) + 0.3:
+            tube(g, 'Bark', tp_, trr, seg=3, cap_end=False)
+            wood.append((tp_, trr, 3))
+    anc = []
+    for pts, rad, lvl in wood:
+        if lvl == 0:
+            continue
+        f0, step = {1: (0.55, 1.0), 2: (0.2, 0.5), 3: (0.0, 0.4)}[lvl]
+        n = len(pts)
+        for i in range(1, n):
+            if i / (n - 1) < f0:
+                continue
+            a, b_ = pts[i - 1], pts[i]
+            k = max(1, int((b_ - a).length / step))
+            for j in range(k):
+                anc.append((a.lerp(b_, (j + rng2.uniform(0, 1)) / k), lvl))
+        anc.append((pts[-1], lvl))
+    if len(anc) >= 4:
+        P = np.array([tuple(p) for p, _ in anc])
+        zcut = np.percentile(P[:, 2], 20)
+        hor = np.hypot(P[:, 0] - fork.x, P[:, 1] - fork.y)
+        ccen = Vector((P[:, 0].mean(), P[:, 1].mean(), P[:, 2].min() + 0.35 * (P[:, 2].max() - P[:, 2].min())))
+        crad = Vector((max(3.0, np.abs(P[:, 0] - ccen.x).max() + 1.0), max(3.0, np.abs(P[:, 1] - ccen.y).max() + 1.0),
+                       max(2.5, P[:, 2].max() - ccen.z + 1.0)))
+        crown = Crown(ccen, crad, OAK_PAL, rng2, bend=0.62 * leaf_bend, base_frac=0.75)
+        order = rng2.permutation(len(anc))
+        acc = np.zeros((0, 3))
+        hue_t = np.array([1.0 + rng2.uniform(-0.03, 0.03), 1.0, 1.0 + rng2.uniform(-0.04, 0.04)])
+        nspray = 0
+        for oi in order:
+            if nspray >= max_clumps:
+                break
+            p, lvl = anc[oi]
+            if p.z < zcut and hor[oi] < 6.0:
+                continue
+            c0 = Vector((p.x, p.y, p.z + 0.2))
+            if len(acc) and np.any(((acc - np.array(c0)) ** 2).sum(1) < (0.85 * spacing) ** 2):
+                continue
+            acc = np.vstack([acc, np.array(c0)])
+            nspray += 1
+            tone = rng2.uniform(0.9, 1.08)
+            hue = hue_t * np.array([rng2.uniform(0.95, 1.06), 1.0, rng2.uniform(0.92, 1.06)])
+            for k in range(int(rng2.integers(3, 7))):
+                r = rng2.uniform(0.22, 0.4) * leaf
+                a = rng2.uniform(0, 2 * math.pi)
+                f = rng2.uniform(0.0, 0.55)
+                c = c0 + Vector((math.cos(a) * f, math.sin(a) * f, rng2.uniform(-0.12, 0.18)))
+                r3 = (r, r * rng2.uniform(0.8, 1.2), r * rng2.uniform(0.6, 0.8))
+                if not inside(c, max(r3[0], r3[1]) + 0.25):
                     continue
-                foliage_clump(g, 'OakLeaves', q, rng.uniform(0.7, 1.0), seed * 5000 + j * 50 + mm,
-                              tone=t * rng.uniform(0.95, 1.1), inner=inner, hue=hue, nfn=nfn, n_sub=1)
-    # Spanish moss: curtains (streaked sheets with ragged bottoms) and loose strands
-    rng.shuffle(anchors)
-    MV, MF = [], []
-    nst = 0
-    for (p, r, dirb) in anchors:
-        if nst >= max_strands * moss:
-            break
-        if rng.random() > 0.55:
-            continue
-        top0 = Vector((p.x, p.y, p.z - r * 0.7))
-        floor_z = max(house_top(top0.x, top0.y) + 0.4, 2.0)
-        L = float(np.clip(rng.lognormal(math.log(1.0), 0.55), 0.35, 3.0))
-        L = min(L, top0.z - floor_z)
-        if L < 0.3:
-            continue
-        hd = Vector((dirb.x, dirb.y, 0))
-        hd = hd.normalized() if hd.length > 1e-3 else Vector((1, 0, 0))
-        hd = (hd + Vector((rng.uniform(-0.4, 0.4), rng.uniform(-0.4, 0.4), 0))).normalized()
-        if rng.random() < 0.65:
-            # curtain
-            w = rng.uniform(0.18, 0.5)
-            n = max(3, int(w / 0.06))
-            b_ = len(MV)
-            for i in range(n + 1):
-                MV.append(top0 + hd * (w * (i / n - 0.5)) + Vector((0, 0, rng.uniform(-0.03, 0.03))))
-            for i in range(n + 1):
-                jit = Vector((rng.uniform(-0.04, 0.04), rng.uniform(-0.04, 0.04), 0))
-                MV.append(top0 + hd * (w * (i / n - 0.5) * 0.9) + jit + Vector((0, 0, -L * rng.uniform(0.3, 0.45))))
-            for i in range(n):
-                tl = L * rng.uniform(0.45, 1.0)
-                MV.append(top0 + hd * (w * ((i + 0.5) / n - 0.5) * 0.85) +
-                          Vector((rng.uniform(-0.06, 0.06), rng.uniform(-0.06, 0.06), -tl)))
-            for i in range(n):
-                MF.append([b_ + i, b_ + i + 1, b_ + n + 2 + i, b_ + n + 1 + i])
-                MF.append([b_ + n + 1 + i, b_ + n + 2 + i, b_ + 2 * n + 2 + i])
-            nst += n
-        else:
-            for s_ in range(int(rng.integers(2, 5))):
-                top = top0 + hd * rng.uniform(-0.2, 0.2)
-                Ls = L * rng.uniform(0.4, 1.1)
-                a = rng.uniform(0, math.pi)
-                w0 = rng.uniform(0.04, 0.08)
-                b_ = len(MV)
-                for k in range(4):
-                    t = k / 3
-                    dv = Vector((math.cos(a + t), math.sin(a + t), 0))
-                    c = top + Vector((rng.uniform(-0.03, 0.03), rng.uniform(-0.03, 0.03), -Ls * t))
-                    MV.append(c - dv * w0 * (1 - 0.85 * t) / 2)
-                    MV.append(c + dv * w0 * (1 - 0.85 * t) / 2)
-                for k in range(3):
-                    i0 = b_ + 2 * k
-                    MF.append([i0, i0 + 1, i0 + 3, i0 + 2])
-                nst += 1
-    if MV:
-        g.add(MV, MF, 'Moss', smooth=True)
+                ht = max(house_top(c.x + ox * r, c.y + oy * r) for ox, oy in ((0, 0), (1, 0), (-1, 0), (0, 1), (0, -1)))
+                if ht > 0 and c.z - r3[2] < ht + 0.3:
+                    continue
+                leaf_clump(gl, 'OakLeaves', crown, c, r3, rng2, sub='uv7_4' if hi_detail else 'uv6_4', amp=0.3,
+                           freq=2.6, flat=0.2, tone=tone * rng2.uniform(0.95, 1.05), hue=hue)
+    # Spanish moss: thin tapered strands hanging in clusters, kept clear of the roofs and the ground
+    moss_on_wood(gl, wood, np.random.default_rng(seed * 13 + 5), int(max_strands * moss), inside,
+                 lambda q: max(house_top(q.x, q.y) + 0.35, 2.1), density=moss_density)
 
 
-def ornamental_tree(g, base, seed=7):
-    """Rounded, dense small specimen tree (tea olive / holly type) on a clear trunk."""
+def ornamental_tree(g, base, seed=7, gl=None):
+    """Rounded, dense small specimen tree (tea olive / holly type) on a clear trunk: scaffold limbs and twigs
+    carrying a few hundred small leaf clusters around a darker dense core, vertex-coloured."""
     rng = np.random.default_rng(seed)
+    gl = gl or g
     bx, by = base
     tube(g, 'Bark', [(bx, by, -0.6), (bx, by, 0.0), (bx + 0.04, by, 0.9), (bx + 0.06, by + 0.03, 1.7)],
          [0.15, 0.14, 0.12, 0.1], seg=10, cap_end=True)
-    for k in range(4):
-        a = 2 * math.pi * k / 4 + 0.4
-        tube(g, 'Bark', [(bx + 0.06, by + 0.03, 1.6), (bx + math.cos(a) * 0.45, by + math.sin(a) * 0.45, 2.5),
-                         (bx + math.cos(a) * 0.8, by + math.sin(a) * 0.8, 3.4)], [0.07, 0.05, 0.025], seg=6)
+    scaff = []
+    for k in range(5):
+        a = 2 * math.pi * k / 5 + 0.4 + rng.uniform(-0.25, 0.25)
+        rr = rng.uniform(0.75, 0.95)
+        pts = [Vector((bx + 0.06, by + 0.03, 1.6)), Vector((bx + math.cos(a) * 0.4 * rr, by + math.sin(a) * 0.4 * rr, 2.45)),
+               Vector((bx + math.cos(a) * 0.85 * rr, by + math.sin(a) * 0.85 * rr, 3.4)),
+               Vector((bx + math.cos(a + 0.2) * 0.9 * rr, by + math.sin(a + 0.2) * 0.9 * rr, 4.5))]
+        rad = [0.075, 0.055, 0.035, 0.018]
+        tube(g, 'Bark', pts, rad, seg=6)
+        scaff.append((pts, rad))
+    lead = [Vector((bx + 0.06, by + 0.03, 1.6)), Vector((bx + 0.1, by, 3.2)), Vector((bx + 0.05, by - 0.05, 5.0))]
+    tube(g, 'Bark', lead, [0.07, 0.045, 0.015], seg=6)
+    scaff.append((lead, [0.07, 0.045, 0.015]))
     cz, R, H = 3.85, 1.85, 2.05
-    nfn = crown_normals((bx, by, cz - 0.3), (R, R, H), 0.3)
-    n = 34
+    crown = Crown((bx, by, cz - 0.15), (R * 1.05, R * 1.05, H * 1.05), ORN_PAL, rng, bend=0.86, base_frac=0.9,
+                  speck=1.6)
+    cand = [(p, r) for pts, rad in scaff for p, r in zip(pts[1:], rad[1:])]
+    n = 400
     for k in range(n):
         zf = 1 - 2 * (k + 0.5) / n
         rr = math.sqrt(max(0.0, 1 - zf * zf))
-        a = k * 2.39996 + rng.uniform(-0.25, 0.25)
-        f = rng.uniform(0.8, 0.98)
-        c = (bx + math.cos(a) * rr * R * f, by + math.sin(a) * rr * R * f, cz + zf * H * f * 0.92)
-        if c[2] < 2.1:
+        a = k * 2.39996 + rng.uniform(-0.3, 0.3)
+        f = rng.uniform(0.62, 0.98)
+        # slightly irregular outline: a broad noise bulge on the envelope
+        f *= 1 + 0.1 * mnoise.noise(Vector((math.cos(a) * rr, math.sin(a) * rr, zf)) * 1.4 + Vector((seed, 0, 0)))
+        c = Vector((bx + math.cos(a) * rr * R * f, by + math.sin(a) * rr * R * f, cz + zf * H * f * 0.95))
+        if c.z < 2.15:
             continue
-        r = rng.uniform(0.5, 0.72)
-        t = rng.uniform(0.9, 1.08)
-        blob(g, 'Ornamental', c, (r, r * rng.uniform(0.85, 1.15), r * 0.85), seed=seed * 100 + k, rough=0.26, freq=2.2,
-             sub=3, nfn=nfn, colfn=lambda q, d, t=t, zf=zf: (t * (0.62 + 0.38 * (zf + 1) / 2),) * 3)
-    for k in range(3):
-        blob(g, 'Ornamental', (bx + rng.uniform(-.3, .3), by + rng.uniform(-.3, .3), cz + rng.uniform(-.3, .4)),
-             (R * 0.78, R * 0.78, H * 0.72), seed=seed * 7 + k, rough=0.2, sub=2, nfn=nfn,
-             colfn=lambda q, d: (0.35, 0.37, 0.33))
+        r = rng.uniform(0.2, 0.34)
+        if rng.random() < 0.2:   # some clusters show their twig
+            p, pr = min(cand, key=lambda q: (q[0] - c).length)
+            e = c - (c - p).normalized() * r * 0.5
+            tube(g, 'Bark', [p, p.lerp(e, 0.5) + Vector((0, 0, 0.08)), e], [min(0.03, pr * 0.6), 0.016, 0.01], seg=3,
+                 cap_end=False)
+        leaf_clump(gl, 'Ornamental', crown, c, (r, r * rng.uniform(0.85, 1.15), r * rng.uniform(0.7, 0.9)), rng,
+                   sub='uv7_4' if f > 0.8 else 'uv6_4', amp=0.36, freq=3.0, flat=0.2, tone=rng.uniform(0.84, 1.08),
+                   hue=(rng.uniform(0.95, 1.05), 1.0, rng.uniform(0.92, 1.05)))
+    for k in range(4):   # dense core (dark, mostly hidden)
+        c = (bx + rng.uniform(-.35, .35), by + rng.uniform(-.35, .35), cz + rng.uniform(-.4, .45))
+        leaf_clump(gl, 'Ornamental', crown, c, (R * 0.62, R * 0.62, H * 0.56), rng, sub=1, amp=0.2, freq=1.8,
+                   tone=0.8)
 
 
 def shrub(g, mat, c, size, seed, tone=1.0):
@@ -2100,13 +2238,14 @@ def build_lot():
     trees = []
     for name, base, seed, limbs, tr, fz, lean in OAKS:
         g = Geo(name)
-        oak_tree(g, base, seed, limbs, tr, fz, lean, n_masses=9 if name.endswith('_1') else 10,
-                 mass_max=4.0 if name.endswith('_1') else 3.4, mass_lift=0.4 if name.endswith('_1') else 1.0,
-                 max_strands=1400 if name.endswith('_1') else 2600)
-        trees.append(g)
-    gO = Geo('Tree_Ornamental')
-    ornamental_tree(gO, ORN)
-    return [gFn, gW, gDr, gB, gS, gPr] + trees + [gO]
+        gl = Geo(name + '_Leaves')
+        big = name.endswith('_2')
+        oak_tree(g, base, seed, limbs, tr, fz, lean, max_clumps=228 if big else 192,
+                 max_strands=1700 if big else 1150, gl=gl)
+        trees += [g, gl]
+    gO, gOl = Geo('Tree_Ornamental'), Geo('Tree_Ornamental_Leaves')
+    ornamental_tree(gO, ORN, gl=gOl)
+    return [gFn, gW, gDr, gB, gS, gPr] + trees + [gO, gOl]
 
 
 # ============================================================================ render-only surroundings
@@ -2127,7 +2266,7 @@ def render_extras():
         g = Geo(f'Render_BG_{s}')
         limbs = [(a + s * 7, 60 if tall else 36, 11 if tall else 10) for a in (0, 72, 144, 216, 288)]
         oak_tree(g, b, s, limbs, 0.65 if tall else 0.6, 6.0 if tall else 3.6, (0, 0), moss=0.5,
-                 n_masses=12,
+                 max_clumps=240, max_strands=900, leaf=1.15, spacing=0.95, hi_detail=False,
                  bounds=(-200, -200, 200, 200))
         objs.append(g.build())
     return objs
@@ -2138,6 +2277,9 @@ def export_set(objs, path):
     wp.finalize(objs)
     for o in objs:
         apply_custom_uvs(o)
+        if o.name.endswith('_Leaves'):     # vertex colour only: no texture, so no UVs to export
+            while o.data.uv_layers:
+                o.data.uv_layers.remove(o.data.uv_layers[0])
     wp.export_glb(path, objs)
     return wp.tri_count(objs)
 
@@ -2213,7 +2355,11 @@ def main():
                   "in the photo; the brief put one behind the house, the photo was followed). Interpreted (not "
                   "visible in the photo): side and rear elevations, the hipped side wing, the rear kitchen ell and "
                   "stoop, chimney positions on the rear slope, lattice under the house block (per the brief), shell "
-                  "driveway with concrete apron, mailbox, HVAC condensers, roll carts, porch rockers, swing and ferns.")}
+                  "driveway with concrete apron, mailbox, HVAC condensers, roll carts, porch rockers, swing and ferns. "
+                  "Trees: each is two objects, `Tree_*` (textured bark) and `Tree_*_Leaves` (leaf clusters and Spanish "
+                  "moss, untextured, coloured by COLOR_0 vertex colours, no UVs). Live-oak crowns are ~200 leafy sprays "
+                  "of 3 to 6 small clusters on the twigs and outer branches; moss is thin tapered ribbon strands in "
+                  "drooping clusters of 4 to 9.")}
     with open(os.path.join(mdir, f'{ID}.json'), 'w') as f:
         json.dump(meta, f, indent=1)
     print(json.dumps({k: meta[k] for k in ('triangles', 'triangles_house', 'triangles_lot', 'file_mb', 'ridge_height_m')}))

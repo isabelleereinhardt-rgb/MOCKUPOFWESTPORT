@@ -653,7 +653,7 @@ def b_church_brick(g):
     bx = 1.75; by0, by1 = (ty0 + ty1) / 2 - 1.75, (ty0 + ty1) / 2 + 1.75; cyb = (ty0 + ty1) / 2
     z0, z1 = tops + 0.35, tops + 3.6
     louv = dict(rail=False, sill=False, rd=0.12, T='Trim', glassmat='Glass', lintel=None)
-    bops = {k: [('a', 0.0 if k in 'SN' else cyb * (1 if k == 'E' else -1), 1.5, z0 + 0.5, z1 - 0.35, louv)] for k in 'SENW'}
+    bops = {k: [('a', 0.0 if k in 'SN' else cyb, 1.5, z0 + 0.5, z1 - 0.35, louv)] for k in 'SENW'}   # body() takes world coords
     body(g, -bx, bx, by0, by1, z0, z1, bops, wmat='Trim', found=None, corners=False)
     for cx_, cy_ in ((-bx, by0), (bx, by0), (bx, by1), (-bx, by1)):
         cbox(g, 'Trim', cx_, cy_, 0.4, 0.4, z0, z1, skip='b')
@@ -942,7 +942,7 @@ def lineup(out, ids):
             o.location.x += x + w / 2
         x += w + 6
     wp.render_rig(samples=int(os.environ.get('WP_SAMPLES', 24)), res=tuple(int(v) for v in os.environ.get('WP_RES', '1600x700').split('x')), threads=2, sun_elev=40, sun_az=200)
-    wp.camera((x / 2, -x * 0.62, x * 0.16), (x / 2, 0, 5), lens=35)
+    wp.camera((x / 2, -x * 0.72, x * 0.14), (x / 2, 0, 5), lens=26)
     wp.render(out)
 
 

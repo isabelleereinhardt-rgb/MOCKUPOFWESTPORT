@@ -199,7 +199,7 @@ def M(name):
         'Copper': lambda: wp.mat('Copper', '#ffffff', rough=0.55, metal=0.2, tex=small_normal(wp.tex_metal('lm_verdigris', color='#6f9b88', n=512, tile=1.5, seam=True, seed=48))),
         'Concrete': lambda: wp.mat('Concrete', '#ffffff', rough=0.9, tex=small_normal(wp.tex_ground('lm_concrete', kind='concrete', n=1024, tile=3.0, seed=49))),
         'Block': lambda: wp.mat('Block', '#ffffff', rough=0.85, tex=small_normal(wp.tex_ground('lm_block', kind='stucco', color='#e6e0d2', n=1024, tile=2.0, seed=50))),
-        'TowerPaint': lambda: wp.mat('TowerPaint', '#ffffff', rough=0.45, metal=0.25, tex=tex_painted('lm_tower_paint', '#b2c1cb')),
+        'TowerPaint': lambda: wp.mat('TowerPaint', '#ffffff', rough=0.5, metal=0.1, tex=tex_painted('lm_tower_paint', '#a7b8c4')),
         'Lettering': lambda: wp.mat('Lettering', '#1d2742', rough=0.4, metal=0.2),
         'Steel': lambda: wp.mat('Steel', '#7d8388', rough=0.5, metal=0.7),
         'Stainless': lambda: wp.mat('Stainless', '#ffffff', rough=0.22, metal=1.0, tex=wp.tex_metal('lm_stainless', color='#c9ccce', n=512, tile=0.6, rib=0.05, seed=51)),
@@ -441,7 +441,7 @@ def build_water_tower(A):
         font = os.path.join(bpy.utils.system_resource('DATAFILES'), 'fonts', 'DejaVuSans.woff2')
     letters = []
     for th0 in (0.0, math.pi):
-        for txt, size, zc in (('WESTPORT', 1.9, 37.2), ('FOUNDED 1625', 0.8, 35.0)):
+        for txt, size, zc in (('WESTPORT', 1.9, 37.65), ('FOUNDED 1625', 0.8, 35.85)):
             me = text_mesh(txt, size, font, R, zc, theta0=th0)
             o = bpy.data.objects.new('Lettering', me)
             bpy.context.scene.collection.objects.link(o)
@@ -454,7 +454,7 @@ def build_water_tower(A):
                            front_heading_deg_atlas=s['front_heading_deg_atlas'] if s else 0.0, footprint_m=s['footprint_m'] if s else [12, 12],
                            atlas_kind=s['atlas_kind'] if s else None, atlas_height_m=s['atlas_height_m'] if s else None, street=s['street'] if s else None),
                 lettering=['WESTPORT', 'FOUNDED 1625'],
-                notes=('Classic six-leg elevated steel tank, pale blue-grey (#B2C1CB), 13 m tank on battered tubular legs with tie-rod X bracing, '
+                notes=('Classic six-leg elevated steel tank, pale blue-grey (#A7B8C4), 13 m tank on battered tubular legs with tie-rod X bracing, '
                        'a balcony at the shell bottom, central riser and a caged ladder. Lettering is real geometry (DejaVu Sans Bold, navy), '
                        'WESTPORT over FOUNDED 1625, on the front (toward Mariner Drive) and the back. Center is the QA-moved place point '
                        '(qa.json move_places), which is also the center of Atlas building %s (kind %s in the Atlas, not "tower"). '
@@ -521,7 +521,7 @@ def build_pier_bar(A):
             bar(g, 'DeckWood', a3 + Vector((0, 0, rz + 0.5)), b3 + Vector((0, 0, rz + 0.5)), 0.05, 0.12)
     # the bar: 10 x 14 weathered board building, raised sill, big propped bar windows, metal gable roof
     bx0, bx1, by0, by1 = -5.0, 5.0, -6.0, 8.0
-    fz, zp = DZ + 0.12, DZ + 3.25
+    fz, zp = DZ + 0.02, DZ + 3.2     # the bar's floor is the deck (z = 1.2) plus a 2 cm finish
     box(g, 'DeckWood', bx0 - 0.05, bx1 + 0.05, by0 - 0.05, by1 + 0.05, DZ, fz, skip='b')
     ops = {'S': [('d', 0.0, 1.9, fz, fz + 2.2, dict(pair=True, lite=True, D='PaintedWood', T='DeckWood', rd=0.12)),
                  ('w', -3.3, 2.4, fz + 0.95, fz + 2.15, dict(rail=False, sill='DeckWood', T='DeckWood', mull=1, rd=0.12, glassmat='Glass')),
@@ -1100,7 +1100,7 @@ BUILDERS = [('water-tower', build_water_tower), ('pier-bar', build_pier_bar), ('
             ('chadwicks', build_chadwicks), ('courthouse', build_courthouse), ('carnegie-library', build_library)]
 
 # camera presets per landmark: (eye, target, lens) in the model frame (front = -Y)
-CAMS = {'water-tower': ((30, -60, 2.0), (0, 0, 21), 28), 'pier-bar': ((-17, -24, 5.5), (0, 0, 2.6), 30),
+CAMS = {'water-tower': ((21, -42, 2.0), (0, 0, 21.5), 28), 'pier-bar': ((-17, -24, 5.5), (0, 0, 2.6), 30),
         'williams-funeral-home': ((-20, -30, 4.0), (0, 0, 4.8), 30), 'chadwicks': ((-11, -21, 2.2), (0, -3, 2.2), 30),
         'courthouse': ((-36, -58, 7.0), (0, -4, 10), 30), 'carnegie-library': ((-20, -30, 3.0), (0, -2, 5.0), 30)}
 
@@ -1139,6 +1139,9 @@ if __name__ == '__main__':
     tiles = []
     for lid, fn in BUILDERS:
         if only and lid not in only:
+            tp = os.path.join(TEX, 'tiles', f'tile-{lid}.jpg')
+            if os.path.exists(tp) and not PREVIEW:
+                tiles.append(tp)     # keep the earlier final tile for the sheet
             continue
         MATS.clear()
         objs, meta = fn(A)
@@ -1150,12 +1153,12 @@ if __name__ == '__main__':
         tp = os.path.join(tdir, f'tile-{lid}.jpg')
         render_scene(lid, objs, tp, tile, SAMPLES)
         tiles.append(tp)
-        if lid == 'water-tower' and not PREVIEW:
+        if lid == 'water-tower' and not PREVIEW and '--tile-only' not in ARGS:
             wp.reset(); MATS.clear()
             objs, meta = fn(A)
             wp.finalize(objs)
             wp.render_rig(samples=SAMPLES, res=(1600, 1000), threads=2, sun_elev=34, sun_az=215, ground_size=800)
             wp.camera((30, -62, 1.7), (0, 0, 20.5), lens=28)
             wp.render(os.path.join(RENDERS, 'water-tower.jpg'))
-    if tiles and not only:
+    if len(tiles) == len(BUILDERS):
         contact_sheet(tiles, os.path.join(RENDERS, 'landmarks.jpg') if not PREVIEW else os.path.join(TEX, 'landmarks-preview.jpg'))

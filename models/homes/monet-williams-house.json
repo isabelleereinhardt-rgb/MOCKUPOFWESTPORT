@@ -28,16 +28,16 @@
   "white diagonal lattice and slatted porch skirting",
   "grey painted porch floor, pale blue beadboard porch ceiling"
  ],
- "triangles": 213555,
+ "triangles": 283153,
  "triangles_house": 108637,
- "triangles_lot": 104918,
+ "triangles_lot": 174516,
  "files": {
   "house": "models/homes/monet-williams-house.glb",
   "lot": "models/homes/monet-williams-house-lot.glb"
  },
  "file_mb": {
   "house": 8.09,
-  "lot": 7.49
+  "lot": 7.78
  },
  "house_bbox_m": [
   [
@@ -58,5 +58,5 @@
   22.5
  ],
  "curb_line_local_y": -28.66,
- "notes": "Main block 12.4 x 11.0 m, first floor raised 0.95 m on brick piers, eaves 7.8 m, ridge 12.5 m (Atlas height 10 m; the photo needs the taller roof). The photo shows a long ridge with near-vertical roof ends, so the hip ends are pitched steeper (60 deg) than the front and back (38 deg). Wraparound porch 3.0 m deep on the front and both sides; the left return stops short of the side wing, the right return has brick steps at its back end toward the driveway. From the photo: massing, three dormers with sawn bargeboards and finials, scalloped fascia, turned posts with fan brackets, sawn balusters, balcony with flower boxes, double entry with sidelights and transom, lanterns, brick steps, slatted porch skirting, white picket fence with an X-braced gate, brick walk, rounded ornamental tree right of the walk, and the two moss-hung live oaks (both stand front left in the photo; the brief put one behind the house, the photo was followed). Interpreted (not visible in the photo): side and rear elevations, the hipped side wing, the rear kitchen ell and stoop, chimney positions on the rear slope, lattice under the house block (per the brief), shell driveway with concrete apron, mailbox, HVAC condensers, roll carts, porch rockers, swing and ferns."
+ "notes": "Main block 12.4 x 11.0 m, first floor raised 0.95 m on brick piers, eaves 7.8 m, ridge 12.5 m (Atlas height 10 m; the photo needs the taller roof). The photo shows a long ridge with near-vertical roof ends, so the hip ends are pitched steeper (60 deg) than the front and back (38 deg). Wraparound porch 3.0 m deep on the front and both sides; the left return stops short of the side wing, the right return has brick steps at its back end toward the driveway. From the photo: massing, three dormers with sawn bargeboards and finials, scalloped fascia, turned posts with fan brackets, sawn balusters, balcony with flower boxes, double entry with sidelights and transom, lanterns, brick steps, slatted porch skirting, white picket fence with an X-braced gate, brick walk, rounded ornamental tree right of the walk, and the two moss-hung live oaks (both stand front left in the photo; the brief put one behind the house, the photo was followed). Interpreted (not visible in the photo): side and rear elevations, the hipped side wing, the rear kitchen ell and stoop, chimney positions on the rear slope, lattice under the house block (per the brief), shell driveway with concrete apron, mailbox, HVAC condensers, roll carts, porch rockers, swing and ferns. Trees: each is two objects, `Tree_*` (textured bark) and `Tree_*_Leaves` (leaf clusters and Spanish moss, untextured, coloured by COLOR_0 vertex colours, no UVs). Live-oak crowns are ~200 leafy sprays of 3 to 6 small clusters on the twigs and outer branches; moss is thin tapered ribbon strands in drooping clusters of 4 to 9."
 }

@@ -226,8 +226,8 @@
     "white diagonal lattice and slatted porch skirting",
     "grey painted porch floor, pale blue beadboard porch ceiling"
    ],
-   "notes": "Main block 12.4 x 11.0 m, first floor raised 0.95 m on brick piers, eaves 7.8 m, ridge 12.5 m (Atlas height 10 m; the photo needs the taller roof). The photo shows a long ridge with near-vertical roof ends, so the hip ends are pitched steeper (60 deg) than the front and back (38 deg). Wraparound porch 3.0 m deep on the front and both sides; the left return stops short of the side wing, the right return has brick steps at its back end toward the driveway. From the photo: massing, three dormers with sawn bargeboards and finials, scalloped fascia, turned posts with fan brackets, sawn balusters, balcony with flower boxes, double entry with sidelights and transom, lanterns, brick steps, slatted porch skirting, white picket fence with an X-braced gate, brick walk, rounded ornamental tree right of the walk, and the two moss-hung live oaks (both stand front left in the photo; the brief put one behind the house, the photo was followed). Interpreted (not visible in the photo): side and rear elevations, the hipped side wing, the rear kitchen ell and stoop, chimney positions on the rear slope, lattice under the house block (per the brief), shell driveway with concrete apron, mailbox, HVAC condensers, roll carts, porch rockers, swing and ferns.",
-   "triangles": 213555,
+   "notes": "Main block 12.4 x 11.0 m, first floor raised 0.95 m on brick piers, eaves 7.8 m, ridge 12.5 m (Atlas height 10 m; the photo needs the taller roof). The photo shows a long ridge with near-vertical roof ends, so the hip ends are pitched steeper (60 deg) than the front and back (38 deg). Wraparound porch 3.0 m deep on the front and both sides; the left return stops short of the side wing, the right return has brick steps at its back end toward the driveway. From the photo: massing, three dormers with sawn bargeboards and finials, scalloped fascia, turned posts with fan brackets, sawn balusters, balcony with flower boxes, double entry with sidelights and transom, lanterns, brick steps, slatted porch skirting, white picket fence with an X-braced gate, brick walk, rounded ornamental tree right of the walk, and the two moss-hung live oaks (both stand front left in the photo; the brief put one behind the house, the photo was followed). Interpreted (not visible in the photo): side and rear elevations, the hipped side wing, the rear kitchen ell and stoop, chimney positions on the rear slope, lattice under the house block (per the brief), shell driveway with concrete apron, mailbox, HVAC condensers, roll carts, porch rockers, swing and ferns. Trees: each is two objects, `Tree_*` (textured bark) and `Tree_*_Leaves` (leaf clusters and Spanish moss, untextured, coloured by COLOR_0 vertex colours, no UVs). Live-oak crowns are ~200 leafy sprays of 3 to 6 small clusters on the twigs and outer branches; moss is thin tapered ribbon strands in drooping clusters of 4 to 9.",
+   "triangles": 283153,
    "lotRect": [
     -21.2,
     -28.66,
@@ -468,7 +468,7 @@
    ],
    "heading": 90,
    "building": 58,
-   "height": 6.2,
+   "height": 6.15,
    "notes": "Origin = the platform center at map grade z = 0; the deck top is z = 1.2 (PIER_DECK_Y = WATER_Y + 1.9), pilings run to z = -4. The app draws pier 12 as a 3 m deck (175.1 m long); this model brings its own 16 x 20 m pier-head platform that starts exactly at the seaward end of that polyline (so the app deck and rails do not overlap it) and runs 20 m on along the last segment; the 10 x 14 m bar sits on it with 3 m of deck all round. Front (-Y) faces back up the pier toward Harbor Drive; the rail has a 3.6 m opening where the pier comes in. Atlas building 58 (a shop at the old pier-bar point) is the bar it replaces; hide it. distance_along_pier_m is the platform center measured from the land end, 10 m past the polyline end."
   },
   {
@@ -482,7 +482,7 @@
    "heading": 0,
    "building": 57,
    "height": 44.5,
-   "notes": "Classic six-leg elevated steel tank, pale blue-grey (#B2C1CB), 13 m tank on battered tubular legs with tie-rod X bracing, a balcony at the shell bottom, central riser and a caged ladder. Lettering is real geometry (DejaVu Sans Bold, navy), WESTPORT over FOUNDED 1625, on the front (toward Mariner Drive) and the back. Center is the QA-moved place point (qa.json move_places), which is also the center of Atlas building 57 (kind civic in the Atlas, not \"tower\"). Leg footings spread to a 16.4 m circle, a little beyond the 12 m Atlas square."
+   "notes": "Classic six-leg elevated steel tank, pale blue-grey (#A7B8C4), 13 m tank on battered tubular legs with tie-rod X bracing, a balcony at the shell bottom, central riser and a caged ladder. Lettering is real geometry (DejaVu Sans Bold, navy), WESTPORT over FOUNDED 1625, on the front (toward Mariner Drive) and the back. Center is the QA-moved place point (qa.json move_places), which is also the center of Atlas building 57 (kind civic in the Atlas, not \"tower\"). Leg footings spread to a 16.4 m circle, a little beyond the 12 m Atlas square."
   },
   {
    "id": "williams-funeral-home",
@@ -585,7 +585,7 @@
     "Riverside",
     "North End"
    ],
-   "triangles": 2153,
+   "triangles": 2155,
    "style": "brick church, gable nave with arched windows, brick tower with white belfry and spire on the front",
    "roof": "shingle",
    "size_kb": 404,

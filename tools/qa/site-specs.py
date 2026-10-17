@@ -39,9 +39,9 @@ def spec(key, bi, street):
     _, ei, W, nrm = best
     D = math.dist(pts[(ei+1) % 4], pts[(ei+2) % 4])
     # local frame: +y_local = back (away from street), front faces -y_local (Blender -Y)
-    ux, uy = -nrm[1], nrm[0]  # local +x (to the right when facing the house from the street? see note)
-    # facing the house from the street you look along -nrm; your right hand is (+nrm rotated -90) = (nrm.y, -nrm.x)
-    rx, ry = nrm[1], -nrm[0]
+    # facing the house from the street you look along -nrm; your right hand is that direction turned
+    # clockwise: (-nrm.y, nrm.x). This matches Blender +X and the map's model rotation.
+    rx, ry = -nrm[1], nrm[0]
     def local(px, py):
         vx, vy = px-c[0], py-c[1]
         return (round(vx*rx+vy*ry, 2), round(-(vx*nrm[0]+vy*nrm[1]), 2))

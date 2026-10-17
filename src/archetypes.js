@@ -73,11 +73,13 @@ export class Archetypes {
       for (const b of c.list) {
         if (b.hero) continue;
         const a = this.pick(b); if (!a || !a.parts) { continue; }
-        const [bw, bd, bh] = a.bbox_m, fw = b.fw || b.w, fd = b.fd || b.d;
+        // churches scale by the body (eaves) height, so the steeple keeps its proportion above it
+        const [bw, bd] = a.bbox_m, bh = a.body_height_m || a.bbox_m[2], fw = b.fw || b.w, fd = b.fd || b.d;
         // mobile homes and sheds whose long side faces the street turn 90 degrees, door side to the street
         const turn = (b.kind === 'mobile' || b.kind === 'shed') && (bw / bd - 1) * (fw / fd - 1) < 0;
-        if (turn) { q.setFromAxisAngle(up, Math.atan2(-b.fny, -b.fnx)); s.set(fd / bw, Math.max(2.4, b.h) / bh, fw / bd); }
-        else { q.setFromAxisAngle(up, Math.atan2(b.fnx, -b.fny)); s.set(fw / bw, Math.max(2.4, b.h) / bh, fd / bd); }
+        let sy = Math.max(2.4, b.h) / bh; if (a.body_height_m) sy = Math.min(1.25, Math.max(0.75, sy));
+        if (turn) { q.setFromAxisAngle(up, Math.atan2(-b.fny, -b.fnx)); s.set(fd / bw, sy, fw / bd); }
+        else { q.setFromAxisAngle(up, Math.atan2(b.fnx, -b.fny)); s.set(fw / bw, sy, fd / bd); }
         p.set(b.cx, 0, -b.cy);
         m.compose(p, q, s);
         for (const im of a.parts) {
