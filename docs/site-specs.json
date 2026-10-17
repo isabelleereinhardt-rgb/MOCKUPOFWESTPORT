@@ -1,0 +1,1013 @@
+{
+ "convention": "Local frame: origin = footprint center at grade; local +x = to your right when standing in the street looking at the front door; local -y = toward the street (front); local +y = toward the back. In Blender build with front facing -Y, up +Z. Atlas: x east, y north, meters.",
+ "homes": [
+  {
+   "id": "monet-williams-house",
+   "building_index": 6973,
+   "kind": "house",
+   "atlas_height_m": 10.0,
+   "center_atlas": [
+    -1974.88,
+    1231.88
+   ],
+   "footprint_w_along_street_m": 23.52,
+   "footprint_d_deep_m": 20.01,
+   "front_normal_atlas": [
+    -0.0379,
+    -0.9993
+   ],
+   "front_heading_deg_atlas": -92.2,
+   "street": "Oak Street",
+   "street_class": "residential",
+   "street_centerline_dist_m": 32.41,
+   "street_half_width_m": 3.75,
+   "curb_line_local_y": -28.66,
+   "footprint_local": [
+    [
+     11.76,
+     -9.83
+    ],
+    [
+     -11.76,
+     -9.94
+    ],
+    [
+     -11.5,
+     10.07
+    ],
+    [
+     11.5,
+     9.7
+    ]
+   ],
+   "neighbors_local": [
+    {
+     "i": 6974,
+     "kind": "house",
+     "h": 10.0,
+     "local": [
+      -42.41,
+      -0.02
+     ],
+     "dist": 42.4
+    },
+    {
+     "i": 6971,
+     "kind": "house",
+     "h": 12.0,
+     "local": [
+      45.02,
+      -0.21
+     ],
+     "dist": 45.0
+    },
+    {
+     "i": 7031,
+     "kind": "house",
+     "h": 9.5,
+     "local": [
+      0.85,
+      45.38
+     ],
+     "dist": 45.4
+    },
+    {
+     "i": 6975,
+     "kind": "shed",
+     "h": 3.0,
+     "local": [
+      -44.94,
+      15.72
+     ],
+     "dist": 47.6
+    },
+    {
+     "i": 6972,
+     "kind": "shed",
+     "h": 3.0,
+     "local": [
+      46.27,
+      16.01
+     ],
+     "dist": 49.0
+    },
+    {
+     "i": 7032,
+     "kind": "house",
+     "h": 9.5,
+     "local": [
+      -43.15,
+      46.3
+     ],
+     "dist": 63.3
+    },
+    {
+     "i": 7000,
+     "kind": "house",
+     "h": 11.5,
+     "local": [
+      2.63,
+      -65.77
+     ],
+     "dist": 65.8
+    },
+    {
+     "i": 7030,
+     "kind": "house",
+     "h": 9.0,
+     "local": [
+      49.65,
+      45.77
+     ],
+     "dist": 67.5
+    },
+    {
+     "i": 7001,
+     "kind": "house",
+     "h": 10.5,
+     "local": [
+      -43.07,
+      -63.66
+     ],
+     "dist": 76.9
+    },
+    {
+     "i": 6999,
+     "kind": "house",
+     "h": 10.5,
+     "local": [
+      47.03,
+      -62.7
+     ],
+     "dist": 78.4
+    }
+   ]
+  },
+  {
+   "id": "thompson-house",
+   "building_index": 22180,
+   "kind": "house",
+   "atlas_height_m": 8.5,
+   "center_atlas": [
+    3440.75,
+    923.75
+   ],
+   "footprint_w_along_street_m": 24.14,
+   "footprint_d_deep_m": 18.44,
+   "front_normal_atlas": [
+    -0.9762,
+    0.2169
+   ],
+   "front_heading_deg_atlas": 167.5,
+   "street": "Pelican Point Drive",
+   "street_class": "tertiary",
+   "street_centerline_dist_m": 34.23,
+   "street_half_width_m": 4.5,
+   "curb_line_local_y": -29.73,
+   "footprint_local": [
+    [
+     -12.07,
+     9.08
+    ],
+    [
+     12.07,
+     9.36
+    ],
+    [
+     12.07,
+     -9.08
+    ],
+    [
+     -12.07,
+     -9.36
+    ]
+   ],
+   "neighbors_local": [
+    {
+     "i": 22179,
+     "kind": "shed",
+     "h": 3.0,
+     "local": [
+      -33.81,
+      13.79
+     ],
+     "dist": 36.5
+    },
+    {
+     "i": 22178,
+     "kind": "house",
+     "h": 8.5,
+     "local": [
+      -37.47,
+      -1.53
+     ],
+     "dist": 37.5
+    },
+    {
+     "i": 22181,
+     "kind": "house",
+     "h": 8.0,
+     "local": [
+      57.24,
+      -15.54
+     ],
+     "dist": 59.3
+    },
+    {
+     "i": 23620,
+     "kind": "house",
+     "h": 7.0,
+     "local": [
+      -59.52,
+      11.05
+     ],
+     "dist": 60.5
+    },
+    {
+     "i": 22168,
+     "kind": "house",
+     "h": 8.0,
+     "local": [
+      10.03,
+      -65.49
+     ],
+     "dist": 66.2
+    },
+    {
+     "i": 23650,
+     "kind": "house",
+     "h": 7.5,
+     "local": [
+      6.05,
+      69.85
+     ],
+     "dist": 70.1
+    },
+    {
+     "i": 22167,
+     "kind": "house",
+     "h": 8.0,
+     "local": [
+      -23.12,
+      -67.72
+     ],
+     "dist": 71.6
+    },
+    {
+     "i": 23649,
+     "kind": "house",
+     "h": 8.5,
+     "local": [
+      -33.18,
+      67.94
+     ],
+     "dist": 75.6
+    }
+   ]
+  },
+  {
+   "id": "patel-house",
+   "building_index": 23310,
+   "kind": "house",
+   "atlas_height_m": 7.5,
+   "center_atlas": [
+    4609.88,
+    163.88
+   ],
+   "footprint_w_along_street_m": 23.05,
+   "footprint_d_deep_m": 17.46,
+   "front_normal_atlas": [
+    0.9191,
+    -0.3939
+   ],
+   "front_heading_deg_atlas": -23.2,
+   "street": "Sandpiper Lane",
+   "street_class": "residential",
+   "street_centerline_dist_m": 29.79,
+   "street_half_width_m": 3.75,
+   "curb_line_local_y": -26.04,
+   "footprint_local": [
+    [
+     -11.65,
+     8.67
+    ],
+    [
+     11.65,
+     8.47
+    ],
+    [
+     11.52,
+     -8.34
+    ],
+    [
+     -11.52,
+     -8.8
+    ]
+   ],
+   "neighbors_local": [
+    {
+     "i": 23308,
+     "kind": "house",
+     "h": 7.0,
+     "local": [
+      -44.22,
+      0.59
+     ],
+     "dist": 44.2
+    },
+    {
+     "i": 23309,
+     "kind": "shed",
+     "h": 3.0,
+     "local": [
+      -44.4,
+      16.99
+     ],
+     "dist": 47.5
+    },
+    {
+     "i": 23311,
+     "kind": "house",
+     "h": 8.5,
+     "local": [
+      47.6,
+      0.95
+     ],
+     "dist": 47.6
+    },
+    {
+     "i": 21768,
+     "kind": "house",
+     "h": 8.5,
+     "local": [
+      17.76,
+      -68.67
+     ],
+     "dist": 70.9
+    },
+    {
+     "i": 21769,
+     "kind": "house",
+     "h": 8.5,
+     "local": [
+      -22.06,
+      -69.56
+     ],
+     "dist": 73.0
+    },
+    {
+     "i": 23307,
+     "kind": "house",
+     "h": 7.5,
+     "local": [
+      -79.74,
+      4.66
+     ],
+     "dist": 79.9
+    }
+   ]
+  },
+  {
+   "id": "al-hassan-house",
+   "building_index": 21135,
+   "kind": "house",
+   "atlas_height_m": 7.5,
+   "center_atlas": [
+    5728.62,
+    37.88
+   ],
+   "footprint_w_along_street_m": 24.63,
+   "footprint_d_deep_m": 18.61,
+   "front_normal_atlas": [
+    -0.0929,
+    0.9957
+   ],
+   "front_heading_deg_atlas": 95.3,
+   "street": "Spinnaker Court",
+   "street_class": "tertiary",
+   "street_centerline_dist_m": 33.44,
+   "street_half_width_m": 4.5,
+   "curb_line_local_y": -28.94,
+   "footprint_local": [
+    [
+     -12.04,
+     9.3
+    ],
+    [
+     12.04,
+     9.54
+    ],
+    [
+     12.31,
+     -9.52
+    ],
+    [
+     -12.31,
+     -9.31
+    ]
+   ],
+   "neighbors_local": [
+    {
+     "i": 21133,
+     "kind": "house",
+     "h": 8.5,
+     "local": [
+      -42.11,
+      -2.17
+     ],
+     "dist": 42.2
+    },
+    {
+     "i": 21136,
+     "kind": "house",
+     "h": 7.0,
+     "local": [
+      45.23,
+      -1.68
+     ],
+     "dist": 45.3
+    },
+    {
+     "i": 21134,
+     "kind": "shed",
+     "h": 3.0,
+     "local": [
+      -43.97,
+      12.47
+     ],
+     "dist": 45.7
+    },
+    {
+     "i": 21117,
+     "kind": "house",
+     "h": 9.0,
+     "local": [
+      7.95,
+      -67.68
+     ],
+     "dist": 68.1
+    },
+    {
+     "i": 21116,
+     "kind": "house",
+     "h": 9.0,
+     "local": [
+      -33.41,
+      -65.76
+     ],
+     "dist": 73.8
+    }
+   ]
+  },
+  {
+   "id": "hernandez-house",
+   "building_index": 30499,
+   "kind": "house",
+   "atlas_height_m": 4.5,
+   "center_atlas": [
+    224.12,
+    -1769.25
+   ],
+   "footprint_w_along_street_m": 10.55,
+   "footprint_d_deep_m": 12.54,
+   "front_normal_atlas": [
+    0.0995,
+    0.995
+   ],
+   "front_heading_deg_atlas": 84.3,
+   "street": "Mercer Street",
+   "street_class": "secondary",
+   "street_centerline_dist_m": 28.69,
+   "street_half_width_m": 5.5,
+   "curb_line_local_y": -23.19,
+   "footprint_local": [
+    [
+     -5.02,
+     6.28
+    ],
+    [
+     5.02,
+     6.28
+    ],
+    [
+     5.27,
+     -6.31
+    ],
+    [
+     -5.27,
+     -6.26
+    ]
+   ],
+   "neighbors_local": [
+    {
+     "i": 30498,
+     "kind": "house",
+     "h": 4.5,
+     "local": [
+      -16.62,
+      -0.35
+     ],
+     "dist": 16.6
+    },
+    {
+     "i": 30500,
+     "kind": "duplex",
+     "h": 5.0,
+     "local": [
+      18.13,
+      0.45
+     ],
+     "dist": 18.1
+    },
+    {
+     "i": 30501,
+     "kind": "shed",
+     "h": 3.0,
+     "local": [
+      15.16,
+      14.69
+     ],
+     "dist": 21.1
+    },
+    {
+     "i": 27852,
+     "kind": "house",
+     "h": 4.0,
+     "local": [
+      0.05,
+      29.39
+     ],
+     "dist": 29.4
+    },
+    {
+     "i": 27853,
+     "kind": "house",
+     "h": 4.5,
+     "local": [
+      16.03,
+      28.42
+     ],
+     "dist": 32.6
+    },
+    {
+     "i": 30497,
+     "kind": "house",
+     "h": 4.5,
+     "local": [
+      -33.3,
+      -0.06
+     ],
+     "dist": 33.3
+    },
+    {
+     "i": 27851,
+     "kind": "duplex",
+     "h": 5.0,
+     "local": [
+      -16.34,
+      31.28
+     ],
+     "dist": 35.3
+    },
+    {
+     "i": 30502,
+     "kind": "house",
+     "h": 4.5,
+     "local": [
+      38.13,
+      0.71
+     ],
+     "dist": 38.1
+    },
+    {
+     "i": 27850,
+     "kind": "shed",
+     "h": 3.0,
+     "local": [
+      -36.63,
+      16.85
+     ],
+     "dist": 40.3
+    },
+    {
+     "i": 27849,
+     "kind": "house",
+     "h": 4.0,
+     "local": [
+      -33.21,
+      30.96
+     ],
+     "dist": 45.4
+    }
+   ]
+  },
+  {
+   "id": "abernathy-trailer",
+   "building_index": 173,
+   "kind": "mobile",
+   "atlas_height_m": 3.5,
+   "center_atlas": [
+    -1937.25,
+    -2151.25
+   ],
+   "footprint_w_along_street_m": 19.01,
+   "footprint_d_deep_m": 5.02,
+   "front_normal_atlas": [
+    -0.995,
+    0.0995
+   ],
+   "front_heading_deg_atlas": 174.3,
+   "street": null,
+   "street_class": "service",
+   "street_centerline_dist_m": 9.25,
+   "street_half_width_m": 2.75,
+   "curb_line_local_y": -6.5,
+   "footprint_local": [
+    [
+     9.48,
+     1.82
+    ],
+    [
+     9.48,
+     -3.21
+    ],
+    [
+     -9.48,
+     -1.82
+    ],
+    [
+     -9.48,
+     3.21
+    ]
+   ],
+   "neighbors_local": [
+    {
+     "i": 171,
+     "kind": "mobile",
+     "h": 3.5,
+     "local": [
+      0.9,
+      11.47
+     ],
+     "dist": 11.5
+    },
+    {
+     "i": 175,
+     "kind": "mobile",
+     "h": 3.5,
+     "local": [
+      -0.9,
+      -11.47
+     ],
+     "dist": 11.5
+    },
+    {
+     "i": 169,
+     "kind": "mobile",
+     "h": 3.5,
+     "local": [
+      1.79,
+      22.94
+     ],
+     "dist": 23.0
+    },
+    {
+     "i": 177,
+     "kind": "mobile",
+     "h": 3.5,
+     "local": [
+      -1.79,
+      -22.94
+     ],
+     "dist": 23.0
+    },
+    {
+     "i": 174,
+     "kind": "mobile",
+     "h": 3.5,
+     "local": [
+      -27.91,
+      2.29
+     ],
+     "dist": 28.0
+    },
+    {
+     "i": 176,
+     "kind": "mobile",
+     "h": 3.5,
+     "local": [
+      -28.81,
+      -9.18
+     ],
+     "dist": 30.2
+    },
+    {
+     "i": 172,
+     "kind": "mobile",
+     "h": 3.5,
+     "local": [
+      -27.02,
+      13.76
+     ],
+     "dist": 30.3
+    },
+    {
+     "i": 167,
+     "kind": "mobile",
+     "h": 3.5,
+     "local": [
+      2.69,
+      34.4
+     ],
+     "dist": 34.5
+    },
+    {
+     "i": 179,
+     "kind": "mobile",
+     "h": 3.5,
+     "local": [
+      -2.69,
+      -34.4
+     ],
+     "dist": 34.5
+    },
+    {
+     "i": 178,
+     "kind": "mobile",
+     "h": 3.5,
+     "local": [
+      -29.7,
+      -20.65
+     ],
+     "dist": 36.2
+    }
+   ]
+  },
+  {
+   "id": "delacroix-house",
+   "building_index": 23936,
+   "kind": "house",
+   "atlas_height_m": 8.0,
+   "center_atlas": [
+    5518.75,
+    -634.75
+   ],
+   "footprint_w_along_street_m": 24.4,
+   "footprint_d_deep_m": 18.74,
+   "front_normal_atlas": [
+    -0.7203,
+    0.6936
+   ],
+   "front_heading_deg_atlas": 136.1,
+   "street": "Harbor Drive",
+   "street_class": "secondary",
+   "street_centerline_dist_m": 38.54,
+   "street_half_width_m": 5.5,
+   "curb_line_local_y": -33.04,
+   "footprint_local": [
+    [
+     -12.2,
+     9.32
+    ],
+    [
+     12.2,
+     9.42
+    ],
+    [
+     12.2,
+     -9.32
+    ],
+    [
+     -12.2,
+     -9.42
+    ]
+   ],
+   "neighbors_local": [
+    {
+     "i": 23937,
+     "kind": "house",
+     "h": 8.5,
+     "local": [
+      42.27,
+      -0.79
+     ],
+     "dist": 42.3
+    },
+    {
+     "i": 23935,
+     "kind": "house",
+     "h": 7.0,
+     "local": [
+      -44.36,
+      -1.01
+     ],
+     "dist": 44.4
+    },
+    {
+     "i": 23997,
+     "kind": "house",
+     "h": 7.0,
+     "local": [
+      70.96,
+      19.99
+     ],
+     "dist": 73.7
+    },
+    {
+     "i": 23998,
+     "kind": "house",
+     "h": 7.5,
+     "local": [
+      46.83,
+      57.64
+     ],
+     "dist": 74.3
+    },
+    {
+     "i": 23924,
+     "kind": "house",
+     "h": 9.0,
+     "local": [
+      -14.11,
+      -76.65
+     ],
+     "dist": 77.9
+    }
+   ]
+  },
+  {
+   "id": "sullivan-house",
+   "building_index": 21165,
+   "kind": "house",
+   "atlas_height_m": 8.5,
+   "center_atlas": [
+    6949.5,
+    -1740.75
+   ],
+   "footprint_w_along_street_m": 21.38,
+   "footprint_d_deep_m": 16.77,
+   "front_normal_atlas": [
+    -0.1789,
+    -0.9839
+   ],
+   "front_heading_deg_atlas": -100.3,
+   "street": "Bay Drive",
+   "street_class": "tertiary",
+   "street_centerline_dist_m": 32.74,
+   "street_half_width_m": 4.5,
+   "curb_line_local_y": -28.24,
+   "footprint_local": [
+    [
+     10.69,
+     -8.3
+    ],
+    [
+     -10.69,
+     -8.47
+    ],
+    [
+     -10.69,
+     8.3
+    ],
+    [
+     10.69,
+     8.47
+    ]
+   ],
+   "neighbors_local": [
+    {
+     "i": 21164,
+     "kind": "house",
+     "h": 7.0,
+     "local": [
+      40.07,
+      0.97
+     ],
+     "dist": 40.1
+    },
+    {
+     "i": 21166,
+     "kind": "house",
+     "h": 9.0,
+     "local": [
+      -41.6,
+      -1.71
+     ],
+     "dist": 41.6
+    },
+    {
+     "i": 21167,
+     "kind": "shed",
+     "h": 3.0,
+     "local": [
+      -40.92,
+      12.52
+     ],
+     "dist": 42.8
+    },
+    {
+     "i": 21197,
+     "kind": "house",
+     "h": 7.5,
+     "local": [
+      -12.28,
+      -67.52
+     ],
+     "dist": 68.6
+    },
+    {
+     "i": 21196,
+     "kind": "house",
+     "h": 8.5,
+     "local": [
+      34.39,
+      -63.81
+     ],
+     "dist": 72.5
+    }
+   ]
+  },
+  {
+   "id": "rossi-house",
+   "building_index": 21164,
+   "kind": "house",
+   "atlas_height_m": 7.0,
+   "center_atlas": [
+    6910.25,
+    -1732.62
+   ],
+   "footprint_w_along_street_m": 19.14,
+   "footprint_d_deep_m": 16.45,
+   "front_normal_atlas": [
+    -0.3393,
+    -0.9407
+   ],
+   "front_heading_deg_atlas": -109.8,
+   "street": "Bay Drive",
+   "street_class": "tertiary",
+   "street_centerline_dist_m": 30.8,
+   "street_half_width_m": 4.5,
+   "curb_line_local_y": -26.3,
+   "footprint_local": [
+    [
+     9.57,
+     -8.1
+    ],
+    [
+     -9.57,
+     -8.11
+    ],
+    [
+     -9.48,
+     8.34
+    ],
+    [
+     9.48,
+     7.87
+    ]
+   ],
+   "neighbors_local": [
+    {
+     "i": 21165,
+     "kind": "house",
+     "h": 8.5,
+     "local": [
+      -39.68,
+      5.67
+     ],
+     "dist": 40.1
+    },
+    {
+     "i": 21163,
+     "kind": "house",
+     "h": 7.0,
+     "local": [
+      46.75,
+      -1.18
+     ],
+     "dist": 46.8
+    },
+    {
+     "i": 21196,
+     "kind": "house",
+     "h": 8.5,
+     "local": [
+      -16.32,
+      -62.95
+     ],
+     "dist": 65.0
+    },
+    {
+     "i": 21497,
+     "kind": "house",
+     "h": 7.0,
+     "local": [
+      77.83,
+      3.95
+     ],
+     "dist": 77.9
+    }
+   ]
+  }
+ ]
+}

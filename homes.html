@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Westport Homes</title>
+<meta name="description" content="The Nine's homes in Westport, modeled in Blender: renders, interactive 3D models and downloads.">
+<script type="importmap">
+{ "imports": {
+  "three": "https://unpkg.com/three@0.186.1/build/three.module.js",
+  "three/addons/": "https://unpkg.com/three@0.186.1/examples/jsm/"
+} }
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,400;0,500;1,400&family=Alegreya+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root { --ground: #f4f1ea; --panel: #fbf9f5; --line: #ddd5c8; --ink: #2a2621; --ink-muted: #6f675c; --hover: #f1ece2; --display: 'Alegreya', Georgia, serif; --sans: 'Alegreya Sans', 'Segoe UI', Helvetica, Arial, sans-serif; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --ground: #0e0e11; --panel: #15151a; --line: #2b2b33; --ink: #ffffff; --ink-muted: #9c968c; --hover: #1d1d24; } }
+:root[data-theme="dark"] { --ground: #0e0e11; --panel: #15151a; --line: #2b2b33; --ink: #ffffff; --ink-muted: #9c968c; --hover: #1d1d24; }
+* { box-sizing: border-box; }
+html, body { margin: 0; background: var(--ground); color: var(--ink); font: 15px/1.5 var(--sans); }
+a { color: inherit; } a:hover { color: var(--ink-muted); }
+header { display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: 8px 24px; padding: 22px 28px 14px; border-bottom: 1px solid var(--line); }
+header h1 { margin: 0; font: 500 26px var(--display); letter-spacing: .34em; }
+header p { margin: 0; color: var(--ink-muted); }
+main { display: grid; grid-template-columns: 300px 1fr; min-height: calc(100vh - 70px); }
+nav { border-right: 1px solid var(--line); overflow: auto; }
+nav button { display: flex; gap: 10px; width: 100%; text-align: left; background: none; border: 0; border-bottom: 1px solid var(--line); padding: 10px 18px; cursor: pointer; font: 15px var(--sans); color: var(--ink); align-items: flex-start; }
+nav button:hover { background: var(--hover); } nav button.on { background: var(--hover); box-shadow: inset 3px 0 0 var(--c, var(--ink)); }
+nav small { display: block; color: var(--ink-muted); font-size: 12.5px; }
+nav .sw { width: 10px; height: 10px; margin-top: 6px; flex: none; }
+nav .gh { padding: 14px 18px 6px; font: 500 12px var(--display); letter-spacing: .22em; text-transform: uppercase; color: var(--ink-muted); }
+section { padding: 22px 28px 40px; min-width: 0; }
+.name { margin: 0; display: inline-block; background: #0e0e11; color: var(--c, #fff); font: 400 22px/1 var(--display); letter-spacing: .2em; text-transform: uppercase; padding: 8px 14px 6px; border-left: 4px solid var(--c, #fff); }
+h2 { margin: 0 0 4px; font: 400 30px/1.15 var(--display); }
+.sub { color: var(--ink-muted); margin: 6px 0 16px; }
+.hero { display: grid; grid-template-columns: 1.4fr 1fr; gap: 12px; }
+.hero img { width: 100%; display: block; border: 1px solid var(--line); background: var(--panel); aspect-ratio: 16 / 10; object-fit: cover; }
+.viewer { position: relative; margin-top: 12px; border: 1px solid var(--line); height: min(62vh, 620px); background: #c9d6e0; }
+.viewer canvas { display: block; width: 100%; height: 100%; }
+.viewer .vb { position: absolute; top: 10px; left: 10px; display: flex; gap: 0; }
+.viewer .vb button, .acts a, .acts button { font: 14px var(--sans); color: var(--ink); background: var(--panel); border: 1px solid var(--line); padding: 5px 11px; cursor: pointer; text-decoration: none; }
+.viewer .vb button + button { border-left: 0; } .viewer .vb button.on { background: var(--ink); color: var(--panel); }
+.viewer .msg { position: absolute; inset: 0; display: grid; place-items: center; color: #2a2621; font-size: 15px; pointer-events: none; }
+.cols { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 18px; }
+dl { display: grid; grid-template-columns: 130px 1fr; gap: 5px 14px; margin: 0; font-size: 14px; } dt { color: var(--ink-muted); } dd { margin: 0; }
+h3 { margin: 0 0 8px; font: 500 12.5px var(--display); letter-spacing: .22em; text-transform: uppercase; color: var(--ink-muted); }
+ul { margin: 0; padding-left: 18px; font-size: 14px; } li { margin: 2px 0; }
+.notes { font-size: 14px; color: var(--ink); }
+.acts { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+.chip { display: inline-block; font-size: 12px; padding: 0 7px; border: 1px solid var(--line); color: var(--ink-muted); }
+.empty { color: var(--ink-muted); padding: 40px 0; }
+@media (max-width: 900px) { main { grid-template-columns: 1fr; } nav { border-right: 0; border-bottom: 1px solid var(--line); max-height: 40vh; } .hero, .cols { grid-template-columns: 1fr; } section { padding: 18px 16px 32px; } header { padding: 18px 16px 12px; } }
+</style>
+</head>
+<body>
+<header><h1>HOMES</h1><p>The Nine's homes in Westport, modeled in Blender and placed on the Westport Atlas. <a href="index.html">Open the town map</a></p></header>
+<main>
+  <nav id="list" aria-label="Homes"></nav>
+  <section id="detail"><p class="empty">Loading the homes</p></section>
+</main>
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { Sky } from 'three/addons/objects/Sky.js';
+
+const NINE = ['Calista Yuen', 'Lori Delacroix', 'Reya Patel', 'Nellie Sullivan', 'Charlie Thompson', 'Dalton Abernathy', 'Zane Al-Hassan', 'Morgan Hernandez', 'Elio Rossi'];
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
+const [manifest, gaz] = await Promise.all([fetch('data/models.json').then(r => r.ok ? r.json() : null).catch(() => null), fetch('data/gaz.json').then(r => r.json())]);
+const people = gaz.people;
+const homes = (manifest && manifest.homes || []).map(h => {
+  const nine = people.filter(p => p.group === 'The Nine' && (h.residents || []).includes(p.name)).sort((a, b) => NINE.indexOf(a.name) - NINE.indexOf(b.name));
+  return { ...h, nine, order: nine.length ? NINE.indexOf(nine[0].name) : 99 };
+}).sort((a, b) => a.order - b.order);
+const marks = (manifest && manifest.landmarks || []);
+const list = document.getElementById('list');
+list.innerHTML = `<div class="gh">The Nine</div>` + homes.map(h => `<button data-id="${h.id}" style="--c:${h.nine[0] ? h.nine[0].color : '#888'}">${h.nine.map(n => `<span class="sw" style="background:${n.color}"></span>`).join('') || '<span class="sw" style="background:#888"></span>'}<span>${esc(h.name)}<small>${esc(h.nine.map(n => n.name).join(', '))} · ${esc(h.address)}</small></span></button>`).join('')
+  + (marks.length ? `<div class="gh">Landmarks</div>` + marks.map(m => `<button data-id="${m.id}"><span class="sw" style="background:#9E3D5F"></span><span>${esc(m.name)}<small>${esc(m.notes || '').slice(0, 60)}</small></span></button>`).join('') : '');
+
+// ------------------------------------------------------------ viewer
+const viewer = (() => {
+  const renderer = new THREE.WebGLRenderer({ antialias: true });
+  renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 0.95; renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+  const scene = new THREE.Scene(); const camera = new THREE.PerspectiveCamera(35, 1, 0.3, 5000);
+  const sky = new Sky(); sky.scale.setScalar(4000); const su = sky.material.uniforms; su.turbidity.value = 3; su.rayleigh.value = 1.2; su.mieCoefficient.value = 0.004;
+  const sunDir = new THREE.Vector3().setFromSphericalCoords(1, THREE.MathUtils.degToRad(52), THREE.MathUtils.degToRad(210)); su.sunPosition.value.copy(sunDir);
+  sky.material.onBeforeCompile = sh => { sh.fragmentShader = sh.fragmentShader.replace(/gl_FragColor = vec4\(\s*texColor\s*,\s*1\.0\s*\);/, 'gl_FragColor = vec4(texColor * 0.42, 1.0);'); };
+  scene.add(sky);
+  const pm = new THREE.PMREMGenerator(renderer); const envScene = new THREE.Scene(); const s2 = new Sky(); s2.scale.setScalar(100); s2.material.uniforms.sunPosition.value.copy(sunDir); s2.material.uniforms.showSunDisc.value = 0;
+  s2.material.onBeforeCompile = sh => { sh.fragmentShader = sh.fragmentShader.replace(/gl_FragColor = vec4\(\s*texColor\s*,\s*1\.0\s*\);/, 'gl_FragColor = vec4(texColor * 0.05, 1.0);'); };
+  envScene.add(s2); scene.environment = pm.fromScene(envScene, 0.02).texture;
+  const sun = new THREE.DirectionalLight(0xfff2e0, 2.6); sun.position.copy(sunDir).multiplyScalar(120); sun.castShadow = true; sun.shadow.mapSize.set(4096, 4096);
+  Object.assign(sun.shadow.camera, { left: -45, right: 45, top: 45, bottom: -45, near: 1, far: 400 }); sun.shadow.bias = -0.0003; sun.shadow.normalBias = 0.04; scene.add(sun);
+  scene.add(new THREE.HemisphereLight(0xcfe3ff, 0x5b5a3f, 0.3));
+  const tl = new THREE.TextureLoader(); const grass = tl.load('assets/tex/ground_grass.jpg'); grass.colorSpace = THREE.SRGBColorSpace; grass.wrapS = grass.wrapT = THREE.RepeatWrapping; grass.repeat.set(40, 40); grass.anisotropy = 8;
+  const ground = new THREE.Mesh(new THREE.CircleGeometry(160, 64), new THREE.MeshStandardMaterial({ map: grass, color: 0xbfc79a, roughness: 0.95 }));
+  ground.rotation.x = -Math.PI / 2; ground.receiveShadow = true; scene.add(ground);
+  const asph = tl.load('assets/tex/pave_asphalt.jpg'); asph.colorSpace = THREE.SRGBColorSpace; asph.wrapS = asph.wrapT = THREE.RepeatWrapping; asph.repeat.set(40, 2);
+  const conc = tl.load('assets/tex/pave_concrete.jpg'); conc.colorSpace = THREE.SRGBColorSpace; conc.wrapS = conc.wrapT = THREE.RepeatWrapping; conc.repeat.set(54, 0.5);
+  const street = new THREE.Group(); scene.add(street);
+  const road = new THREE.Mesh(new THREE.PlaneGeometry(160, 7.5), new THREE.MeshStandardMaterial({ map: asph, roughness: 0.9 })); road.rotation.x = -Math.PI / 2; road.position.y = 0.02; road.receiveShadow = true; street.add(road);
+  for (const z of [-5.55, 5.55]) { const w = new THREE.Mesh(new THREE.PlaneGeometry(160, 1.5), new THREE.MeshStandardMaterial({ map: conc, roughness: 0.85 })); w.rotation.x = -Math.PI / 2; w.position.set(0, 0.03, z); w.receiveShadow = true; street.add(w); }
+  const controls = new OrbitControls(camera, renderer.domElement); controls.enableDamping = true; controls.maxPolarAngle = Math.PI * 0.49; controls.minDistance = 4; controls.maxDistance = 300;
+  const holder = new THREE.Group(); scene.add(holder);
+  const loader = new GLTFLoader(); const cache = new Map();
+  let el = null, msg = null;
+  function mount(container) { el = container; el.prepend(renderer.domElement); msg = el.querySelector('.msg'); resize(); }
+  function resize() { if (!el) return; const w = el.clientWidth, h = el.clientHeight; renderer.setPixelRatio(Math.min(devicePixelRatio, 2)); renderer.setSize(w, h); camera.aspect = w / h; camera.updateProjectionMatrix(); }
+  addEventListener('resize', resize);
+  async function show(files, opts = {}) {
+    holder.clear(); msg.textContent = 'Loading the model';
+    for (const f of files.filter(Boolean)) {
+      let g = cache.get(f);
+      if (!g) { g = (await loader.loadAsync(f)).scene; g.traverse(o => { if (o.isMesh) { o.castShadow = o.receiveShadow = true; } }); cache.set(f, g); }
+      holder.add(g);
+    }
+    msg.textContent = '';
+    const box = new THREE.Box3().setFromObject(holder); const size = box.getSize(new THREE.Vector3()); const c = box.getCenter(new THREE.Vector3());
+    const r = Math.max(size.x, size.z) * 0.62 + size.y * 0.4;
+    controls.target.set(c.x, size.y * 0.32, c.z);
+    camera.position.set(c.x + r * 0.62, size.y * 0.45 + r * 0.26, c.z + r * 1.0);
+    // the street at the Atlas curb line, for scale and context
+    street.visible = opts.curb != null;
+    if (opts.curb != null) street.position.z = -opts.curb + 3.75;
+    controls.update();
+  }
+  renderer.setAnimationLoop(() => { controls.update(); renderer.render(scene, camera); });
+  return { mount, show, resize, holder };
+})();
+
+// ------------------------------------------------------------ detail
+const detail = document.getElementById('detail');
+function show(id) {
+  const h = homes.find(x => x.id === id), m = marks.find(x => x.id === id); if (!h && !m) return;
+  document.querySelectorAll('nav button').forEach(b => b.classList.toggle('on', b.dataset.id === id));
+  history.replaceState(null, '', '#' + id);
+  if (h) {
+    const col = h.nine[0] ? h.nine[0].color : '#ffffff';
+    const people = (h.residents || []).join(', ');
+    const mapLink = h.nine[0] ? `index.html#v=${Math.round(h.at[0])},${Math.round(h.at[1])},140,${Math.round((270 - h.heading + 360) % 360)},62&st=0&p=${encodeURIComponent(h.nine[0].name)}` : 'index.html';
+    detail.innerHTML = `
+      <div style="--c:${col}">${h.nine.map(n => `<h1 class="name" style="--c:${n.color}">${esc(n.name)}</h1> `).join('')}</div>
+      <h2 style="margin-top:14px">${esc(h.name)}</h2>
+      <p class="sub">${esc(h.address)} · ${esc(h.neighborhood || '')} · <span class="chip">${esc(h.status || '')}</span></p>
+      <div class="hero">${h.render ? `<img src="${h.render}" alt="${esc(h.name)}, front view rendered in Blender">` : ''}${h.aerial ? `<img src="${h.aerial}" alt="${esc(h.name)} and its lot from above, rendered in Blender">` : ''}</div>
+      <div class="viewer" id="vw"><div class="msg"></div><div class="vb"><button data-v="both" class="on">House and lot</button><button data-v="house">House only</button></div></div>
+      <div class="cols">
+        <div><h3>The home</h3><dl><dt>Who lives here</dt><dd>${esc(people)}</dd><dt>Style</dt><dd>${esc(h.style || '')}</dd><dt>Stories</dt><dd>${h.stories ?? '–'}</dd><dt>Footprint</dt><dd>${h.footprint ? `${h.footprint[0].toFixed(1)} × ${h.footprint[1].toFixed(1)} m (${Math.round(h.footprint[0] * 3.28)} × ${Math.round(h.footprint[1] * 3.28)} ft)` : '–'}</dd><dt>Ridge</dt><dd>${h.ridge ? `${h.ridge.toFixed(1)} m (${Math.round(h.ridge * 3.28)} ft)` : '–'}</dd><dt>Atlas building</dt><dd>#${h.building}, ${Math.round(h.at[0])} E, ${Math.round(h.at[1])} N</dd><dt>Triangles</dt><dd>${(h.triangles || 0).toLocaleString()}</dd></dl></div>
+        <div><h3>Materials</h3><ul>${(h.materials || []).map(x => `<li>${esc(x)}</li>`).join('')}</ul></div>
+      </div>
+      ${h.notes ? `<h3 style="margin-top:18px">What came from your photo and what is interpretation</h3><p class="notes">${esc(h.notes)}</p>` : ''}
+      <div class="acts"><a href="${mapLink}">See it on the map</a><a href="${h.house}" download>Download house (GLB)</a>${h.lot ? `<a href="${h.lot}" download>Download lot (GLB)</a>` : ''}<a href="tools/blender/homes/${h.id.replace(/-/g, '_')}.py" download>Blender script</a></div>`;
+    viewer.mount(document.getElementById('vw'));
+    const files = mode => mode === 'house' ? [h.house] : [h.house, h.lot];
+    const curb = h.lotRect ? h.lotRect[1] : null;
+    viewer.show(files('both'), { curb });
+    detail.querySelectorAll('.vb button').forEach(b => b.onclick = () => { detail.querySelectorAll('.vb button').forEach(x => x.classList.toggle('on', x === b)); viewer.show(files(b.dataset.v), { curb }); });
+  } else {
+    detail.innerHTML = `<h2>${esc(m.name)}</h2><p class="sub">${esc(m.notes || '')}</p><div class="viewer" id="vw"><div class="msg"></div></div><div class="acts"><a href="index.html#v=${Math.round(m.at[0])},${Math.round(m.at[1])},220,0,60&st=0">See it on the map</a><a href="${m.file}" download>Download (GLB)</a></div>`;
+    viewer.mount(document.getElementById('vw')); viewer.show([m.file]);
+  }
+}
+list.onclick = e => { const b = e.target.closest('button[data-id]'); if (b) show(b.dataset.id); };
+if (!homes.length && !marks.length) detail.innerHTML = '<p class="empty">No home models are in data/models.json yet.</p>';
+else show([...homes, ...marks].some(x => x.id === location.hash.slice(1)) ? location.hash.slice(1) : (homes[0] || marks[0]).id);
+</script>
+</body>
+</html>

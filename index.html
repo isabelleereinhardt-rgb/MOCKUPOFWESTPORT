@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Westport 3D</title>
+<meta name="description" content="A to-scale 3D map of Westport, North Carolina, built on the Westport Atlas, with the Nine's homes modeled in Blender, a distance tracker and a map check.">
+<script type="importmap">
+{ "imports": {
+  "three": "https://unpkg.com/three@0.186.1/build/three.module.js",
+  "three/addons/": "https://unpkg.com/three@0.186.1/examples/jsm/"
+} }
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,400;0,500;1,400&family=Alegreya+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root, [data-theme="atlas"] {
+  --ground: #f4f1ea; --panel: #fbf9f5; --line: #ddd5c8; --ink: #2a2621; --ink-muted: #6f675c; --hover: #f1ece2; --on: #ece6da;
+  --lab: #ffffff; --lab-halo: rgba(20, 22, 24, .78); --lab-water: #cfe3f1; --lab-street: #f4f2ee;
+  --display: 'Alegreya', Georgia, 'Times New Roman', serif; --sans: 'Alegreya Sans', 'Segoe UI', Helvetica, Arial, sans-serif;
+}
+[data-theme="shadows"] { --ground: #0e0e11; --panel: #15151a; --line: #2b2b33; --ink: #ffffff; --ink-muted: #9c968c; --hover: #1d1d24; --on: #23232b; }
+body[data-style="1"] { --lab: #4b443c; --lab-halo: rgba(255, 255, 255, .92); --lab-water: #3b6c8e; --lab-street: #4b443c; }
+body[data-style="3"] { --lab: #3a3631; --lab-halo: rgba(255, 255, 255, .9); --lab-water: #4f6f86; --lab-street: #3a3631; }
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; overflow: hidden; background: #c6d3dc; color: var(--ink); font: 15px/1.45 var(--sans); }
+a { color: inherit; } a:hover { color: var(--ink-muted); }
+button { font: inherit; color: var(--ink); background: var(--panel); border: 1px solid var(--line); border-radius: 0; cursor: pointer; padding: 6px 10px; }
+button:hover { background: var(--hover); } button.on { background: var(--ink); color: var(--panel); border-color: var(--ink); }
+.hidden { display: none !important; }
+#view { position: fixed; inset: 0; } #view canvas { display: block; outline: none; touch-action: none; }
+body.measuring #view canvas { cursor: crosshair; }
+.panel { position: fixed; background: var(--panel); border: 1px solid var(--line); z-index: 10; box-shadow: 0 1px 3px rgba(0, 0, 0, .12); }
+.panel .x { position: absolute; top: 8px; right: 8px; border: 1px solid var(--line); background: var(--panel); font-size: 12.5px; line-height: 1.2; padding: 2px 8px; color: var(--ink-muted); z-index: 2; }
+.caps { font-family: var(--display); letter-spacing: .26em; text-transform: uppercase; font-size: 13px; color: var(--ink-muted); }
+.hint { color: var(--ink-muted); font-size: 13.5px; margin: 4px 0 10px; } .hint.pad { padding: 10px 16px; } .mu { color: var(--ink-muted); font-size: 13px; }
+.chip { display: inline-block; font-size: 11.5px; letter-spacing: .04em; padding: 0 6px; border: 1px solid var(--line); color: var(--ink-muted); white-space: nowrap; vertical-align: 2px; font-family: var(--sans); }
+.chip.canon { color: var(--ink); border-color: var(--ink-muted); } .chip.new { border-style: dashed; }
+.sw { display: inline-block; width: 10px; height: 10px; margin-right: 7px; vertical-align: 0; flex: none; }
+.dot { width: 9px; height: 9px; border-radius: 50%; flex: none; margin-top: 6px; } .dot.hollow { border: 1.5px solid var(--ink-muted); }
+
+/* left column: title, search, card */
+#left { position: fixed; top: 16px; left: 16px; width: 360px; bottom: 56px; display: flex; flex-direction: column; gap: 10px; z-index: 10; pointer-events: none; }
+#left > * { pointer-events: auto; position: relative; }
+#title { padding: 14px 18px 12px; }
+#title h1 { margin: 0; font: 500 26px/1.1 var(--display); letter-spacing: .34em; }
+#title p { margin: 6px 0 0; font-size: 14.5px; color: var(--ink-muted); }
+#gaz { display: flex; flex-direction: column; min-height: 0; flex: 0 1 auto; max-height: 52vh; }
+#gaz .head { display: flex; align-items: center; justify-content: space-between; padding: 9px 14px; border-bottom: 1px solid var(--line); }
+#gaz .head button { padding: 2px 9px; font-size: 13px; }
+#q { width: 100%; border: 0; border-bottom: 1px solid var(--line); background: transparent; color: var(--ink); padding: 11px 14px; font: 15px var(--sans); outline: none; }
+#q::placeholder { color: var(--ink-muted); }
+#results { overflow: auto; flex: 1; min-height: 0; }
+body.gaz-min #results, body.gaz-min #q { display: none; }
+.res { display: flex; gap: 10px; align-items: flex-start; width: 100%; text-align: left; background: none; border: 0; border-bottom: 1px solid var(--line); padding: 8px 14px; }
+.res .nm { font-size: 15px; } .res .sub { display: block; font-size: 12.5px; color: var(--ink-muted); line-height: 1.3; }
+.res .sw { margin-top: 6px; }
+.group-h { padding: 10px 14px 4px; font-size: 12px; letter-spacing: .16em; text-transform: uppercase; color: var(--ink-muted); }
+#card { flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; }
+#cardBody { overflow: auto; }
+#card .top { padding: 14px 64px 10px 16px; border-bottom: 1px solid var(--line); }
+#card h2 { margin: 0 6px 0 0; display: inline; font: 400 22px/1.2 var(--display); }
+#card h2.nine { color: var(--c); font: 400 19px/1.25 var(--display); letter-spacing: .18em; text-transform: uppercase; background: #0e0e11; padding: 4px 10px 3px; display: inline-block; }
+#card .addr { margin-top: 5px; font-size: 14px; color: var(--ink-muted); }
+#card .body { padding: 10px 16px 16px; font-size: 14px; } #card p { margin: 6px 0; } #card .was { color: var(--ink-muted); font-size: 13.5px; }
+#card dl { display: grid; grid-template-columns: 104px 1fr; gap: 4px 12px; margin: 6px 0; font-size: 13.5px; } #card dt { color: var(--ink-muted); } #card dd { margin: 0; }
+#card a[data-open] { cursor: pointer; text-decoration: underline; text-decoration-color: var(--line); }
+#card h3, .pbody h3 { margin: 14px 0 6px; font: 500 12.5px var(--display); letter-spacing: .22em; text-transform: uppercase; color: var(--ink-muted); }
+.render { margin: 10px 0 4px; } .render img { width: 100%; display: block; border: 1px solid var(--line); } .render figcaption { font-size: 12.5px; color: var(--ink-muted); margin-top: 5px; }
+.acts { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0 2px; } .acts button { font-size: 13px; padding: 4px 10px; }
+table.dt { width: 100%; border-collapse: collapse; font-size: 13px; font-variant-numeric: tabular-nums; }
+table.dt th { text-align: left; font-weight: 500; color: var(--ink-muted); font-size: 12px; padding: 4px 6px 4px 0; border-bottom: 1px solid var(--line); }
+table.dt td { padding: 4px 6px 4px 0; border-bottom: 1px solid var(--line); white-space: nowrap; } table.dt td:first-child { white-space: normal; }
+table.dt tr[data-go] { cursor: pointer; } table.dt tr[data-go]:hover td { background: var(--hover); }
+
+/* right side: toolbar and tool panels */
+#bar { position: fixed; top: 16px; right: 16px; z-index: 11; display: flex; flex-direction: column; align-items: flex-end; gap: 8px; }
+.seg { display: flex; border: 1px solid var(--line); background: var(--panel); box-shadow: 0 1px 3px rgba(0, 0, 0, .12); }
+.seg button { border: 0; padding: 8px 13px 6px; font-size: 14.5px; color: var(--ink-muted); border-bottom: 2px solid transparent; background: none; }
+.seg button.on { color: var(--ink); border-bottom-color: var(--ink); background: none; }
+#bar .row { display: flex; gap: 8px; } #tools { display: flex; gap: 0; box-shadow: 0 1px 3px rgba(0, 0, 0, .12); } #tools button { border-left-width: 0; font-size: 14px; } #tools button:first-child { border-left-width: 1px; }
+.tool { top: 112px; right: 16px; width: 380px; max-height: calc(100vh - 200px); display: flex; flex-direction: column; }
+.tool .ph { padding: 12px 64px 10px 16px; border-bottom: 1px solid var(--line); } .tool .ph h2 { margin: 0; font: 500 13px var(--display); letter-spacing: .26em; text-transform: uppercase; }
+.tool .pbody { overflow: auto; padding: 10px 16px 14px; font-size: 14px; }
+#mMode, #dTabs, .filters { display: flex; flex-wrap: wrap; gap: 0; margin: 2px 0 10px; border-bottom: 1px solid var(--line); }
+#mMode button, #dTabs button, .filters button { border: 0; background: none; border-bottom: 2px solid transparent; padding: 6px 10px; font-size: 13.5px; color: var(--ink-muted); }
+#mMode button.on, #dTabs button.on, .filters button.on { color: var(--ink); border-bottom-color: var(--ink); background: none; }
+.filters { align-items: center; } .filters .dl { margin-left: auto; font-size: 13px; }
+#mRead .mbig { font: 400 30px/1.1 var(--display); } #mRead .msum { margin-top: 4px; font-size: 13.5px; color: var(--ink-muted); }
+#mRead ol.legs { margin: 10px 0 0; padding-left: 20px; font-size: 13.5px; } #mRead ol.legs .via { color: var(--ink-muted); font-size: 12.5px; }
+#mtags { position: fixed; inset: 0; pointer-events: none; z-index: 8; }
+.mtag { position: absolute; transform: translate(-50%, -150%); background: #15151a; color: #fff; padding: 2px 8px; font-size: 12.5px; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.mx { overflow: auto; } table.mxt td { font-size: 12.5px; } table.mxt td span { display: block; color: var(--ink-muted); font-size: 11.5px; } table.mxt td.self { color: var(--ink-muted); text-align: center; }
+#layers { width: 240px; } #layers label { display: flex; gap: 8px; align-items: center; padding: 3px 0; font-size: 14px; } #layers .sub { margin: 10px 0 4px; }
+#layers input[type=range] { width: 100%; } #layers select { font: inherit; padding: 3px 6px; border: 1px solid var(--line); background: var(--panel); color: var(--ink); }
+.qasum { display: flex; gap: 0; margin: 6px 0 10px; border: 1px solid var(--line); } .qasum div { flex: 1; padding: 6px 10px; border-right: 1px solid var(--line); } .qasum div:last-child { border-right: 0; }
+.qasum b { display: block; font: 400 22px var(--display); } .qasum span { font-size: 12px; color: var(--ink-muted); }
+ol.issues { margin: 6px 0 0; padding-left: 18px; font-size: 13px; } ol.issues li { margin: 0 0 6px; cursor: pointer; } ol.issues li:hover { color: var(--ink-muted); }
+#about .pbody p { margin: 6px 0; } #about .pbody li { margin: 3px 0; }
+
+/* bottom */
+#readout { position: fixed; left: 16px; bottom: 12px; z-index: 10; display: flex; gap: 0; font-size: 12.5px; background: var(--panel); border: 1px solid var(--line); max-width: calc(100vw - 420px); overflow: hidden; }
+#readout span { padding: 4px 10px; border-right: 1px solid var(--line); white-space: nowrap; font-variant-numeric: tabular-nums; } #readout span:last-child { border-right: 0; } #readout .live { color: var(--ink); background: var(--on); }
+#br { position: fixed; right: 16px; bottom: 12px; z-index: 10; display: flex; align-items: flex-end; gap: 8px; }
+#scale { padding: 4px 8px 5px; font-size: 12px; color: var(--ink-muted); min-width: 70px; position: static; } #scaleBar { height: 6px; border: 1.5px solid var(--ink); border-top: 0; margin-top: 2px; }
+#nav { display: flex; flex-direction: column; position: static; } #nav button { width: 38px; height: 34px; padding: 0; font-size: 18px; border-top-width: 0; } #nav button:first-child { border-top-width: 1px; }
+#compass { width: 38px; height: 38px; padding: 0; display: grid; place-items: center; } #needle { transition: transform .08s linear; }
+#foot { position: fixed; right: 16px; bottom: 0; transform: translateY(100%); }
+#credit { position: fixed; left: 50%; bottom: 12px; transform: translateX(-50%); z-index: 9; font-size: 12px; color: var(--ink); background: var(--panel); border: 1px solid var(--line); padding: 3px 10px; white-space: nowrap; }
+#streetHelp { position: fixed; left: 50%; top: 16px; transform: translateX(-50%); z-index: 12; padding: 8px 14px; font-size: 14px; }
+
+/* labels */
+#labels { position: fixed; inset: 0; pointer-events: none; z-index: 5; overflow: hidden; }
+.lb { position: absolute; left: 0; top: 0; white-space: nowrap; color: var(--lab); font: 500 12.5px var(--sans); text-shadow: 0 0 2px var(--lab-halo), 0 0 3px var(--lab-halo), 0 0 5px var(--lab-halo); will-change: transform; }
+.lb.hit { pointer-events: auto; cursor: pointer; }
+.lb.hood { font: 500 14px var(--display); letter-spacing: .3em; text-transform: uppercase; }
+.lb.town { font: 500 26px var(--display); letter-spacing: .5em; text-transform: uppercase; }
+.lb.edge { font: italic 400 13px var(--display); }
+.lb.water { font: italic 400 15px var(--display); color: var(--lab-water); letter-spacing: .12em; }
+.lb.street { font: 500 11.5px var(--sans); color: var(--lab-street); letter-spacing: .03em; }
+.lb.street.major { font-size: 12.5px; font-weight: 700; }
+.lb.place { display: flex; align-items: center; gap: 5px; font-size: 12.5px; }
+.lb.place i { width: 8px; height: 8px; border-radius: 50%; border: 1.5px solid #fff; flex: none; }
+.lb.home span { font-size: 11.5px; opacity: .92; }
+.lb.nine { text-shadow: none; }
+.lb.nine b { display: block; background: rgba(14, 14, 17, .88); color: var(--c); font: 400 12px/1 var(--display); letter-spacing: .2em; text-transform: uppercase; padding: 5px 8px 4px 10px; border-left: 3px solid var(--c); }
+.lb.nine em { position: absolute; left: 50%; top: 100%; width: 1.5px; height: var(--lead, 30px); background: var(--c); transform: translateX(-50%); }
+.lb.nine em::after { content: ''; position: absolute; left: 50%; bottom: -3px; width: 6px; height: 6px; border-radius: 50%; background: var(--c); transform: translateX(-50%); box-shadow: 0 0 0 1.5px rgba(14, 14, 17, .8); }
+
+/* loading */
+#loading { position: fixed; inset: 0; z-index: 50; background: var(--ground); display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 14px; }
+#loading h1 { margin: 0; font: 500 30px var(--display); letter-spacing: .34em; } #loading p { margin: 0; color: var(--ink-muted); font-size: 15px; }
+
+@media (max-width: 900px) {
+  #left { width: calc(100vw - 32px); bottom: auto; max-height: 46vh; } #title { display: none; }
+  #bar { top: auto; bottom: 64px; right: 16px; } .tool { top: auto; bottom: 150px; left: 16px; right: 16px; width: auto; max-height: 42vh; }
+  #readout { display: none; } #credit { display: none; }
+}
+</style>
+</head>
+<body data-theme="atlas" data-style="0">
+<div id="view"></div>
+<div id="labels"></div>
+<div id="mtags"></div>
+<div id="loading"><h1>WESTPORT</h1><p id="loadmsg">Opening the Atlas</p></div>
+
+<div id="left">
+  <div class="panel" id="title"><h1>WESTPORT</h1><p>Seat of Lindon County, North Carolina · pop. 74,529</p></div>
+  <div class="panel" id="gaz">
+    <div class="head"><span class="caps">Gazetteer</span><button id="gazToggle">Hide</button></div>
+    <input id="q" placeholder="Search places, people, streets or an address" autocomplete="off" aria-label="Search the gazetteer">
+    <div id="results"></div>
+  </div>
+  <div class="panel hidden" id="card"><button class="x" onclick="WP.ui.closeCard()">Close</button><div id="cardBody"></div></div>
+</div>
+
+<div id="bar">
+  <div class="row">
+    <div class="seg" id="segStyle"><button data-v="0" class="on">Realistic</button><button data-v="1">Atlas</button><button data-v="2">Shadows</button><button data-v="3">Clay</button></div>
+    <div class="seg" id="segView"><button data-v="2D">2D</button><button data-v="3D" class="on">3D</button><button data-v="Street">Street</button></div>
+  </div>
+  <div id="tools"><button id="measureBtn" title="Measure (M)">Measure</button><button id="distBtn">Distances</button><button id="qaBtn">Map check</button><button id="layersBtn">Layers</button><button id="aboutBtn">About</button></div>
+</div>
+
+<div class="panel tool hidden" id="measure"><button class="x">Close</button><div class="ph"><h2>Measure</h2></div>
+  <div class="pbody"><div id="mMode"><button data-m="road" class="on">By road</button><button data-m="line">Straight line</button></div><div id="mRead"></div><div class="acts"><button id="mClear">Clear</button></div></div></div>
+<div class="panel tool hidden" id="dist"><button class="x">Close</button><div class="ph"><h2>Distances</h2></div>
+  <div class="pbody"><div id="dTabs"><button data-t="from" class="on">From one place</button><button data-t="nine">The Nine's homes</button></div><div id="distBody"></div></div></div>
+<div class="panel tool hidden" id="qa"><button class="x">Close</button><div class="ph"><h2>Map check</h2></div><div class="pbody" id="qaBody"></div></div>
+<div class="panel tool hidden" id="layers"><button class="x">Close</button><div class="ph"><h2>Layers</h2></div>
+  <div class="pbody">
+    <label><input type="checkbox" data-l="homes" checked> Homes and the Nine</label>
+    <label><input type="checkbox" data-l="places" checked> Places</label>
+    <label><input type="checkbox" data-l="streets" checked> Street names</label>
+    <label><input type="checkbox" data-l="hoods" checked> Neighborhoods</label>
+    <label><input type="checkbox" data-l="water" checked> Water names</label>
+    <label><input type="checkbox" data-l="buildings" checked> Buildings</label>
+    <label><input type="checkbox" data-l="trees" checked> Trees</label>
+    <label><input type="checkbox" data-l="shadows" checked> Sun shadows</label>
+    <label><input type="checkbox" data-l="ao" checked> Contact shading</label>
+    <div class="sub caps">Time of day <span id="hourOut" class="mu">3:30 pm</span></div>
+    <input type="range" id="hour" min="5.5" max="21" step="0.25" value="15.5" aria-label="Time of day">
+    <div class="sub caps">Units</div>
+    <select id="units"><option value="imperial">Feet and miles</option><option value="metric">Meters and kilometers</option></select>
+  </div></div>
+<div class="panel tool hidden" id="about"><button class="x">Close</button><div class="ph"><h2>About this map</h2></div>
+  <div class="pbody">
+    <p>Westport in 3D, built on the Westport Atlas: every street, building, shoreline and address comes from the Atlas files (gaz.json and wpdata.json), at true scale in meters from Courthouse Square.</p>
+    <p>The Nine's homes and the town's landmarks are modeled in Blender from your photos and Pinterest board, and placed on their exact Atlas footprints. Every other building is drawn from its Atlas footprint and height.</p>
+    <h3>How to move</h3>
+    <ul><li>Left-drag pans, right-drag turns, the wheel zooms toward the cursor.</li><li>2D looks straight down with north up. Street drops you to eye level: drag to look, W A S D or the arrow keys to walk, Shift to run, Esc to leave.</li><li>Press / to search and M to measure.</li></ul>
+    <h3>What is canon</h3>
+    <p>Cards show each place's status from your register. Designs of the homes are interpretations unless a photo was supplied; the Map check lists everything that was corrected or needs your decision.</p>
+  </div></div>
+
+<div class="panel" id="readout"><span>Move over the map</span></div>
+<div id="br">
+  <div class="panel" id="scale"><span id="scaleTxt">500 ft</span><div id="scaleBar" style="width:80px"></div></div>
+  <div class="panel" id="nav"><button id="compass" title="North up"><svg width="22" height="22" viewBox="0 0 22 22" id="needle"><path d="M11 2 L15 12 L11 10 L7 12 Z" fill="#b34a5e"/><path d="M11 20 L7 12 L11 10 L15 12 Z" fill="currentColor" opacity=".35"/></svg></button><button id="zin" aria-label="Zoom in">+</button><button id="zout" aria-label="Zoom out">−</button></div>
+</div>
+<div id="credit">Fictional town · map data generated for TBOS · not a real survey</div>
+<div class="panel hidden" id="streetHelp">Street view: drag to look, W A S D to walk, Shift to run, Esc to leave</div>
+
+<script type="module">
+import { boot } from './src/main.js';
+boot();
+</script>
+</body>
+</html>
