@@ -1,0 +1,298 @@
+[
+ {
+  "id": "house-ranch",
+  "kinds": [
+   "house"
+  ],
+  "bbox_m": [
+   14.2,
+   10.58,
+   5.86
+  ],
+  "stories": 1,
+  "best_aspect": 1.342,
+  "neighborhoods": [
+   "Westport Acres",
+   "Pinecrest",
+   "North End",
+   "South of the river"
+  ],
+  "triangles": 722,
+  "style": "1950s-60s ranch, low hip roof",
+  "roof": "shingle",
+  "size_kb": 364
+ },
+ {
+  "id": "house-brick-ranch",
+  "kinds": [
+   "house"
+  ],
+  "bbox_m": [
+   15.45,
+   11.26,
+   6.19
+  ],
+  "stories": 1,
+  "best_aspect": 1.372,
+  "neighborhoods": [
+   "Westport Acres",
+   "Pinecrest",
+   "Harborview",
+   "North End",
+   "South of the river"
+  ],
+  "triangles": 887,
+  "style": "brick ranch, side gable with siding gables and a gabled entry portico",
+  "roof": "shingle",
+  "size_kb": 375
+ },
+ {
+  "id": "house-bungalow",
+  "kinds": [
+   "house"
+  ],
+  "bbox_m": [
+   10.3,
+   14.86,
+   6.42
+  ],
+  "stories": 1,
+  "best_aspect": 0.693,
+  "neighborhoods": [
+   "Riverside",
+   "Garden District",
+   "North End",
+   "Downtown"
+  ],
+  "triangles": 869,
+  "style": "Craftsman bungalow, front gable with an offset front-gable porch on brick piers",
+  "roof": "shingle",
+  "size_kb": 374
+ },
+ {
+  "id": "house-cape",
+  "kinds": [
+   "house"
+  ],
+  "bbox_m": [
+   11.4,
+   10.26,
+   8.34
+  ],
+  "stories": 1.5,
+  "best_aspect": 1.111,
+  "neighborhoods": [
+   "Westport Acres",
+   "Garden District",
+   "Harborview",
+   "North End"
+  ],
+  "triangles": 1019,
+  "style": "Cape Cod, steep side gable, two gabled dormers, end chimney",
+  "roof": "shingle",
+  "size_kb": 384
+ },
+ {
+  "id": "house-colonial",
+  "kinds": [
+   "house"
+  ],
+  "bbox_m": [
+   13.4,
+   10.61,
+   10.33
+  ],
+  "stories": 2,
+  "best_aspect": 1.263,
+  "neighborhoods": [
+   "Harborview",
+   "Garden District",
+   "Westport Acres",
+   "Uptown"
+  ],
+  "triangles": 1479,
+  "style": "Colonial Revival, two stories, side gable, five bays with shutters, end chimney",
+  "roof": "shingle",
+  "size_kb": 416
+ },
+ {
+  "id": "house-foursquare",
+  "kinds": [
+   "house"
+  ],
+  "bbox_m": [
+   10.1,
+   12.29,
+   10.11
+  ],
+  "stories": 2.5,
+  "best_aspect": 0.822,
+  "neighborhoods": [
+   "Garden District",
+   "Downtown",
+   "North End",
+   "Riverside"
+  ],
+  "triangles": 1526,
+  "style": "American Foursquare, hip roof with hipped dormer, full-width porch",
+  "roof": "shingle",
+  "size_kb": 419
+ },
+ {
+  "id": "house-farmhouse",
+  "kinds": [
+   "house"
+  ],
+  "bbox_m": [
+   14.2,
+   14.11,
+   10.13
+  ],
+  "stories": 2,
+  "best_aspect": 1.006,
+  "neighborhoods": [
+   "North of town",
+   "Riverside",
+   "North End",
+   "Marsh Point"
+  ],
+  "triangles": 1433,
+  "style": "two-story farmhouse (I-house) with standing-seam metal roof, rear ell, wraparound porch",
+  "roof": "metal",
+  "size_kb": 296
+ },
+ {
+  "id": "house-shotgun",
+  "kinds": [
+   "house"
+  ],
+  "bbox_m": [
+   5.5,
+   17.64,
+   6.27
+  ],
+  "stories": 1,
+  "best_aspect": 0.312,
+  "neighborhoods": [
+   "Riverside",
+   "Downtown",
+   "South of the river"
+  ],
+  "triangles": 994,
+  "style": "shotgun house on brick piers, front gable over a full-width porch",
+  "roof": "shingle",
+  "size_kb": 382
+ },
+ {
+  "id": "house-coastal",
+  "kinds": [
+   "house"
+  ],
+  "bbox_m": [
+   10.1,
+   12.15,
+   8.31
+  ],
+  "stories": 1,
+  "best_aspect": 0.831,
+  "neighborhoods": [
+   "The beach",
+   "Marsh Point",
+   "Harborview"
+  ],
+  "triangles": 1370,
+  "style": "raised coastal cottage on brick piers, hip roof, porch with a side-running stair",
+  "roof": "metal",
+  "size_kb": 292
+ },
+ {
+  "id": "house-victorian",
+  "kinds": [
+   "house"
+  ],
+  "bbox_m": [
+   13.2,
+   12.84,
+   12.14
+  ],
+  "stories": 2.5,
+  "best_aspect": 1.028,
+  "neighborhoods": [
+   "Garden District",
+   "Downtown",
+   "Uptown"
+  ],
+  "triangles": 1828,
+  "style": "Queen Anne Victorian: steep hip with a front cross gable bay, wraparound porch, tall chimneys",
+  "roof": "shingle",
+  "size_kb": 439
+ },
+ {
+  "id": "duplex-one",
+  "kinds": [
+   "duplex"
+  ],
+  "bbox_m": [
+   16.4,
+   11.48,
+   5.19
+  ],
+  "stories": 1,
+  "best_aspect": 1.429,
+  "neighborhoods": [
+   "Westport Acres",
+   "Riverside",
+   "North of Patriots Boulevard",
+   "Pinecrest"
+  ],
+  "triangles": 850,
+  "style": "one-story side-by-side duplex, hip roof, twin covered stoops",
+  "roof": "shingle",
+  "size_kb": 373
+ },
+ {
+  "id": "duplex-two",
+  "kinds": [
+   "duplex"
+  ],
+  "bbox_m": [
+   14.0,
+   10.91,
+   8.82
+  ],
+  "stories": 2,
+  "best_aspect": 1.283,
+  "neighborhoods": [
+   "Riverside",
+   "Downtown",
+   "North End",
+   "South of the river"
+  ],
+  "triangles": 1230,
+  "style": "two-story side-by-side duplex, side gable, shared front porch",
+  "roof": "shingle",
+  "size_kb": 399
+ },
+ {
+  "id": "townhouse-row",
+  "kinds": [
+   "townhouse"
+  ],
+  "bbox_m": [
+   28.1,
+   11.21,
+   9.12
+  ],
+  "stories": 2,
+  "best_aspect": 2.507,
+  "neighborhoods": [
+   "Downtown",
+   "Uptown",
+   "Harborview"
+  ],
+  "triangles": 1982,
+  "style": "row of four two-story townhouses, side gable, brick party-wall parapets, door hoods",
+  "roof": "shingle",
+  "size_kb": 450
+ }
+]

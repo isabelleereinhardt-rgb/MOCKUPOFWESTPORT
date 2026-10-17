@@ -1,0 +1,158 @@
+[
+ {
+  "id": "live-oak",
+  "height_m": 16.6,
+  "spread_m": 21.37,
+  "triangles": 2837,
+  "lod1_triangles": 281,
+  "use": "streets|yards|coast",
+  "files": {
+   "lod0": "models/vegetation/live-oak.glb",
+   "lod1": "models/vegetation/live-oak-lod1.glb"
+  }
+ },
+ {
+  "id": "live-oak-young",
+  "height_m": 9.28,
+  "spread_m": 10.42,
+  "triangles": 1785,
+  "lod1_triangles": 225,
+  "use": "streets|yards|coast",
+  "files": {
+   "lod0": "models/vegetation/live-oak-young.glb",
+   "lod1": "models/vegetation/live-oak-young-lod1.glb"
+  }
+ },
+ {
+  "id": "magnolia",
+  "height_m": 11.01,
+  "spread_m": 7.61,
+  "triangles": 1909,
+  "lod1_triangles": 259,
+  "use": "streets|yards",
+  "files": {
+   "lod0": "models/vegetation/magnolia.glb",
+   "lod1": "models/vegetation/magnolia-lod1.glb"
+  }
+ },
+ {
+  "id": "loblolly-pine",
+  "height_m": 24.64,
+  "spread_m": 8.98,
+  "triangles": 1716,
+  "lod1_triangles": 185,
+  "use": "woods|yards|streets",
+  "files": {
+   "lod0": "models/vegetation/loblolly-pine.glb",
+   "lod1": "models/vegetation/loblolly-pine-lod1.glb"
+  }
+ },
+ {
+  "id": "pine-young",
+  "height_m": 9.99,
+  "spread_m": 5.04,
+  "triangles": 1671,
+  "lod1_triangles": 165,
+  "use": "woods|yards",
+  "files": {
+   "lod0": "models/vegetation/pine-young.glb",
+   "lod1": "models/vegetation/pine-young-lod1.glb"
+  }
+ },
+ {
+  "id": "crepe-myrtle",
+  "height_m": 5.15,
+  "spread_m": 4.87,
+  "triangles": 1500,
+  "lod1_triangles": 233,
+  "use": "streets|yards",
+  "files": {
+   "lod0": "models/vegetation/crepe-myrtle.glb",
+   "lod1": "models/vegetation/crepe-myrtle-lod1.glb"
+  }
+ },
+ {
+  "id": "crepe-myrtle-pink",
+  "height_m": 5.2,
+  "spread_m": 4.76,
+  "triangles": 1500,
+  "lod1_triangles": 233,
+  "use": "streets|yards",
+  "files": {
+   "lod0": "models/vegetation/crepe-myrtle-pink.glb",
+   "lod1": "models/vegetation/crepe-myrtle-pink-lod1.glb"
+  }
+ },
+ {
+  "id": "sabal-palmetto",
+  "height_m": 9.49,
+  "spread_m": 6.24,
+  "triangles": 1631,
+  "lod1_triangles": 163,
+  "use": "coast|yards|streets",
+  "files": {
+   "lod0": "models/vegetation/sabal-palmetto.glb",
+   "lod1": "models/vegetation/sabal-palmetto-lod1.glb"
+  }
+ },
+ {
+  "id": "bald-cypress",
+  "height_m": 17.95,
+  "spread_m": 7.64,
+  "triangles": 1905,
+  "lod1_triangles": 185,
+  "use": "wet",
+  "files": {
+   "lod0": "models/vegetation/bald-cypress.glb",
+   "lod1": "models/vegetation/bald-cypress-lod1.glb"
+  }
+ },
+ {
+  "id": "hardwood",
+  "height_m": 15.28,
+  "spread_m": 11.54,
+  "triangles": 1973,
+  "lod1_triangles": 239,
+  "use": "streets|yards|woods",
+  "files": {
+   "lod0": "models/vegetation/hardwood.glb",
+   "lod1": "models/vegetation/hardwood-lod1.glb"
+  }
+ },
+ {
+  "id": "shrub",
+  "height_m": 1.18,
+  "spread_m": 1.67,
+  "triangles": 475,
+  "lod1_triangles": 80,
+  "use": "yards|streets",
+  "files": {
+   "lod0": "models/vegetation/shrub.glb",
+   "lod1": "models/vegetation/shrub-lod1.glb"
+  }
+ },
+ {
+  "id": "hedge-1m",
+  "height_m": 1.13,
+  "spread_m": 1.0,
+  "triangles": 480,
+  "lod1_triangles": 28,
+  "use": "yards|streets",
+  "files": {
+   "lod0": "models/vegetation/hedge-1m.glb",
+   "lod1": "models/vegetation/hedge-1m-lod1.glb"
+  }
+ },
+ {
+  "id": "marsh-grass",
+  "height_m": 1.2,
+  "spread_m": 2.12,
+  "triangles": 1650,
+  "lod1_triangles": 275,
+  "use": "wet|coast",
+  "files": {
+   "lod0": "models/vegetation/marsh-grass.glb",
+   "lod1": "models/vegetation/marsh-grass-lod1.glb"
+  }
+ }
+]

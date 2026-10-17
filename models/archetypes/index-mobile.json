@@ -1,0 +1,98 @@
+[
+ {
+  "id": "mobile-single-a",
+  "kinds": [
+   "mobile"
+  ],
+  "bbox_m": [
+   5.375,
+   19.0,
+   3.617
+  ],
+  "z_range_m": [
+   -0.6,
+   3.617
+  ],
+  "stories": 1,
+  "best_aspect": 0.2829,
+  "neighborhoods": [
+   "Riverside"
+  ],
+  "triangles": 1186,
+  "file_kb": 486.5,
+  "description": "older single-wide: bowed metal roof with cross seams, two-tone lap aluminum siding, window AC, wooden landing and steps with a rail",
+  "front_note": "long axis along Y; lane end at -Y (glTF +Z); entry steps on the -X side"
+ },
+ {
+  "id": "mobile-single-b",
+  "kinds": [
+   "mobile"
+  ],
+  "bbox_m": [
+   5.66,
+   19.0,
+   3.626
+  ],
+  "z_range_m": [
+   -0.6,
+   3.626
+  ],
+  "stories": 1,
+  "best_aspect": 0.2979,
+  "neighborhoods": [
+   "Riverside"
+  ],
+  "triangles": 1182,
+  "file_kb": 541.1,
+  "description": "older, rustier 1970s single-wide: rounder metal roof with streaky (rust) shading, stripe band, aluminum door awning, plain wooden stoops",
+  "front_note": "long axis along Y; lane end at -Y (glTF +Z); entry steps on the -X side"
+ },
+ {
+  "id": "mobile-single-c",
+  "kinds": [
+   "mobile"
+  ],
+  "bbox_m": [
+   5.515,
+   19.2,
+   3.492
+  ],
+  "z_range_m": [
+   -0.6,
+   3.492
+  ],
+  "stories": 1,
+  "best_aspect": 0.2872,
+  "neighborhoods": [
+   "Riverside"
+  ],
+  "triangles": 1266,
+  "file_kb": 901.0,
+  "description": "newer single-wide: 3:12 shingled gable roof with overhangs, vinyl lap siding, shutters, landing with steps and railing",
+  "front_note": "long axis along Y; lane end at -Y (glTF +Z); entry steps on the -X side"
+ },
+ {
+  "id": "mobile-double",
+  "kinds": [
+   "mobile"
+  ],
+  "bbox_m": [
+   10.475,
+   18.7,
+   4.45
+  ],
+  "z_range_m": [
+   -0.6,
+   4.45
+  ],
+  "stories": 1,
+  "best_aspect": 0.5602,
+  "neighborhoods": [
+   "Riverside"
+  ],
+  "triangles": 1390,
+  "file_kb": 899.8,
+  "description": "double-wide (about 9 x 18 m): 4:12 shingled gable roof, vinyl siding, shutters, two doors, block-look skirting, landing with steps",
+  "front_note": "long axis along Y; lane end at -Y (glTF +Z); entry steps on the -X side"
+ }
+]
